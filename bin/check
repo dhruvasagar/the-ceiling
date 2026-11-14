@@ -67,6 +67,8 @@ check_captures() {
   why="$why$(marker zjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker yjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker hwia-zjit-hir.txt 'PushInlineFrame :convert_key')"
+  why="$why$(marker glimpse-zjit.txt 'PushInlineFrame :present\?')"
+  why="$why$(marker glimpse-yjit.txt 'inlined simple ISEQ')"
   why="$why$(marker hwia-yjit-disasm.txt 'call to ActiveSupport::HashWithIndifferentAccess#convert_key')"
   why="$why$(marker zjit-sq.txt 'PushInlineFrame :sq')"
   why="$why$(marker hwia-source.txt 'Symbol === key')"
@@ -217,6 +219,13 @@ check_narration() {
   fi
   if bin/narration - | cmp -s - talk/narration.org; then ok narration
   else fail narration "talk/narration.org is out of date: run bin/narration"; fi
+}
+
+check_glimpse() {
+  want=$(ruby bin/lib/glimpse.rb captures/glimpse-yjit.txt captures/glimpse-zjit.txt 2>&1)
+  have=$(awk '/^# glimpse: rows generated/{p=1; next} p && /^\| =/{print} p && /^[^|]/{if (n++) exit}' "$TALK")
+  if [ "$want" = "$have" ]; then ok glimpse
+  else fail glimpse "slide table differs from captures (run: ruby bin/lib/glimpse.rb captures/glimpse-yjit.txt captures/glimpse-zjit.txt)"; fi
 }
 
 check_takeaway() {

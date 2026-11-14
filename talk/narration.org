@@ -31,17 +31,18 @@ STORY beat (30 s).
 | 13 | 9:45 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
 | 14 | 10:15 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
 | 15 | 11:45 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
-| 16 | 13:00 | The 2-beat kick | 0:45 | 0:39 | 0:06 | STORY  |
-| 17 | 13:45 | In the ZJIT team's words | 0:45 | 0:53 | -0:08 | OVER  |
-| 18 | 14:30 | Race day: params | 0:30 | 0:29 | 0:01 |  |
-| 19 | 15:00 | params, through both | 0:45 | 0:44 | 0:01 |  |
-| 20 | 15:45 | The feed stop | 0:30 | 0:20 | 0:10 |  |
-| 21 | 16:15 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
-| 22 | 17:15 | Read your own code | 0:30 | 0:29 | 0:01 |  |
-| 23 | 17:45 | What it means for Ruby | 0:45 | 0:42 | 0:03 |  |
-| 24 | 18:30 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
+| 16 | 13:00 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
+| 17 | 13:30 | In the ZJIT team's words | 0:45 | 0:53 | -0:08 | OVER  |
+| 18 | 14:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 19 | 14:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
+| 20 | 15:30 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
+| 21 | 16:15 | The feed stop | 0:30 | 0:20 | 0:10 |  |
+| 22 | 16:45 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
+| 23 | 17:45 | Read your own code | 0:30 | 0:29 | 0:01 |  |
+| 24 | 18:15 | What it means for Ruby | 0:45 | 0:42 | 0:03 |  |
+| 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:15* | *17:44* | *1:31* | |
+|   |        | *Total* | *19:45* | *18:15* | *1:30* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -469,7 +470,7 @@ more code at once to the optimizer".]
 
 /Next: The 2-beat kick/
 
-** 16. The 2-beat kick  (13:00, 0:45)
+** 16. The 2-beat kick  (13:00, 0:30)
 
 /On screen:/
 - diagram img/two-beat-kick.svg: The 2-beat kick is timed to the whole stroke
@@ -484,7 +485,7 @@ callee together.
 
 /Next: In the ZJIT team's words/
 
-** 17. In the ZJIT team's words  (13:45, 0:45)
+** 17. In the ZJIT team's words  (13:30, 0:45)
 
 /On screen:/
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
@@ -512,7 +513,7 @@ contribute to").]
 
 /Next: Race day: params/
 
-** 18. Race day: params  (14:30, 0:30)
+** 18. Race day: params  (14:15, 0:30)
 
 /On screen:/
 - listing (captures/hwia-source.txt):
@@ -537,7 +538,7 @@ method calling a small method.
 
 /Next: params, through both/
 
-** 19. params, through both  (15:00, 0:45)
+** 19. params, through both  (14:45, 0:45)
 
 /On screen:/
 - YJIT at ~[]~:
@@ -572,9 +573,38 @@ in C.
 [Depth: where the caller passes a literal like :id, ZJIT inlines [] and
 convert_key into it and folds "Symbol === :id" away entirely.]
 
+/Next: A glimpse: seven everyday lines/
+
+** 20. A glimpse: seven everyday lines  (15:30, 0:45)
+
+/On screen:/
+- Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
+- | One line | YJIT: real calls into Ruby methods | ZJIT: inlined into one plan |
+- |----------+------------------------------------+-----------------------------|
+- | ~params[:name].present?~ | 4 calls | all 4 inlined |
+- | ~name.presence~ | 3 calls | all 3 inlined |
+- | ~text.squish~ | 2 calls | both inlined |
+- | ~list.second~ | 1 call | 1 inlined |
+- | ~5.minutes~ | 3 calls | 2 inlined, 1 call |
+- | ~obj.try(:upcase)~ | 1 call | 1 call (not inlined) |
+- | ~nil.blank?~ | inlined | folded to a constant |
+- Fewer jumps and fewer checks, not free: ZJIT still sets up a light frame for each. We counted calls; we didn't time them.
+- activesupport 8.1.4.1 · Ruby 4.1.0-preview1 · default settings
+
+/Say:/
+
+params isn't a one-off. Seven lines you'll find in any Rails app.
+
+Five of them: YJIT makes real calls, ZJIT turns them into one plan. But
+read the bottom too. 5.minutes still calls initialize. try isn't inlined
+at all. And nil.blank? YJIT inlines that one as well.
+
+And inlined isn't free: ZJIT still sets up a light frame for each. We
+counted calls. We didn't time them.
+
 /Next: The feed stop/
 
-** 20. The feed stop  (15:45, 0:30)
+** 21. The feed stop  (16:15, 0:30)
 
 /On screen:/
 - diagram img/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
@@ -587,7 +617,7 @@ garbage collection. A better stroke doesn't shorten the stop at the boat.
 
 /Next: Calm water, choppy water/
 
-** 21. Calm water, choppy water  (16:15, 1:00)
+** 22. Calm water, choppy water  (16:45, 1:00)
 
 /On screen:/
 - code:
@@ -627,7 +657,7 @@ still saves the call to double itself. That's this build, today.
 
 /Next: Read your own code/
 
-** 22. Read your own code  (17:15, 0:30)
+** 23. Read your own code  (17:45, 0:30)
 
 /On screen:/
 - code:
@@ -651,7 +681,7 @@ is out of the compiler's reach.
 
 /Next: What it means for Ruby/
 
-** 23. What it means for Ruby  (17:45, 0:45)
+** 24. What it means for Ruby  (18:15, 0:45)
 
 /On screen:/
 - YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
@@ -676,7 +706,7 @@ it can still be slower on larger apps. 4.1 ships in a few weeks. Try it with --z
 
 /Next: Head down/
 
-** 24. Head down  (18:30, 0:45)
+** 25. Head down  (19:00, 0:45)
 
 /On screen:/
 - /"Every time you lift your head, you slow down."/

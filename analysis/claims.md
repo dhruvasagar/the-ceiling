@@ -72,6 +72,22 @@ search for the quoted text.
 | Both compile `super` as a call to `Hash#[]` in C | shown | ZJIT: `CCallWithFrame v27, :Hash#[]` `hwia-zjit-hir.txt:4005`; YJIT: `# call C function` after `invokesuper` `hwia-yjit-disasm.txt:63436` |
 | With a literal key, ZJIT inlines `[]` and `convert_key` into the caller and folds `Symbol === :id` away (depth note) | shown | `fn block in <main>` `hwia-zjit-hir.txt:4010`: `PushInlineFrame :[]`, `PushInlineFrame :convert_key`, and no `IsA`/`CondBranch` in that function |
 
+## A glimpse: seven everyday lines
+
+The table on the slide is generated from `glimpse-yjit.txt` and
+`glimpse-zjit.txt` by `bin/lib/glimpse.rb`, and `bin/check glimpse` fails
+if the slide and the captures disagree. Rules: count calls into Ruby
+methods only (methods YJIT compiled blocks for in activesupport files);
+calls into C are left out under both compilers.
+
+| Claim | Kind | Evidence |
+|---|---|---|
+| Each row's YJIT and ZJIT counts | shown | generated from the captures by `bin/lib/glimpse.rb` |
+| YJIT inlines `NilClass#blank?` | shown | `inlined simple ISEQ` after `# call to NilClass#blank?`, `glimpse-yjit.txt` |
+| ZJIT folds `nil.blank?` to `true` | shown | `Const Value(true)` in the caller, `glimpse-zjit.txt` |
+| ZJIT does not inline `try` (calls it directly) | shown | `SendDirect … :try`, `glimpse-zjit.txt` |
+| Inlined is not free: ZJIT sets up a light frame | shown | see "The turn: sq" above |
+
 ## Polymorphism: `double`
 
 | Claim | Kind | Evidence |

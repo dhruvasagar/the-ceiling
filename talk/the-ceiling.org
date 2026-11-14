@@ -502,7 +502,7 @@ more code at once to the optimizer".]
 
 * The 2-beat kick
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -619,6 +619,42 @@ in C.
 
 [Depth: where the caller passes a literal like :id, ZJIT inlines [] and
 convert_key into it and folds "Symbol === :id" away entirely.]
+#+end_notes
+
+* A glimpse: seven everyday lines
+:PROPERTIES:
+:DURATION: 0:45
+:END:
+
+#+attr_html: :class cap
+Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
+
+# glimpse: rows generated from captures/glimpse-*.txt by bin/lib/glimpse.rb; bin/check verifies them
+| One line | YJIT: real calls into Ruby methods | ZJIT: inlined into one plan |
+|----------+------------------------------------+-----------------------------|
+| =params[:name].present?= | 4 calls | all 4 inlined |
+| =name.presence= | 3 calls | all 3 inlined |
+| =text.squish= | 2 calls | both inlined |
+| =list.second= | 1 call | 1 inlined |
+| =5.minutes= | 3 calls | 2 inlined, 1 call |
+| =obj.try(:upcase)= | 1 call | 1 call (not inlined) |
+| =nil.blank?= | inlined | folded to a constant |
+
+#+attr_html: :class cap
+Fewer jumps and fewer checks, not free: ZJIT still sets up a light frame for each. We counted calls; we didn't time them.
+
+#+attr_html: :class ver
+activesupport 8.1.4.1 · Ruby 4.1.0-preview1 · default settings
+
+#+begin_notes
+params isn't a one-off. Seven lines you'll find in any Rails app.
+
+Five of them: YJIT makes real calls, ZJIT turns them into one plan. But
+read the bottom too. 5.minutes still calls initialize. try isn't inlined
+at all. And nil.blank? YJIT inlines that one as well.
+
+And inlined isn't free: ZJIT still sets up a light frame for each. We
+counted calls. We didn't time them.
 #+end_notes
 
 * The feed stop
@@ -839,6 +875,38 @@ params = ActiveSupport::HashWithIndifferentAccess.new("id" => 1, "name" => "x")
   params[:id]
   params["name"]
 end
+#+end_src
+
+"A glimpse": seven everyday ActiveSupport lines, each wrapped in a
+one-line method and called 100,000 times, so both compilers compile it at
+their default settings. bin/lib/glimpse.rb turns the two captures into the
+slide's table.
+
+#+begin_src ruby :tangle ../src/glimpse.rb :mkdirp yes
+require "active_support"
+require "active_support/hash_with_indifferent_access"
+require "active_support/core_ext/object/blank"
+require "active_support/core_ext/object/try"
+require "active_support/core_ext/string/filters"
+require "active_support/core_ext/array/access"
+require "active_support/core_ext/numeric/time"
+
+def g_params(params) = params[:name].present?
+def g_presence(name) = name.presence
+def g_squish(text) = text.squish
+def g_second(list) = list.second
+def g_minutes(n) = n.minutes
+def g_try(obj) = obj.try(:upcase)
+def g_nil_blank(value) = value.blank?
+
+params = ActiveSupport::HashWithIndifferentAccess.new("name" => "dhruva")
+100_000.times { g_params(params) }
+100_000.times { g_presence("dhruva") }
+100_000.times { g_squish("  hello   world  ") }
+100_000.times { g_second([1, 2, 3]) }
+100_000.times { g_minutes(5) }
+100_000.times { g_try("dhruva") }
+100_000.times { g_nil_blank(nil) }
 #+end_src
 
 Print the real source of the two methods on the HWIA slide, from the

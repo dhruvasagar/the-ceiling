@@ -20,8 +20,8 @@
 <h1>The Ceiling: Why Ruby 4.0 Needed a Second Compiler</h1><p>Dhruva Sagar · RubyConf 2026</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 </section>
 <section>
-<section id="slide-org33f50e4">
-<h2 id="org33f50e4">Every time you lift your head</h2>
+<section id="slide-org265d76b">
+<h2 id="org265d76b">Every time you lift your head</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -66,10 +66,10 @@ written in.]
 </section>
 </section>
 <section>
-<section id="slide-orgac96445" class="diagram">
-<h2 id="orgac96445">Ruby swims with its head up</h2>
+<section id="slide-orgac09ff6" class="diagram">
+<h2 id="orgac09ff6">Ruby swims with its head up</h2>
 
-<div id="org08177a9" class="figure">
+<div id="org35a9a93" class="figure">
 <p><img src="img/head-up.svg" alt="The beginner swimmer lifts their head every stroke" class="org-svg" />
 </p>
 </div>
@@ -88,8 +88,8 @@ Ruby's interpreter runs your code a lot like that. Let me show you.
 </section>
 </section>
 <section>
-<section id="slide-org074ff0b">
-<h2 id="org074ff0b">Our five lines</h2>
+<section id="slide-org319eeed">
+<h2 id="org319eeed">Our five lines</h2>
 <div class="org-src-container">
 
 <pre id="point-class"><code class="ruby" >class Point
@@ -123,15 +123,15 @@ interpreter runs that.
 </section>
 </section>
 <section>
-<section id="slide-orgd6e2c6e">
-<h2 id="orgd6e2c6e">The bytecode</h2>
+<section id="slide-orgb4301fd">
+<h2 id="orgb4301fd">The bytecode</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
 </code></pre>
 </div>
 
-<pre class="example" id="org3e269a1">
+<pre class="example" id="orgcadce4c">
 0000 getlocal_WC_0          a@0
 0002 opt_send_without_block &lt;calldata!mid:x, argc:0, ARGS_SIMPLE&gt;
 0004 getlocal_WC_0          b@1
@@ -167,10 +167,10 @@ check first, every single time: the interpreter lifting its head. You can run th
 </section>
 </section>
 <section>
-<section id="slide-org848a1e4" class="diagram">
-<h2 id="org848a1e4">Learning to sight</h2>
+<section id="slide-orgc632cd3" class="diagram">
+<h2 id="orgc632cd3">Learning to sight</h2>
 
-<div id="org256f999" class="figure">
+<div id="orgd33dfa4" class="figure">
 <p><img src="img/sighting.svg" alt="A trained swimmer looks once, then keeps their head down" class="org-svg" />
 </p>
 </div>
@@ -196,8 +196,8 @@ Ruby has two of them, and they look in different ways.
 </section>
 </section>
 <section>
-<section id="slide-org1012677">
-<h2 id="org1012677">YJIT: compile as you go</h2>
+<section id="slide-orgd91b7c4">
+<h2 id="orgd91b7c4">YJIT: compile as you go</h2>
 <ul>
 <li>Once a method is warm, compile a small piece, run it</li>
 <li>Look at the values that really turned up</li>
@@ -205,7 +205,7 @@ Ruby has two of them, and they look in different ways.
 
 </ul>
 
-<pre class="example" id="org1a9fba8">
+<pre class="example" id="orgbbac4cc">
 # Insn: 0002 opt_send_without_block (stack_size: 1)
 # call to Point#x
 # guard not immediate
@@ -247,8 +247,8 @@ instance-variable layout.]
 </section>
 </section>
 <section>
-<section id="slide-org7d59a69">
-<h2 id="org7d59a69">ZJIT: watch, then plan</h2>
+<section id="slide-org710a11e">
+<h2 id="org710a11e">ZJIT: watch, then plan</h2>
 <ul>
 <li>While the interpreter runs the method, record which types turn up: a <b>profile</b></li>
 <li>Then turn the <b>whole method</b> into a plan: the <b>IR</b> (intermediate representation)</li>
@@ -271,9 +271,9 @@ representation, improves the plan, and compiles it in one go.
 </section>
 </section>
 <section>
-<section id="slide-org5e4d674">
-<h2 id="org5e4d674">ZJIT: the IR on one slide</h2>
-<pre class="example" id="orgb7a3027">
+<section id="slide-org7573751">
+<h2 id="org7573751">ZJIT: the IR on one slide</h2>
+<pre class="example" id="org4c24b04">
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v79:ObjectSubclass[class_exact:Point] = GuardType v16
@@ -329,9 +329,9 @@ if someone redefines Point#x.]
 </section>
 </section>
 <section>
-<section id="slide-org6af4f05">
-<h2 id="org6af4f05">25 compiles, or one</h2>
-<pre class="example" id="orga06c6c5">
+<section id="slide-orgd47a612">
+<h2 id="orgd47a612">25 compiles, or one</h2>
+<pre class="example" id="org8af0a6e">
 YJIT                                          ZJIT
 call 30                                       call 30
 distance@distance_log.rb:7 (index: 0)         distance@distance_log.rb:7
@@ -378,9 +378,9 @@ before any machine code is written. Hold onto that.
 </section>
 </section>
 <section>
-<section id="slide-org20e97ee">
-<h2 id="org20e97ee">On five lines, a tie</h2>
-<pre class="example" id="orge345730">
+<section id="slide-orgea4762c">
+<h2 id="orgea4762c">On five lines, a tie</h2>
+<pre class="example" id="orgb700b3b">
 YJIT                                         ZJIT
 # Insn: 0028 getlocal_WC_0 (stack_size: 2)   v95:Fixnum = FixnumSub v93, v94
 # Insn: 0030 opt_mult (stack_size: 3)        ...
@@ -415,10 +415,10 @@ ZJIT exists, we need something every Ruby codebase is full of.
 </section>
 </section>
 <section>
-<section id="slide-org01f905f" class="diagram">
-<h2 id="org01f905f">The plateau</h2>
+<section id="slide-org835551c" class="diagram">
+<h2 id="org835551c">The plateau</h2>
 
-<div id="orga97d490" class="figure">
+<div id="org42e4327" class="figure">
 <p><img src="img/plateau.svg" alt="Swim times drop fast while learning to sight, then stop moving" class="org-svg" />
 </p>
 </div>
@@ -445,8 +445,8 @@ Let's add one turn to our five lines.
 </section>
 </section>
 <section>
-<section id="slide-orgda58aaf">
-<h2 id="orgda58aaf">One more call</h2>
+<section id="slide-orgbe78423">
+<h2 id="orgbe78423">One more call</h2>
 <div class="org-src-container">
 
 <pre id="distance-v2"><code class="ruby" >def sq(n) = n * n
@@ -469,10 +469,10 @@ called sq.
 </section>
 </section>
 <section>
-<section id="slide-orga68b215" class="diagram">
-<h2 id="orga68b215">One more call is one more buoy</h2>
+<section id="slide-orgf44591d" class="diagram">
+<h2 id="orgf44591d">One more call is one more buoy</h2>
 
-<div id="org993fdd0" class="figure">
+<div id="orgb1b80a6" class="figure">
 <p><img src="img/turn-buoy.svg" alt="One more call is one more turn buoy" class="org-svg" />
 </p>
 </div>
@@ -492,9 +492,9 @@ distance. That's called inlining.
 </section>
 </section>
 <section>
-<section id="slide-org35eb77a">
-<h2 id="org35eb77a">At the turn buoy</h2>
-<pre class="example" id="orgffb7aef">
+<section id="slide-org20d739d">
+<h2 id="org20d739d">At the turn buoy</h2>
+<pre class="example" id="orged9208b">
 YJIT                                     ZJIT
 # call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
 # push callee control frame              ...
@@ -553,10 +553,10 @@ is cheaper than a call, not free.]
 </section>
 </section>
 <section>
-<section id="slide-orgd176ad8" class="diagram">
-<h2 id="orgd176ad8">Why it's a ceiling</h2>
+<section id="slide-org49425ec" class="diagram">
+<h2 id="org49425ec">Why it's a ceiling</h2>
 
-<div id="org9b98597" class="figure">
+<div id="org512410f" class="figure">
 <p><img src="img/ceiling.svg" alt="YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it" class="org-svg" />
 </p>
 </div>
@@ -603,10 +603,10 @@ more code at once to the optimizer".]
 </section>
 </section>
 <section>
-<section id="slide-org0a86501" class="diagram">
-<h2 id="org0a86501">The 2-beat kick</h2>
+<section id="slide-org1127a82" class="diagram">
+<h2 id="org1127a82">The 2-beat kick</h2>
 
-<div id="org14c4569" class="figure">
+<div id="org9378617" class="figure">
 <p><img src="img/two-beat-kick.svg" alt="The 2-beat kick is timed to the whole stroke" class="org-svg" />
 </p>
 </div>
@@ -626,8 +626,8 @@ callee together.
 </section>
 </section>
 <section>
-<section id="slide-orga5c2f26">
-<h2 id="orga5c2f26">In the ZJIT team's words</h2>
+<section id="slide-orgbe2b633">
+<h2 id="orgbe2b633">In the ZJIT team's words</h2>
 <blockquote>
 <p>
 "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)."
@@ -667,9 +667,9 @@ contribute to").]
 </section>
 </section>
 <section>
-<section id="slide-org2d6c134">
-<h2 id="org2d6c134">Race day: params</h2>
-<pre class="example" id="org8dc518d">
+<section id="slide-orgc35857e">
+<h2 id="orgc35857e">Race day: params</h2>
+<pre class="example" id="org1d17bec">
 def [](key)
   super(convert_key(key))
 end
@@ -699,13 +699,13 @@ method calling a small method.
 </section>
 </section>
 <section>
-<section id="slide-orgd82839b">
-<h2 id="orgd82839b">params, through both</h2>
+<section id="slide-orgeaa93df">
+<h2 id="orgeaa93df">params, through both</h2>
 <p class="cap">
 YJIT at <code>[]</code>:
 </p>
 
-<pre class="example" id="org43d9ccb">
+<pre class="example" id="org1c459ed">
 # call to ActiveSupport::HashWithIndifferentAccess#convert_key
 # push callee control frame
 # gen_direct_jmp: existing block
@@ -715,7 +715,7 @@ YJIT at <code>[]</code>:
 ZJIT at <code>[]</code>:
 </p>
 
-<pre class="example" id="org434d50c">
+<pre class="example" id="orge4b91f5">
 PushInlineFrame :convert_key, v27, num_args=1
 v78:BoolExact = IsA v10, v43
 CondBranch v50, bb8(), bb7()
@@ -752,10 +752,106 @@ convert<sub>key</sub> into it and folds "Symbol <code>=</code> :id" away entirel
 </section>
 </section>
 <section>
-<section id="slide-org7d81b30" class="diagram">
-<h2 id="org7d81b30">The feed stop</h2>
+<section id="slide-orgd009f42">
+<h2 id="orgd009f42">A glimpse: seven everyday lines</h2>
+<p class="cap">
+Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
+</p>
 
-<div id="org1dcf2e1" class="figure">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">One line</th>
+<th scope="col" class="org-left">YJIT: real calls into Ruby methods</th>
+<th scope="col" class="org-left">ZJIT: inlined into one plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>params[:name].present?</code></td>
+<td class="org-left">4 calls</td>
+<td class="org-left">all 4 inlined</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>name.presence</code></td>
+<td class="org-left">3 calls</td>
+<td class="org-left">all 3 inlined</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>text.squish</code></td>
+<td class="org-left">2 calls</td>
+<td class="org-left">both inlined</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>list.second</code></td>
+<td class="org-left">1 call</td>
+<td class="org-left">1 inlined</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>5.minutes</code></td>
+<td class="org-left">3 calls</td>
+<td class="org-left">2 inlined, 1 call</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>obj.try(:upcase)</code></td>
+<td class="org-left">1 call</td>
+<td class="org-left">1 call (not inlined)</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>nil.blank?</code></td>
+<td class="org-left">inlined</td>
+<td class="org-left">folded to a constant</td>
+</tr>
+</tbody>
+</table>
+
+<p class="cap">
+Fewer jumps and fewer checks, not free: ZJIT still sets up a light frame for each. We counted calls; we didn't time them.
+</p>
+
+<p class="ver">
+activesupport 8.1.4.1 · Ruby 4.1.0-preview1 · default settings
+</p>
+
+<aside class="notes">
+<p>
+params isn't a one-off. Seven lines you'll find in any Rails app.
+</p>
+
+<p>
+Five of them: YJIT makes real calls, ZJIT turns them into one plan. But
+read the bottom too. 5.minutes still calls initialize. try isn't inlined
+at all. And nil.blank? YJIT inlines that one as well.
+</p>
+
+<p>
+And inlined isn't free: ZJIT still sets up a light frame for each. We
+counted calls. We didn't time them.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orgd209c46" class="diagram">
+<h2 id="orgd209c46">The feed stop</h2>
+
+<div id="org78f959a" class="figure">
 <p><img src="img/feed-stop.svg" alt="A feed stop: a better stroke doesn't make it shorter" class="org-svg" />
 </p>
 </div>
@@ -771,8 +867,8 @@ garbage collection. A better stroke doesn't shorten the stop at the boat.
 </section>
 </section>
 <section>
-<section id="slide-org3411013">
-<h2 id="org3411013">Calm water, choppy water</h2>
+<section id="slide-orgbd9099c">
+<h2 id="orgbd9099c">Calm water, choppy water</h2>
 <div class="org-src-container">
 
 <pre><code class="ruby" >def double(x) = x + x   # called with Integers only, or with five types
@@ -783,7 +879,7 @@ garbage collection. A better stroke doesn't shorten the stop at the boat.
 Calm, ZJIT: spliced in, one check, one add.
 </p>
 
-<pre class="example" id="org2ed928d">
+<pre class="example" id="org6643d2a">
 v44:Fixnum = GuardType v10, Fixnum recompile
 v46:Fixnum = FixnumAdd v44, v44
 </pre>
@@ -792,7 +888,7 @@ v46:Fixnum = FixnumAdd v44, v44
 Choppy: five types.
 </p>
 
-<pre class="example" id="org233cc29">
+<pre class="example" id="org0ec1c37">
 YJIT                        ZJIT
 # guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
 # call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
@@ -829,8 +925,8 @@ still saves the call to double itself. That's this build, today.
 </section>
 </section>
 <section>
-<section id="slide-org0ac9fdc">
-<h2 id="org0ac9fdc">Read your own code</h2>
+<section id="slide-orgfa6fe55">
+<h2 id="orgfa6fe55">Read your own code</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'
@@ -864,8 +960,8 @@ is out of the compiler's reach.
 </section>
 </section>
 <section>
-<section id="slide-orgdd738a9">
-<h2 id="orgdd738a9">What it means for Ruby</h2>
+<section id="slide-orgd215b66">
+<h2 id="orgd215b66">What it means for Ruby</h2>
 <p>
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 whole method at once, so it can see through small method calls and pay
@@ -899,8 +995,8 @@ it can still be slower on larger apps. 4.1 ships in a few weeks. Try it with &#x
 </section>
 </section>
 <section>
-<section id="slide-org7eee3b3">
-<h2 id="org7eee3b3">Head down</h2>
+<section id="slide-org981755f">
+<h2 id="org981755f">Head down</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
