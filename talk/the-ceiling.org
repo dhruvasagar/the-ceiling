@@ -42,8 +42,8 @@ one extra call that only one of them can see through, and why. Swimming
 is texture: long-distance swimming is about efficiency, not power, and so
 is a JIT.
 
-Cut order if long: (1) "25 compiles, or one"; (2) "The 2-beat kick" (say
-its one line on the quote slide). Never cut "On five lines, a tie", "At
+Cut order if long: (1) "The 2-beat kick" (say its one line on the quote
+slide); (2) the YJIT listing on "YJIT: compile as you go". Never cut "On five lines, a tie", "At
 the turn buoy" or "Why it's a ceiling": they are the argument.
 
 * Every time you lift your head
@@ -285,45 +285,6 @@ that C code.
 if someone redefines Point#x.]
 #+end_notes
 
-* 25 compiles, or one
-:PROPERTIES:
-:DURATION: 1:00
-:END:
-
-# capture: how-yjit.txt, how-zjit.txt
-#+begin_example
-YJIT                                          ZJIT
-call 30                                       call 30
-distance@distance_log.rb:7 (index: 0)         distance@distance_log.rb:7
-distance@distance_log.rb:7 (index: 2)
- ...
-distance@distance_log.rb:10 (index: 42)
-#+end_example
-
-#+attr_html: :class cap
-Default settings. Both compile during call 30. YJIT: *25* pieces, one by one as that call runs. ZJIT: *1* plan. Calls 31 to 40: no compiles at all.
-
-#+begin_notes
-You can count it. Both wait until call 30.
-
-During that one call, YJIT compiles twenty-five times: compile a piece,
-run it, reach a value it hasn't seen, like b, look at it, compile the
-next piece. After call 30 it's all machine code; calls 31 to 40 compile
-nothing. ZJIT compiles once.
-
-Why? So YJIT never compiles code that doesn't run, or for types that
-never turn up.
-
-[Depth: some positions appear twice in the log because a piece is
-compiled in two steps, up to a defer_compilation, then the rest. In a big
-app YJIT raises its threshold (120 calls once there are 40,000 compiled
-methods), so "both at 30" is for small programs.]
-
-Neither number wins on its own. What matters is the shape: twenty-five
-pieces turned into machine code one at a time, or one plan, improved
-before any machine code is written. Hold onto that.
-#+end_notes
-
 * On five lines, a tie
 :PROPERTIES:
 :DURATION: 0:45
@@ -546,6 +507,46 @@ significantly after your code has been compiled, we will frequently
 side-exit into the interpreter"); merge post 2025-05-14 ("a more
 traditional “textbook” compiler so it is easy for the community to
 contribute to").]
+#+end_notes
+
+* Measured: the ZJIT team's results, and ours
+:PROPERTIES:
+:DURATION: 1:00
+:END:
+
+| What                                      | YJIT    | ZJIT    | Source                      |
+|-------------------------------------------+---------+---------+-----------------------------|
+| Instance-variable writes (setivar), per run | 5 ms    | 2 ms    | ZJIT team, Mar 2026          |
+| JIT memory, Shopify storefront            | 125 MiB | 101 MiB | ZJIT team, Oct 2026          |
+| Ruby calls in =params[:name].present?=    | 4       | 0       | ours                        |
+| Machine code for our =params= program     | 320 KiB | 352 KiB | ours                        |
+| Bail-outs to the interpreter, choppy water | 0       | 0       | ours                        |
+
+#+attr_html: :class cap
+The team, Oct 2026: ZJIT is "probably as fast as or faster than YJIT" on Shopify's storefront, and "there are definitely some where we are worse". Ours are counts and sizes from this talk's captures, not timings.
+
+#+begin_export html
+<p class="ver">Sources: <a href="https://railsatscale.com/2026-03-18-how-zjit-removes-redundant-object-loads-and-stores/">Denbeaux, Rails at Scale, 2026-03-18</a> · <a href="https://railsatscale.com/2026-10-09-zjit-is-now-as-fast-as-yjit/">Bernstein, Rails at Scale, 2026-10-09</a> · ours: captures/ in the repo</p>
+#+end_export
+
+#+begin_notes
+Don't take my word for it. Here's what the ZJIT team has measured, and
+what we saw ourselves.
+
+Theirs: on a benchmark of instance-variable writes, ZJIT is over twice as
+fast as YJIT, from an optimization that works across the whole method. On
+Shopify's storefront, it uses less memory, and they call it probably as
+fast as or faster than YJIT. In their words, there are still some where
+it's worse.
+
+Ours are counts, not timings: four calls gone in our params line, no
+bail-outs in chop. And ZJIT generated a bit more machine code, which the
+team says too.
+
+[Depth: team, Oct 2026: "we generate more code (less precise than LBBV and
+more versions) and probably bigger code". Sizes are each compiler's
+reported code region (code_region_size / code_region_bytes), captures
+hwia-yjit-stats and hwia-zjit-stats.]
 #+end_notes
 
 * Race day: params

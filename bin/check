@@ -67,6 +67,8 @@ check_captures() {
   why="$why$(marker zjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker yjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker hwia-zjit-hir.txt 'PushInlineFrame :convert_key')"
+  why="$why$(marker hwia-yjit-stats.txt '^code_region_size: +327,680$')"
+  why="$why$(marker hwia-zjit-stats.txt '^code_region_bytes: +360,448$')"
   why="$why$(marker glimpse-zjit.txt 'PushInlineFrame :present\?')"
   why="$why$(marker glimpse-yjit.txt 'inlined simple ISEQ')"
   why="$why$(marker hwia-yjit-disasm.txt 'call to ActiveSupport::HashWithIndifferentAccess#convert_key')"

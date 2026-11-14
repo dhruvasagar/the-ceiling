@@ -78,7 +78,9 @@ of the whole method that could be rewritten afterwards. Optimisations
 that need many blocks at once, across branches or across calls (inlining
 a callee, removing a check that a caller already made), are hard to add
 to a compiler that decides one block at a time before the next one
-exists. This is the "ceiling" the ZJIT team describes: ZJIT's
+exists. The ZJIT team's register-allocator post makes the same point:
+"YJIT compiles one basic block at a time, so it never has the full picture
+of the function anyway" [15]. This is the "ceiling" the ZJIT team describes: ZJIT's
 architecture "gives more code at once to the optimizer" [1].
 
 The two designs trade differently. YJIT *reacts*: a new type at a site
@@ -313,6 +315,19 @@ The cost of polymorphism is the lost fast path, not exits.
   some where we are worse" [3].
 - **4.1 previews**: "faster than YJIT on many benchmarks" but possibly
   "still slower than YJIT on larger benchmarks or applications" [5].
+
+- **Published wins**: on the setivar benchmark, "ZJIT takes an average of
+  2ms per iteration on this benchmark, while YJIT takes an average of 5ms",
+  which the team attributes to load-store elimination over the whole
+  method; "we're now beginning to see the design differences between YJIT
+  and ZJIT manifest themselves in performance divergences" [14]. For
+  blocks, "ZJIT chooses to get call context by inlining" [16]. On
+  Shopify's storefront, JIT memory is 101 MiB for ZJIT against 125 MiB for
+  YJIT, though "we generate more code (less precise than LBBV and more
+  versions) and probably bigger code" [3]. In our own `params` program,
+  ZJIT's code region was 360,448 bytes against YJIT's 327,680
+  ([`hwia-zjit-stats.txt`](../captures/hwia-zjit-stats.txt),
+  [`hwia-yjit-stats.txt`](../captures/hwia-yjit-stats.txt)).
 
 These statements are dated on purpose. The target moved from "on par" [1]
 to "faster than YJIT" [4], and the latest sources are hedged [3][5].

@@ -49,9 +49,36 @@ exact words used and where they're used.
 - "For a lot of benchmarks, we are neck and neck with YJIT. And there are
   definitely some where we are worse." (analysis §8)
 - "YJIT takes 125MiB and ZJIT takes 101MiB." (analysis §4)
+- "we generate more code (less precise than LBBV and more versions) and
+  probably bigger code" (talk: *Measured: the ZJIT team's results, and ours*)
 - "we do not yet support inlining the blocks themselves" and "Right now we
   delegate a lot of begin/rescue and break/next-in-block to the
   interpreter." (analysis §7, §8)
+
+[14] Jacob Denbeaux. *How ZJIT removes redundant object loads and stores.*
+Rails at Scale, 2026-03-18.
+https://railsatscale.com/2026-03-18-how-zjit-removes-redundant-object-loads-and-stores/
+
+- "ZJIT takes an average of 2ms per iteration on this benchmark, while
+  YJIT takes an average of 5ms." (the setivar benchmark) (talk: *Measured: the
+  ZJIT team's results, and ours*)
+- "ZJIT is over twice as fast as YJIT for repeated instance variable
+  assignment" (talk: *Measured: the ZJIT team's results, and ours*, notes)
+- "we're now beginning to see the design differences between YJIT and
+  ZJIT manifest themselves in performance divergences" (analysis §8)
+
+[15] Aaron Patterson. *A new Register Allocator for ZJIT.* Rails at Scale,
+2026-05-27. https://railsatscale.com/2026-05-27-a-new-register-allocator-for-zjit/
+
+- "YJIT compiles one basic block at a time, so it never has the full
+  picture of the function anyway" (talk: *Measured: the ZJIT team's results, and ours*,
+  depth note; analysis §2)
+
+[16] Max Bernstein. *The inliner is yielding benefits for ZJIT.* Rails at
+Scale, 2026-07-28. https://railsatscale.com/2026-07-28-the-inliner-is-yielding-benefits/
+
+- "ZJIT chooses to get call context by inlining" (on blocks; YJIT relies
+  on methods annotated for it) (analysis §8)
 
 ## Ruby itself
 

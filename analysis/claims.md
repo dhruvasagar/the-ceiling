@@ -20,8 +20,8 @@ search for the quoted text.
 | At `a.x`, YJIT guards object, class and shape, then reads `@x` directly (*YJIT: compile as you go*) | shown | `# call to Point#x` and the guards after it, `yjit-distance.txt:412` |
 | ZJIT records types in the interpreter, then compiles the whole method from that profile (*ZJIT: watch, then plan*) | stated | "reads historical type information from the profiled interpreter", "compiles one entire method at a time" [1]; "uses profile information from the interpreter" [7] |
 | ZJIT's IR names every value once (SSA) (*ZJIT: the IR on one slide*) | stated | HIR glossary: "graph representation in static single-assignment (SSA) form" [7] |
-| Both compile `distance` during call 30; YJIT logs 25 compile events, ZJIT one; none on calls 31 to 40 (*25 compiles, or one*) | shown | `how-yjit.txt` (first event at :40, all events follow `call 30`), `how-zjit.txt:33` |
-| YJIT raises its threshold to 120 calls once a process has 40,000 ISEQs (*25 compiles, or one*, depth note) | stated | `doc/jit/yjit.md` line 200 [12] |
+| Both compile `distance` during call 30; YJIT logs 25 compile events, ZJIT one; none on calls 31 to 40 (analysis E0; no longer on a slide) | shown | `how-yjit.txt` (first event at :40, all events follow `call 30`), `how-zjit.txt:33` |
+| YJIT raises its threshold to 120 calls once a process has 40,000 ISEQs (analysis) | stated | `doc/jit/yjit.md` line 200 [12] |
 
 ## The five-line method
 
@@ -97,6 +97,17 @@ calls into C are left out under both compilers.
 | Choppy: YJIT keeps an inline integer add and a version per type | shown | `guard arg0 fixnum` (no call) plus `call to Float#+`, `String#+`, `Array#+`, `Rational#+` in `yjit-choppy.txt` |
 | Choppy: ZJIT inlines `double`; YJIT calls it | shown | `PushInlineFrame :double` `zjit-choppy.txt:18`; `# call to Object#double` `yjit-choppy.txt:214` |
 | Neither bails out to the interpreter: 0 side exits each | shown | `side_exit_count: 0`, `zjit-choppy-stats.txt:40`, `yjit-choppy-stats.txt:94` |
+
+## Measured: the ZJIT team's results, and ours
+
+| Claim | Kind | Evidence |
+|---|---|---|
+| setivar: YJIT 5 ms, ZJIT 2 ms per iteration | stated | "ZJIT takes an average of 2ms per iteration on this benchmark, while YJIT takes an average of 5ms." [14] |
+| Storefront JIT memory: YJIT 125 MiB, ZJIT 101 MiB | stated | "YJIT takes 125MiB and ZJIT takes 101MiB" [3] |
+| Storefront: "probably as fast as or faster than YJIT"; "there are definitely some where we are worse" | stated | [3] |
+| ZJIT generates more code | stated + shown | "we generate more code …" [3]; ours: `code_region_bytes: 360,448` (ZJIT) vs `code_region_size: 327,680` (YJIT), `hwia-*-stats.txt` (each compiler's own counter) |
+| Ruby calls in `params[:name].present?`: YJIT 4, ZJIT 0 | shown | glimpse table, `bin/lib/glimpse.rb` |
+| No bail-outs in choppy water, either compiler | shown | `side_exit_count: 0`, `zjit-choppy-stats.txt:40`, `yjit-choppy-stats.txt:94` |
 
 ## Status and dates
 
