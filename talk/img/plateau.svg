@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
   <title>The plateau: swim times stop dropping</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
@@ -15,7 +16,7 @@
   </g>
   <text x="400" y="300" font-size="36" fill="#7a5a00">learning to sight</text>
   <text x="400" y="342" font-size="36" fill="#7a5a00">faster every week</text>
-  <text x="640" y="490" font-size="36" fill="#7a5a00">…then the times stop moving</text>
+  <text x="640" y="490" font-size="36" fill="#7a5a00">...then the times stop moving</text>
   <!-- where the time goes -->
   <rect x="1090" y="200" width="440" height="380" rx="16" fill="#ffffff" stroke="#9cc7e6" stroke-width="4"/>
   <text x="1310" y="260" font-size="36" font-weight="700" fill="#1b2733" text-anchor="middle">where the time goes</text>

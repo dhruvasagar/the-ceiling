@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
   <title>A feed stop: a better stroke doesn't make it shorter</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
@@ -7,7 +8,7 @@
   <rect x="1080" y="300" width="160" height="80" fill="#ffffff" stroke="#1b2733" stroke-width="5"/>
   <text x="1150" y="560" font-size="36" text-anchor="middle" fill="#1b2733">support boat</text>
   <!-- swimmer treading water -->
-  <circle cx="760" cy="440" r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/>
+  <g transform="translate(760,440)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
   <path d="M700 470 Q760 500 820 470" stroke="#1b2733" stroke-width="5" fill="none"/>
   <g transform="translate(760,338)"><circle r="30" fill="#fff" stroke="#1b2733" stroke-width="5"/><rect x="-7" y="-44" width="14" height="12" fill="#1b2733"/><path d="M0 0 V-20 M0 0 L14 8" stroke="#b23a3a" stroke-width="5" stroke-linecap="round"/></g>
   <text x="760" y="560" font-size="36" text-anchor="middle" fill="#4a5a6a">stopped, drinking</text>
