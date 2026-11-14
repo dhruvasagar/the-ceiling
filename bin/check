@@ -63,6 +63,47 @@ check_captures() {
   verdict captures "$why"
 }
 
+# listings ORG CAPTURE_DIR: reasons (empty = every listing line is real)
+listings() {
+  [ -f bin/lib/check-listings.awk ] || { echo "bin/lib/check-listings.awk missing. "; return; }
+  awk -f bin/lib/check-listings.awk "$1" | while IFS="$(printf '\t')" read -r files line; do
+    if [ "$files" = "ERR" ]; then echo "$line. "; continue; fi
+    want=$(printf '%s\n' "$line" | bin/normalize)
+    found=""
+    for f in $(echo "$files" | tr ',' ' '); do
+      [ -f "$2/$f" ] || { echo "listing names missing capture $f. "; continue; }
+      bin/normalize < "$2/$f" | grep -qF -- "$want" && found=1
+    done
+    [ -n "$found" ] || echo "line not in $files: '$want'. "
+  done
+}
+
+check_listings_selftest() {
+  t=$(mktemp -d)
+  printf 'alpha   beta\n  guard arg0 fixnum @0x1f\nPushInlineFrame :sq, v116 (0x104b59e60), num_args=1\n' > "$t/c.txt"
+  cat > "$t/good.org" <<'EOF'
+# capture: c.txt
+#+begin_example
+YJIT                         ZJIT
+guard arg0 fixnum            PushInlineFrame :sq, v116, num_args=1
+ ...
+alpha beta
+#+end_example
+EOF
+  sed 's/alpha beta/invented line/' "$t/good.org" > "$t/bad.org"
+  printf '#+begin_example\nalpha beta\n#+end_example\n' > "$t/nosrc.org"
+  why=""
+  [ -z "$(listings "$t/good.org" "$t")" ] || why="good listing rejected: $(listings "$t/good.org" "$t") "
+  listings "$t/bad.org" "$t" | grep -q "invented line" || why="${why}invented line accepted. "
+  listings "$t/nosrc.org" "$t" | grep -q "without a source" || why="${why}listing without '# capture:' accepted. "
+  rm -rf "$t"
+  verdict listings_selftest "$why"
+}
+
+check_listings() {
+  verdict listings "$(listings talk/the-ceiling.org captures | tr '\n' ' ')"
+}
+
 # --- run --------------------------------------------------------------------
 all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
 [ $# -gt 0 ] && all="$*"
