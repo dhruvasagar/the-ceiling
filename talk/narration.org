@@ -711,7 +711,7 @@ it with --zjit.
 /On screen:/
 - /"Every time you lift your head, you slow down."/
 - Next time someone says "Ruby is slow", ask: *which part?*
-- Slides, code, every capture, the full write-up: *[REPO-URL]*
+- Slides, code, every capture, the full write-up: [[https://github.com/dhruvasagar/the-ceiling][github.com/dhruvasagar/the-ceiling]]
 
 /Say:/
 

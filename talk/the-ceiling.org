@@ -776,7 +776,7 @@ it with --zjit.
 
 Next time someone says "Ruby is slow", ask: *which part?*
 
-Slides, code, every capture, the full write-up: *[REPO-URL]*
+Slides, code, every capture, the full write-up: [[https://github.com/dhruvasagar/the-ceiling][github.com/dhruvasagar/the-ceiling]]
 
 #+begin_notes
 [STORY: the closing swim. A recent swim or race where it came together:
