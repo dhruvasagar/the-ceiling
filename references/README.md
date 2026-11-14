@@ -137,6 +137,8 @@ https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
 - `yjit/src/options.rs`: `max_versions: 4` (default number of versions
   of a block). (talk: *In the ZJIT team's words*, notes)
   https://github.com/ruby/ruby/blob/master/yjit/src/options.rs
+- `doc/jit/yjit.md` lines 70-71 and `doc/jit/zjit.md` line 53: both need
+  the Rust compiler (`rustc`) to build. (analysis, Summary)
 - `vm_insnhelper.c`, `vm_opt_minus` (line 7094): checks both operands are
   fixnums (`FIXNUM_2_P`) and that `-` isn't redefined before its fast path,
   on every execution. (talk: *The bytecode*)

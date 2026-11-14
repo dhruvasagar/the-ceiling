@@ -13,8 +13,9 @@ line is the exact command. Numbers in brackets, like [2], refer to
 ## Summary
 
 YJIT and ZJIT are both just-in-time compilers inside CRuby, both written
-in Rust by the same team, and both turn hot Ruby methods into machine code
-guarded by cheap type checks. They differ in **what they compile at once**
+in Rust (each needs `rustc` to build [12]), and both turn hot Ruby methods
+into machine code guarded by cheap type checks. The 4.0 release notes call
+ZJIT "the next generation of YJIT" [4]. They differ in **what they compile at once**
 and **where their type information comes from**:
 
 - **YJIT** uses *lazy basic block versioning* [8][9][10]. It compiles one
@@ -30,8 +31,12 @@ unit size and SSA IR) and encourage more outside contribution (by becoming
 a more traditional method compiler)" [2]. Our experiments show one
 concrete form of that ceiling. At a small method call, at default
 settings, ZJIT inlines the callee into the caller and reuses a type it has
-already proved; YJIT makes a real call into a separately compiled, general
-version of the callee, which checks its argument again (E3).
+already proved, and knows the type of what comes back; YJIT makes a real
+call into a separately compiled, general version of the callee, which
+checks its argument again, and checks the result again after it returns
+(E3). Inlining is not free: ZJIT still sets up a lighter frame for each
+inlined method. The same pattern holds on real ActiveSupport code (E4b,
+E6), with exceptions noted there.
 
 ## 1. How CRuby runs code
 
@@ -39,7 +44,9 @@ CRuby compiles Ruby source to bytecode for its virtual machine, YARV, and
 interprets that bytecode. YARV is a stack machine whose instructions are
 generic: `opt_minus` subtracts whatever two values are on the stack, so on
 every execution it has to establish what those values are
-([`yarv-distance.txt`](../captures/yarv-distance.txt)). A JIT compiler
+([`yarv-distance.txt`](../captures/yarv-distance.txt)): `vm_opt_minus`
+checks both operands are fixnums and that `-` is not redefined before its
+fast path [12]. A JIT compiler
 removes most of that repeated work by generating machine code that checks
 the types once (a **guard**) and then performs the specialised operation.
 If a guard fails, the compiled code cannot continue: it leaves for a slower
@@ -47,8 +54,12 @@ path, either the interpreter (a **side exit** [7]) or, in YJIT's case,
 often another compiled version for the new type (§2).
 
 Both JITs start from the same bytecode. Neither can optimise inside
-methods written in C (`Hash#[]`, `Math.sqrt`, `Integer#+` when not
-specialised); they can only call them.
+arbitrary methods written in C (`Hash#[]`, `Regexp#match?`, `Math.sqrt`);
+they call them. Both special-case a known set of core methods: in the
+`params` capture YJIT inlines `Symbol#name` as a "leaf builtin"
+([`hwia-yjit-disasm.txt`](../captures/hwia-yjit-disasm.txt)), and ZJIT
+reports `inline_cfunc_optimized_send_count: 204,398`
+([`hwia-zjit-stats.txt`](../captures/hwia-zjit-stats.txt)).
 
 ## 2. How YJIT works
 
@@ -72,6 +83,11 @@ actually runs, for types that actually occur, so little is wasted; and,
 in the team's words, its architecture "allows for easy interprocedural
 type-based specialization" [1].
 
+YJIT does inline the smallest methods: attribute readers (`a.x` reads
+`@x` directly, E1) and trivial methods such as `nil.blank?` (`inlined
+simple ISEQ`, E6). A method that does real work (`sq`, `convert_key`,
+`double`) stays a real call in every capture here.
+
 Limits: the unit of compilation is small. YJIT turns each block into
 machine code as soon as it reaches it, so it never holds a representation
 of the whole method that could be rewritten afterwards. Optimisations
@@ -84,7 +100,7 @@ of the function anyway" [15]. This is the "ceiling" the ZJIT team describes: ZJI
 architecture "gives more code at once to the optimizer" [1].
 
 The two designs trade differently. YJIT *reacts*: a new type at a site
-gets a new version. ZJIT *plans* from a profile: if behaviour changes
+gets a new version, up to `max_versions` (4 by default) [12]. ZJIT *plans* from a profile: if behaviour changes
 after compiling, "we will frequently side-exit into the interpreter" [2]
 until it recompiles.
 
@@ -129,8 +145,9 @@ will frequently side-exit into the interpreter" [2].
 | Knowledge travels | forward, block to block | across the whole method graph |
 | Polymorphic sites | one block version per type seen; keeps an inline fixnum path (E5) | type switch in one compiled body; every case a call (E5) |
 | When behaviour changes after compiling | adds another version | plan is stale: side-exits or recompiles [2] |
-| Calls to small Ruby methods | a real call into separately compiled code (E3); attribute readers and some tiny built-ins folded in | inlined into the caller, with a lighter inline frame (E3) |
-| Default call threshold (preview1) | 30 (E0) | 30 [7] (E0) |
+| Calls to small Ruby methods | a real call into separately compiled code (E3, E4b, E6); attribute readers and trivial methods inlined (E1, E6) | inlined into the caller, with a lighter inline frame (E3, E4b, E6); not always (E6) |
+| Default call threshold (preview1) | 30, raised to 120 once a process has 40,000 ISEQs [12] (E0) | 30 [7] (E0) |
+| Machine code, our `params` program | 327,680 bytes (`code_region_size`) | 360,448 bytes (`code_region_bytes`) |
 | Memory on Shopify SFR | 125 MiB [3] | 101 MiB [3] |
 | Status | mature; evaluated in production at Shopify [11] | 4.0: slower than YJIT [4]; 4.1 previews: faster on many benchmarks [5] |
 
@@ -165,7 +182,11 @@ end
 
 Both compilers guard the receivers' class and shape, read `@x`/`@y`
 directly instead of calling the readers, guard the operands as fixnums,
-and emit an overflow-checked subtract. Both call `Math.sqrt` in C.
+and emit an overflow-checked subtract. Both call `Math.sqrt` in C. One
+difference already: before reading `@y`, YJIT guards `a` and `b`'s class
+and shape again (`# call to Point#y`, then `guard known class` /
+`guard shape`), while ZJIT reuses the guards it made for `@x`
+(`LoadField v79, :@y` with no new guard).
 
 **E2. Knowledge kept within the method.** Same captures. Neither compiler
 re-checks `dx` before `dx * dx`. ZJIT emits `FixnumMult v95, v95` with no
@@ -208,7 +229,9 @@ YJIT's call returns, its `opt_plus` guards both operands
 `FixnumAdd v169, v173` has no guard, because it saw that `sq` returns a
 fixnum.
 
-The difference that holds in every run is **a real call versus an inlined body**: no jump, no separate compiled code, and type knowledge on both sides of the call.
+The difference that holds in every run is **a real call versus an inlined
+body**: no jump, no separate compiled code, and type knowledge on both
+sides of the call.
 Whether YJIT re-checks `n` depends on what it compiled first. With
 `--yjit-call-threshold=1`
 ([`yjit-sq-eager.txt`](../captures/yjit-sq-eager.txt)) YJIT compiles
@@ -224,7 +247,7 @@ optimizer does with it.
 [`hwia-source.txt`](../captures/hwia-source.txt),
 [`hwia-yjit-stats.txt`](../captures/hwia-yjit-stats.txt),
 [`hwia-zjit-stats.txt`](../captures/hwia-zjit-stats.txt).
-Rails `params` (`ActionController::Parameters`) is built on it. 100,000
+Rails `params` (`ActionController::Parameters`) is built on it [13]. 100,000
 iterations, each looking up one Symbol key and one String key:
 
 ```ruby
@@ -286,6 +309,33 @@ Both statistics captures report `side_exit_count: 0`. Neither compiler
 "bails out" here; both stop specialising and fall back to general calls.
 The cost of polymorphism is the lost fast path, not exits.
 
+**E6. A glimpse: seven everyday lines.**
+[`glimpse-yjit.txt`](../captures/glimpse-yjit.txt),
+[`glimpse-zjit.txt`](../captures/glimpse-zjit.txt), from
+[`../src/glimpse.rb`](../src/glimpse.rb). Each line is wrapped in a
+one-line method and called 100,000 times at default settings.
+[`../bin/lib/glimpse.rb`](../bin/lib/glimpse.rb) counts, per line, the
+calls each compiler makes into *Ruby* methods (methods YJIT compiled
+blocks for in activesupport); calls into C are not counted under either.
+`bin/check glimpse` fails if the talk's table and the captures disagree.
+
+| One line | YJIT: real calls into Ruby methods | ZJIT: inlined into one plan |
+|---|---|---|
+| `params[:name].present?` | 4 calls | all 4 inlined |
+| `name.presence` | 3 calls | all 3 inlined |
+| `text.squish` | 2 calls | both inlined |
+| `list.second` | 1 call | 1 inlined |
+| `5.minutes` | 3 calls | 2 inlined, 1 call |
+| `obj.try(:upcase)` | 1 call | 1 call (not inlined) |
+| `nil.blank?` | inlined | folded to a constant |
+
+Five of seven become one plan under ZJIT. The exceptions matter: `5.minutes`
+still calls `Duration#initialize` (`SendDirect … :initialize`); `try`,
+which takes `*args` and a block, is called directly, not inlined; and
+YJIT inlines `NilClass#blank?` too, while ZJIT folds it to `true`. These
+are counts of calls, not timings; each inlined method still costs ZJIT a
+lighter frame (E3).
+
 ## 7. Where no JIT helps
 
 - **Waiting**: database, network and disk time are unaffected.
@@ -303,7 +353,7 @@ The cost of polymorphism is the lost fast path, not exits.
   the release notes "advise against deploying it in production for now"
   and set the goal "to make ZJIT faster than YJIT and production-ready in
   Ruby 4.1" [4].
-- **Why it was built**: "a more traditional 'textbook' compiler so it is
+- **Why it was built**: "a more traditional “textbook” compiler so it is
   easy for the community to contribute to" [1]; "raise the performance
   ceiling (bigger compilation unit size and SSA IR)" [2].
 - **Direction stated by the team**: a "general-purpose method inlining
@@ -315,7 +365,6 @@ The cost of polymorphism is the lost fast path, not exits.
   some where we are worse" [3].
 - **4.1 previews**: "faster than YJIT on many benchmarks" but possibly
   "still slower than YJIT on larger benchmarks or applications" [5].
-
 - **Published wins**: on the setivar benchmark, "ZJIT takes an average of
   2ms per iteration on this benchmark, while YJIT takes an average of 5ms",
   which the team attributes to load-store elimination over the whole
@@ -347,4 +396,10 @@ to "faster than YJIT" [4], and the latest sources are hedged [3][5].
 - **Toy workloads.** E1–E3 and E5 are deliberately small. They isolate a
   mechanism; they do not predict application speed-ups. For that, see the
   team's own measurements [3][11].
+- **Different counters.** The machine-code sizes come from each compiler's
+  own statistic (`code_region_size` for YJIT, `code_region_bytes` for
+  ZJIT); they may not measure exactly the same thing.
+- **Our counting rules (E6).** "Real calls into Ruby methods" is our
+  definition, computed by `bin/lib/glimpse.rb`; a different rule (for
+  example, counting calls into C) gives different numbers.
 - **One machine.** arm64 macOS only.
