@@ -178,9 +178,11 @@ check_export() {
   if [ ! -s "$html" ]; then
     why="${why}$html missing. "
   else
-    [ "$html" -nt "$TALK" ] || why="${why}$html older than $TALK. "
+    [ "$TALK" -nt "$html" ] && why="${why}$html older than $TALK. "
     grep -q 'reveal.js@4.6.1' "$html" || why="${why}not using reveal.js@4.6.1. "
     grep -q 'class="notes"' "$html" || why="${why}speaker notes missing. "
+    grep -q 'RevealHighlight' "$html" || why="${why}syntax highlighting plugin not loaded. "
+    grep -qE '<code[^>]*class="[^"]*ruby' "$html" || why="${why}ruby code blocks not marked for highlighting. "
     grep -q '#+begin_' "$html" && why="${why}raw org markup leaked into HTML. "
     awk '/^\* / && !/:noexport:/ { sub(/^\* /, ""); print }' "$TALK" | while read -r h; do
       grep -qF -- "$h" "$html" || echo "slide missing from HTML: $h"

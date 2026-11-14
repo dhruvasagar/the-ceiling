@@ -1,7 +1,7 @@
 #+TITLE: The Ceiling: Why Ruby 4.0 Needed a Second Compiler
 #+AUTHOR: Dhruva Sagar
 #+DATE: RubyConf 2026
-#+OPTIONS: toc:nil num:nil timestamp:nil
+#+OPTIONS: toc:nil num:nil timestamp:nil reveal_width:1600 reveal_height:900
 #+STARTUP: overview
 #+PROPERTY: header-args :eval never-export :exports code
 #+PROPERTY: header-args:sh :dir (progn (defvar ceiling--tangling nil) (unless ceiling--tangling (let ((ceiling--tangling t)) (save-excursion (org-babel-tangle)))) "../src") :results output verbatim :prologue "export PATH=\"$HOME/.asdf/shims:$PATH\""
@@ -22,9 +22,12 @@
 
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.6.1
 #+REVEAL_VERSION: 4
+#+REVEAL_PLUGINS: (highlight notes search zoom)
+#+REVEAL_HIGHLIGHT_CSS: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css
 #+REVEAL_THEME: white
 #+REVEAL_TRANS: none
-#+REVEAL_INIT_OPTIONS: width: 1600, height: 900, margin: 0.04, slideNumber: true, hash: true
+#+REVEAL_MARGIN: 0.04
+#+REVEAL_INIT_OPTIONS: slideNumber: true, hash: true
 #+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style>
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><p>%a · %d</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 
@@ -92,7 +95,7 @@ Rust, which is what both of these compilers are written in.
 
 * How Ruby runs your code
 :PROPERTIES:
-:DURATION: 1:15
+:DURATION: 0:30
 :END:
 
 #+name: point-class
@@ -111,6 +114,19 @@ def distance(a, b)
   Math.sqrt(dx * dx + dy * dy)
 end
 #+end_src
+
+#+begin_notes
+Here's our method: the distance between two points with whole-number
+coordinates.
+
+Before any JIT touches it, Ruby turns it into bytecode and runs that in
+its interpreter. Let me just print it.
+#+end_notes
+
+* The bytecode
+:PROPERTIES:
+:DURATION: 0:45
+:END:
 
 # LIVE: C-c C-c on stage. Instant, the same every run. Fallback below.
 #+begin_src sh
@@ -134,11 +150,7 @@ ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).di
 Ruby 4.1.0-preview1
 
 #+begin_notes
-Here's our method: the distance between two points with whole-number
-coordinates.
-
-Before any JIT touches it, Ruby turns it into bytecode and runs that in
-its interpreter. Let me just print it. [Run the live block.]
+[Run the live block.]
 
 In irb that's one line, and I'd encourage you to try it on something of
 yours tonight.
@@ -521,16 +533,13 @@ ZJIT's architecture gives more code at once to the optimizer."]
 
 * Why ZJIT was built
 :PROPERTIES:
-:DURATION: 1:45
+:DURATION: 1:00
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt The 2-beat kick is timed to the whole stroke
 [[file:img/two-beat-kick.svg]]
 
-#+begin_quote
-"we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)."
---- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24
-#+end_quote
 
 #+begin_notes
 [STORY: learning the 2-beat kick. Suggested: "In long-distance swimming
@@ -543,7 +552,19 @@ That's the ceiling. YJIT tunes each leg, each piece, and it does that
 brilliantly. But the next wins, like the one you just saw at the turn
 buoy, need the whole method in view at once. You can't get there one
 piece at a time.
+#+end_notes
 
+* In the ZJIT team's words
+:PROPERTIES:
+:DURATION: 0:45
+:END:
+
+#+begin_quote
+"we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)."
+--- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24
+#+end_quote
+
+#+begin_notes
 That isn't my reading. It's what the team said when they shipped it: they
 want to raise the performance ceiling, with a bigger unit of compilation,
 and a more traditional compiler shape that more people can work on.
@@ -659,7 +680,7 @@ v52:BasicObject = CCallWithFrame v20, :Float#+, v10
 CondBranchHasType v10, Fixnum, bb8(), bb9()
 v55:BasicObject = CCallWithFrame v25, :Integer#+, v10
  ...
-v43:BasicObject = Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
+Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
 #+end_example
 
 #+attr_html: :class ver
