@@ -1,0 +1,28 @@
+#!/bin/sh
+# Integrity checks for the talk repo. Run from anywhere: bin/check [name...]
+# Prints "ok <name>" or "FAIL <name>: <reason>"; exits 1 if anything failed.
+# shellcheck disable=SC2329  # check_* functions are invoked by name below
+cd "$(dirname "$0")/.." || exit 2
+export PATH="$HOME/.asdf/shims:$PATH"
+failed=0
+
+ok()   { echo "ok   $1"; }
+fail() { echo "FAIL $1: $2"; failed=1; }
+# verdict NAME REASON: ok when REASON is empty, otherwise fail with it
+verdict() { if [ -z "$2" ]; then ok "$1"; else fail "$1" "$2"; fi; }
+
+check_no_personal_paths() {
+  hits=$(git ls-files -z --cached --others --exclude-standard \
+           | xargs -0 grep -lE '/Users/[A-Za-z0-9_]|/private/tmp/[A-Za-z0-9_-]|/var/folders/[a-z0-9]' 2>/dev/null \
+           | grep -v '^bin/check$' | tr '\n' ' ')
+  verdict no_personal_paths "${hits:+absolute personal paths in: $hits}"
+}
+
+# --- run --------------------------------------------------------------------
+all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
+[ $# -gt 0 ] && all="$*"
+for c in $all; do
+  case $c in check_*) ;; *) c=check_$c ;; esac
+  "$c"
+done
+exit $failed
