@@ -18,7 +18,7 @@ ROOT=$(pwd)
 export PATH="$HOME/.asdf/shims:$PATH"
 
 WANT_RUBY="4.1.0preview1"
-TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq yjit-sq-eager zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats zjit-calm zjit-choppy yjit-choppy zjit-choppy-stats yjit-choppy-stats"
+TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq yjit-sq-eager zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats zjit-calm zjit-choppy yjit-choppy zjit-choppy-stats yjit-choppy-stats hwia-yjit-disasm hwia-zjit-hir"
 
 command_for() {
   case $1 in
@@ -39,6 +39,8 @@ command_for() {
     yjit-choppy)       echo "ruby --yjit --yjit-dump-disasm choppy.rb" ;;
     zjit-choppy-stats) echo "ruby --zjit --zjit-stats choppy.rb" ;;
     yjit-choppy-stats) echo "ruby --yjit --yjit-stats choppy.rb" ;;
+    hwia-yjit-disasm)  echo "ruby --yjit --yjit-dump-disasm hwia.rb" ;;
+    hwia-zjit-hir)     echo "ruby --zjit --zjit-dump-hir hwia.rb" ;;
     *) return 1 ;;
   esac
 }

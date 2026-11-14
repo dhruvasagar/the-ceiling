@@ -15,6 +15,6 @@
   <text x="80" y="700" font-size="44" font-weight="700" fill="#1f6a2c">ZJIT</text>
   <path d="M220 650 Q800 610 1380 650" stroke="#2e8b3e" stroke-width="10" fill="none"/>
   <g transform="translate(220,698)"><path d="M-36 -22 L-12 -30 L12 -22 L36 -30 L36 26 L12 34 L-12 26 L-36 34 Z" fill="#fdf6df" stroke="#1b2733" stroke-width="4"/><path d="M-12 -30 V26 M12 -22 V34" stroke="#1b2733" stroke-width="3"/><path d="M-28 18 Q-6 -10 28 -14" stroke="#2e8b3e" stroke-width="4" fill="none" stroke-dasharray="6 5"/></g>
-  <text x="800" y="740" font-size="36" text-anchor="middle" fill="#1f6a2c">planned on the beach: swims straight through the turn</text>
+  <text x="800" y="740" font-size="36" text-anchor="middle" fill="#1f6a2c">sees the whole course: swims straight through the turn</text>
   <text x="80" y="850" font-size="44" fill="#1b2733">Seeing through the call and swimming on: <tspan font-weight="700">inlining</tspan>.</text>
 </svg>

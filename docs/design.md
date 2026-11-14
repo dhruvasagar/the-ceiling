@@ -341,3 +341,17 @@ what holds at default settings: YJIT makes a real call into a separately
 compiled, general `sq` that checks its argument; ZJIT inlines `sq` with no
 call and no check. A forced-early capture (`yjit-sq-eager.txt`) is kept
 for the analysis, where it shows YJIT carrying the type across the call.
+
+## 13. Revision (2026-11-14, night): making the argument land
+
+After an independent review against the brief: the five-line method is
+now presented honestly as a tie (neither compiler re-checks `dx`); a new
+"Why it's a ceiling" slide explains the design limit (YJIT never holds a
+whole-method plan to rewrite; ZJIT starts with one), in the team's words;
+the turn-buoy caption leads with "the call disappears"; the gem promise is
+kept by tracing `HashWithIndifferentAccess#[]` through both compilers
+(YJIT calls `convert_key`, ZJIT inlines it); the trade-off is framed as
+react (YJIT) versus plan (ZJIT), including chop, where YJIT keeps a fast
+path ZJIT loses; "Read your own code" lists what to look for. Swimming is
+texture, with the theme of efficiency rather than power: diagrams that
+forced the metaphor (buoy to buoy, course map, fog and chop) were removed.

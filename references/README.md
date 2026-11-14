@@ -17,7 +17,7 @@ exact words used and where they're used.
 - "Instead of using lazy basic block versioning (LBBV) to profile types, it
   reads historical type information from the profiled interpreter" and
   "Instead of compiling one basic block at a time, it compiles one entire
-  method at a time" (analysis §3)
+  method at a time" (talk: *Why it's a ceiling*, notes; analysis §2, §3)
 - "while YJIT’s architecture allows for easy interprocedural type-based
   specialization, ZJIT’s architecture gives more code at once to the
   optimizer." (talk: *At the turn buoy*, notes; analysis §6 E3)
@@ -59,7 +59,7 @@ exact words used and where they're used.
 https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/
 
 - "ZJIT is a new just-in-time (JIT) compiler, which is developed as the
-  next generation of YJIT."
+  next generation of YJIT." (talk: *What it means for Ruby*, notes)
 - "As of Ruby 4.0.0, ZJIT is faster than the interpreter, but not yet as
   fast as YJIT."
 - "Our goal is to make ZJIT faster than YJIT and production-ready in Ruby

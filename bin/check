@@ -66,6 +66,8 @@ check_captures() {
   why="$why$(marker yjit-sq-eager.txt 'call to Object#sq')"
   why="$why$(marker zjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker yjit-choppy-stats.txt '^side_exit_count: +0$')"
+  why="$why$(marker hwia-zjit-hir.txt 'PushInlineFrame :convert_key')"
+  why="$why$(marker hwia-yjit-disasm.txt 'call to ActiveSupport::HashWithIndifferentAccess#convert_key')"
   why="$why$(marker zjit-sq.txt 'PushInlineFrame :sq')"
   why="$why$(marker hwia-source.txt 'Symbol === key')"
   why="$why$(marker hwia-zjit-stats.txt 'Hash#\[\]')"
@@ -124,7 +126,7 @@ check_listings() {
   verdict listings "$(listings talk/the-ceiling.org captures | tr '\n' ' ')"
 }
 
-DIAGRAMS="head-up sighting buoy-to-buoy plateau course-map turn-buoy two-beat-kick fog-chop feed-stop"
+DIAGRAMS="head-up sighting plateau ceiling turn-buoy two-beat-kick feed-stop"
 
 check_diagrams() {
   why=""
@@ -160,7 +162,7 @@ slide_text() {
 }
 
 check_stale_wording() {
-  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call|straight away|first wave|YJIT guesses|guesses as it goes|which is what params is|is what params is' \
+  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call|straight away|first wave|YJIT guesses|guesses as it goes|which is what params is|is what params is|on the beach|time on the beach|prove the rest|proved a number once' \
            "$TALK" talk/img/*.svg "$ANALYSIS" 2>/dev/null | tr '\n' ' ')
   verdict stale_wording "${hits:+stale wording: $hits}"
 }

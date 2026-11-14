@@ -72,9 +72,19 @@ actually runs, for types that actually occur, so little is wasted; and,
 in the team's words, its architecture "allows for easy interprocedural
 type-based specialization" [1].
 
-Limits: the unit of compilation is small. Optimisations that need to see
-many blocks at once, across branches or across calls, are hard to add to a
-compiler that decides one block at a time before the next one exists.
+Limits: the unit of compilation is small. YJIT turns each block into
+machine code as soon as it reaches it, so it never holds a representation
+of the whole method that could be rewritten afterwards. Optimisations
+that need many blocks at once, across branches or across calls (inlining
+a callee, removing a check that a caller already made), are hard to add
+to a compiler that decides one block at a time before the next one
+exists. This is the "ceiling" the ZJIT team describes: ZJIT's
+architecture "gives more code at once to the optimizer" [1].
+
+The two designs trade differently. YJIT *reacts*: a new type at a site
+gets a new version. ZJIT *plans* from a profile: if behaviour changes
+after compiling, "we will frequently side-exit into the interpreter" [2]
+until it recompiles.
 
 ## 3. How ZJIT works
 
@@ -115,7 +125,8 @@ will frequently side-exit into the interpreter" [2].
 | Type information from | live values when a stub is reached | interpreter profile, gathered before compiling |
 | Representation | per-block code with a type context | SSA graph (HIR) for the method |
 | Knowledge travels | forward, block to block | across the whole method graph |
-| Polymorphic sites | one block version per type seen | type switch in one compiled body |
+| Polymorphic sites | one block version per type seen; keeps an inline fixnum path (E5) | type switch in one compiled body; every case a call (E5) |
+| When behaviour changes after compiling | adds another version | plan is stale: side-exits or recompiles [2] |
 | Calls to small Ruby methods | a real call into separately compiled code (E3, default settings) | inlined into the caller (E3) |
 | Default call threshold (preview1) | 30 (E0) | 30 [7] (E0) |
 | Memory on Shopify SFR | 125 MiB [3] | 101 MiB [3] |
@@ -224,6 +235,17 @@ call counts, not timings: we did not profile where the time goes. What
 they show is that the work this method delegates is `Hash#[]`, implemented
 in C, which neither compiler can optimise.
 
+**E4b. The gem method through both compilers.**
+[`hwia-yjit-disasm.txt`](../captures/hwia-yjit-disasm.txt),
+[`hwia-zjit-hir.txt`](../captures/hwia-zjit-hir.txt). Default settings.
+In `[]`, YJIT emits a real call to `convert_key`
+(`call to ActiveSupport::HashWithIndifferentAccess#convert_key`,
+`push callee control frame`, `gen_direct_jmp: existing block`), the same
+pattern as `sq` in E3. ZJIT inlines it (`PushInlineFrame :convert_key`),
+turns `Symbol === key` into an `IsA` type test and a branch, and compiles
+the `super` call as a direct `CCallWithFrame` to `Hash#[]`. The work that
+remains is the C hash lookup.
+
 **E5. Polymorphism: `double(x) = x + x`.**
 [`zjit-calm.txt`](../captures/zjit-calm.txt),
 [`zjit-choppy.txt`](../captures/zjit-choppy.txt),
@@ -241,7 +263,9 @@ like.
   `CCallWithFrame` to that class's `#+` (including `Integer#+`, no longer
   an inline add), and a final generic `Send` marked `polymorphic fallback`.
 - YJIT, choppy: one block version per type: an inline fixnum add, plus
-  calls to `Float#+`, `String#+`, `Array#+` and `Rational#+`.
+  calls to `Float#+`, `String#+`, `Array#+` and `Rational#+`. Here YJIT's
+  reacting design keeps a fast path that ZJIT's plan gives up: in ZJIT
+  even the Integer case is a call to `Integer#+`.
 
 Both statistics captures report `side_exit_count: 0`. Neither compiler
 "bails out" here; both stop specialising and fall back to general calls.
