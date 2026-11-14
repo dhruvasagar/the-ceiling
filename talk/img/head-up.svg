@@ -16,5 +16,5 @@
     <text x="860" y="600">stroke</text><text x="1080" y="600">stroke</text><text x="1300" y="600">stroke</text>
   </g>
   <text x="80" y="760" font-size="48" fill="#1b2733">Head up <tspan font-weight="700">every stroke</tspan>: "where am I? is this still right?"</text>
-  <text x="80" y="830" font-size="40" fill="#4a5a6a">Safe. Slow. Ruby checks "what type is this?" on every instruction.</text>
+  <text x="80" y="830" font-size="40" fill="#4a5a6a">Safe. Slow. Ruby asks "what type is this?" at every operation, every time.</text>
 </svg>

@@ -5,29 +5,40 @@
 # Each writes captures/NAME.txt: first line is the exact command and Ruby
 # version; personal paths and memory addresses are scrubbed. Programs run
 # from src/ (tangled from talk/the-ceiling.org).
+#
+# Default JIT settings everywhere, so what you see is what your app gets.
+# The one exception, yjit-sq-eager, forces YJIT to compile on the first
+# call; the analysis uses it to show what YJIT can do across a call.
+#
+# A capture that fails (wrong Ruby, Ruby error, empty output) never
+# replaces the checked-in file: the old one is kept and the script exits 1.
 set -u
 cd "$(dirname "$0")/.." || exit 2
 ROOT=$(pwd)
 export PATH="$HOME/.asdf/shims:$PATH"
 
-TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats zjit-calm zjit-choppy yjit-choppy"
+WANT_RUBY="4.1.0preview1"
+TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq yjit-sq-eager zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats zjit-calm zjit-choppy yjit-choppy zjit-choppy-stats yjit-choppy-stats"
 
 command_for() {
   case $1 in
-    env)             echo "ruby -v && ruby -ractive_support -e 'puts \"activesupport #{ActiveSupport.version}\"'" ;;
-    yarv-distance)   echo "ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'" ;;
-    yjit-distance)   echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance.rb" ;;
-    zjit-distance)   echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance.rb" ;;
-    yjit-sq)         echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance_sq.rb" ;;
-    zjit-sq)         echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance_sq.rb" ;;
-    how-yjit)        echo "ruby --yjit --yjit-log=/dev/stdout distance_log.rb" ;;
-    how-zjit)        echo "ruby --zjit --zjit-log-compiled-iseqs=/dev/stdout distance_log.rb" ;;
-    hwia-source)     echo "ruby hwia_source.rb" ;;
-    hwia-yjit-stats) echo "ruby --yjit --yjit-stats hwia.rb" ;;
-    hwia-zjit-stats) echo "ruby --zjit --zjit-stats hwia.rb" ;;
-    zjit-calm)       echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir calm.rb" ;;
-    zjit-choppy)     echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir choppy.rb" ;;
-    yjit-choppy)     echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm choppy.rb" ;;
+    env)               echo "ruby -v && ruby -ractive_support -e 'puts \"activesupport #{ActiveSupport.version}\"'" ;;
+    yarv-distance)     echo "ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'" ;;
+    yjit-distance)     echo "ruby --yjit --yjit-dump-disasm distance.rb" ;;
+    zjit-distance)     echo "ruby --zjit --zjit-dump-hir distance.rb" ;;
+    yjit-sq)           echo "ruby --yjit --yjit-dump-disasm distance_sq.rb" ;;
+    yjit-sq-eager)     echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance_sq.rb" ;;
+    zjit-sq)           echo "ruby --zjit --zjit-dump-hir distance_sq.rb" ;;
+    how-yjit)          echo "ruby --yjit --yjit-log=/dev/stdout distance_log.rb" ;;
+    how-zjit)          echo "ruby --zjit --zjit-log-compiled-iseqs=/dev/stdout distance_log.rb" ;;
+    hwia-source)       echo "ruby hwia_source.rb" ;;
+    hwia-yjit-stats)   echo "ruby --yjit --yjit-stats hwia.rb" ;;
+    hwia-zjit-stats)   echo "ruby --zjit --zjit-stats hwia.rb" ;;
+    zjit-calm)         echo "ruby --zjit --zjit-dump-hir calm.rb" ;;
+    zjit-choppy)       echo "ruby --zjit --zjit-dump-hir choppy.rb" ;;
+    yjit-choppy)       echo "ruby --yjit --yjit-dump-disasm choppy.rb" ;;
+    zjit-choppy-stats) echo "ruby --zjit --zjit-stats choppy.rb" ;;
+    yjit-choppy-stats) echo "ruby --yjit --yjit-stats choppy.rb" ;;
     *) return 1 ;;
   esac
 }
@@ -44,19 +55,35 @@ scrub() {
 }
 
 [ -f src/distance.rb ] || { echo "src/ is empty: tangle talk/the-ceiling.org first (bin/check tangle_current does it)" >&2; exit 1; }
+version=$(ruby -v 2>&1)
+case $version in
+  *"$WANT_RUBY"*) ;;
+  *) echo "wrong Ruby: '$version'; want $WANT_RUBY. Run bin/check env for the fix." >&2; exit 1 ;;
+esac
+if ! ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm -e 'def f = 1; f' 2>&1 | grep -q '# Block:'; then
+  echo "this Ruby prints no YJIT disassembly; see bin/check env" >&2; exit 1
+fi
+
 mkdir -p captures
-version=$(ruby -v)
+raw=$(mktemp)
+trap 'rm -f "$raw"' EXIT
 status=0
 # shellcheck disable=SC2086  # TARGETS is a space-separated word list
 [ $# -gt 0 ] || set -- $TARGETS
 for name in "$@"; do
   cmd=$(command_for "$name") || { echo "unknown target: $name (one of: $TARGETS)" >&2; status=1; continue; }
   out="captures/$name.txt"
-  { echo "# \$ $cmd   ($version)"; (cd src && sh -c "$cmd") 2>&1; } | scrub > "$out.tmp"
-  if [ "$(wc -l < "$out.tmp")" -le 1 ]; then
-    echo "capture $name produced no output; see $out.tmp" >&2; status=1; continue
+  # stdout must be a pipe, not a file: the JIT logs write to /dev/stdout,
+  # which macOS can't reopen when stdout is a temp file. The exit status
+  # travels separately so Ruby errors are still caught.
+  { (cd src && sh -c "$cmd"; echo $? > "$raw.rc") 2>&1; } | cat > "$raw"
+  rc=$(cat "$raw.rc" 2>/dev/null || echo 1); rm -f "$raw.rc"
+  if [ "$rc" -ne 0 ] || [ ! -s "$raw" ]; then
+    echo "capture $name FAILED (exit $rc); kept the old $out. Output:" >&2
+    tail -5 "$raw" >&2
+    status=1; continue
   fi
-  mv "$out.tmp" "$out"
+  { echo "# \$ $cmd   ($version)"; cat "$raw"; } | scrub > "$out"
   echo "wrote $out ($(wc -l < "$out" | tr -d ' ') lines)"
 done
 exit $status

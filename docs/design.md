@@ -320,3 +320,24 @@ worded to match what the captures show ("here, it checked again").
 - Placeholders for personal story beats (`[STORY: …]`).
 - Initial `git init` and local commit; **pushing to GitHub / creating the
   remote is the speaker's step** (or done only with his explicit go-ahead).
+
+## 12. Revision (2026-11-14, evening): story and evidence
+
+**Story.** The talk follows one swimmer, the speaker, getting better at
+open water, and Ruby's journey alongside: head up (interpreter) →
+sighting (YJIT) → the plateau, where the time left is at the turns
+(method calls) → planning the line and the 2-beat kick (ZJIT, inlining) →
+race day (C code and waiting as feed stops; polymorphism as chop) → a
+closing swim that returns to the coach's line. Pictures come before code.
+Choppy water is a limit for both compilers, so it sits in race day, not
+at the turning point. Personal beats remain `[STORY: …]` placeholders,
+including the closing swim.
+
+**Evidence.** All captures now use default JIT settings. The "first wave"
+slide is removed: YJIT's re-check after the `Math` lookup only appears
+when it is forced to compile on the first call (before the constant cache
+fills), and is gone once it recompiles. The turn-buoy slide now rests on
+what holds at default settings: YJIT makes a real call into a separately
+compiled, general `sq` that checks its argument; ZJIT inlines `sq` with no
+call and no check. A forced-early capture (`yjit-sq-eager.txt`) is kept
+for the analysis, where it shows YJIT carrying the type across the call.

@@ -1,39 +1,4 @@
-# $ ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
-Optimized HIR:
-fn initialize@distance.rb:3:
-bb1():
-  EntryPoint interpreter
-  v1:HeapBasicObject = LoadSelf
-  v2:CPtr = LoadSP
-  v3:BasicObject = LoadField v2, :x@-0x28
-  v4:BasicObject = LoadField v2, :y@-0x20
-  Jump bb3(v1, v3, v4)
-bb2():
-  EntryPoint JIT(0)
-  v7:HeapBasicObject = LoadArg :self@0
-  v8:BasicObject = LoadArg :x@1
-  v9:BasicObject = LoadArg :y@2
-  Jump bb3(v7, v8, v9)
-bb3(v11:HeapBasicObject, v12:BasicObject, v13:BasicObject):
-  v19:ArrayExact = NewArray v12, v13
-  v23:CInt64 = ArrayLength v19
-  v24:CInt64[1] = Const CInt64(1)
-  v25:BasicObject = ArrayArefChecked v19, v24, v23
-  v26:CInt64[0] = Const CInt64(0)
-  v27:BasicObject = ArrayArefChecked v19, v26, v23
-  v30:CShape = LoadField v11, :shape_id
-  v31:CShape[0x100000] = GuardBitEquals v30, CShape(0x100000) recompile
-  StoreField v11, :@x, v27
-  WriteBarrier v11, v27
-  v34:CShape[0x100079] = Const CShape(0x100079)
-  StoreField v11, :shape_id, v34
-  StoreField v11, :@y, v25
-  WriteBarrier v11, v25
-  v43:CShape[0x10007a] = Const CShape(0x10007a)
-  StoreField v11, :shape_id, v43
-  CheckInterrupts
-  Return v19
-
+# $ ruby --zjit --zjit-dump-hir distance.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
 Optimized HIR:
 fn block in <main>@distance.rb:14:
 bb1():
@@ -50,7 +15,7 @@ bb3(v6:BasicObject):
   v14:CPtr = GetEP 1
   v15:BasicObject = LoadField v14, :b@-0x18
   PatchPoint MethodRedefined(Object, distance)
-  v24:ObjectSubclass[class_exact*:Object@VALUE(0x1003c0ea0)] = GuardType v6, ObjectSubclass[class_exact*:Object@VALUE(0x1003c0ea0)] recompile
+  v24:ObjectSubclass[class_exact*:Object@VALUE(0x1009c0ee0)] = GuardType v6, ObjectSubclass[class_exact*:Object@VALUE(0x1009c0ee0)] recompile
   v25:BasicObject = SendDirect v24, 0x0, :distance, v12, v15
   CheckInterrupts
   Return v25
@@ -95,7 +60,7 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v113:Fixnum = GuardType v109, Fixnum
   v114:Fixnum = FixnumSub v112, v113
   PatchPoint StableConstantNames(Math)
-  v54:ModuleSubclass[Math] = Const Value(VALUE(0x100421de0))
+  v54:ModuleSubclass[Math] = Const Value(VALUE(0x100a21e20))
   PatchPoint MethodRedefined(Integer, *)
   v118:Fixnum = FixnumMult v95, v95
   v122:Fixnum = FixnumMult v114, v114

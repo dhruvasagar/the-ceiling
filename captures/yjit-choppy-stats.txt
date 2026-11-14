@@ -1,0 +1,109 @@
+# $ ruby --yjit --yjit-stats choppy.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+***YJIT: Printing YJIT statistics on exit***
+method call fallback reasons: 
+    (all relevant counters are zero)
+invokeblock fallback reasons: 
+    (all relevant counters are zero)
+invokesuper fallback reasons: 
+    (all relevant counters are zero)
+method call exit reasons: 
+    (all relevant counters are zero)
+invokeblock exit reasons: 
+    (all relevant counters are zero)
+invokesuper exit reasons: 
+    (all relevant counters are zero)
+getblockparamproxy exit reasons: 
+    (all relevant counters are zero)
+getinstancevariable exit reasons:
+    (all relevant counters are zero)
+setinstancevariable exit reasons:
+    (all relevant counters are zero)
+leave exit reasons:
+    interp_return:      1,087 (100.0%)
+left shift (opt_ltlt) exit reasons: 
+    (all relevant counters are zero)
+right shift (>>) exit reasons: 
+    (all relevant counters are zero)
+invalidation reasons: 
+    (all relevant counters are zero)
+num_send:                     14,889
+num_send_known_class:            971 ( 6.5%)
+num_send_polymorphic:          1,988 (13.4%)
+num_send_megamorphic:              0 ( 0.0%)
+num_send_dynamic:                  0 ( 0.0%)
+num_send_cfunc:                3,977 (26.7%)
+num_send_cfunc_inline:           994 (25.0%)
+num_send_iseq:                10,797 (72.5%)
+num_send_iseq_leaf:                0 ( 0.0%)
+num_send_iseq_inline:              0 ( 0.0%)
+num_getivar_megamorphic:           0
+num_setivar_megamorphic:           0
+num_opt_case_megamorphic:          0
+num_throw:                         0
+num_throw_break:                   0
+num_throw_retry:                   0
+num_throw_return:                  0
+num_lazy_frame_check:              0
+num_lazy_frame_push:               0
+lazy_frame_count:                  0
+lazy_frame_failure:                0
+iseq_stack_too_large:              0
+iseq_too_long:                     0
+temp_reg_opnd:                   182
+temp_mem_opnd:                   123
+temp_spill:                      113
+bindings_allocations:             45
+bindings_set:                      0
+live_iseq_count:               1,537
+iseq_alloc_count:              1,537
+compiled_iseq_entry:               2
+cold_iseq_entry:                   0 ( 0.0%)
+compiled_iseq_count:               4
+compiled_blockid_count:           21
+compiled_block_count:             27
+inline_block_count:               10 (37.0%)
+deleted_defer_block_count:         1 ( 3.7%)
+versions_per_block:            1.286
+max_inline_versions:               1
+compiled_branch_count:            37
+yjit_active_ms:                    2
+compile_time_ms:                   0 ( 0.0%)
+block_next_count:                 22
+defer_count:                       9
+defer_empty_count:                 1
+branch_insn_count:                 3
+branch_known_count:                0 ( 0.0%)
+freed_iseq_count:                  0
+invalidation_count:                0
+inline_code_size:              5,212
+outlined_code_size:            4,980
+code_region_size:             16,384
+code_region_overhead:          6,192 (37.8%)
+freed_code_size:                   0
+yjit_alloc_size:             154,870
+context_data_bytes:              193
+context_cache_bytes:         131,072
+num_contexts_encoded:             63
+bytes_per_context:              3.06
+context_cache_hit_rate:           36 (57.1%)
+live_page_count:                   1
+freed_page_count:                  0
+code_gc_count:                     0
+num_gc_obj_refs:                  17
+object_shape_count:              121
+side_exit_count:                   0
+total_exit_count:              1,087
+total_insns_count:           357,943
+vm_insns_count:              221,328
+yjit_insns_count:            136,615
+ratio_in_yjit:                 38.2%
+avg_len_in_yjit:               125.7
+total_exits:                       0
+Top-3 most frequent C calls (75.0% of C calls):
+  995 (25.0%): Rational#+
+  994 (25.0%): Array#+
+  994 (25.0%): String#+
+Top-3 most frequent ISEQ calls (100.0% of ISEQ calls):
+  4,971 (46.0%): double@choppy.rb:1
+  4,855 (45.0%): block (2 levels) in <main>@choppy.rb:3
+    971 ( 9.0%): each@<internal:array>:219

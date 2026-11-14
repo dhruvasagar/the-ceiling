@@ -16,5 +16,5 @@
   <g fill="#f08a24"><circle cx="760" cy="470" r="26"/><circle cx="1160" cy="470" r="26"/><circle cx="1460" cy="470" r="26"/></g>
   <text x="880" y="590" font-size="40" text-anchor="middle" fill="#1f6a2c">the whole loop, planned before the start</text>
   <text x="80" y="790" font-size="48" fill="#1b2733">First a <tspan font-weight="700">profile</tspan>: watch which types turn up. Then plan it all at once.</text>
-  <text x="80" y="850" font-size="40" fill="#4a5a6a">Prove, don't guess. One compile for the whole method.</text>
+  <text x="80" y="850" font-size="40" fill="#4a5a6a">Check once, then prove the rest. One compile for the whole method.</text>
 </svg>

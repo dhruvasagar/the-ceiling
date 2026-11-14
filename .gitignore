@@ -2,3 +2,4 @@
 .emacs-deps/
 *~
 .DS_Store
+!.tool-versions

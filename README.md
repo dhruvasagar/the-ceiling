@@ -18,29 +18,31 @@ Ruby 4.1.0 ships 2026-12-25; the captures will be re-run then.
 
 ## What's here
 
-| Path | What |
-|---|---|
-| `talk/the-ceiling.html` | The slides (reveal.js). Open in a browser; press `s` for speaker notes. |
-| `talk/the-ceiling.org` | The source of the slides, the notes, and the demo Ruby. |
-| `talk/img/` | The swim diagrams. |
-| `src/` | The demo programs. Generated from the talk file; don't edit by hand. |
-| `captures/` | Raw compiler output every slide listing is cut from. |
-| `bin/capture` | Re-runs the captures. |
-| `bin/check` | Checks that every line on a slide exists in a capture, and more. |
-| `bin/export` | Re-exports the slides. |
-| `docs/` | The design and build plan for this repo. |
+| Path                       | What                                                                            |
+|----------------------------|---------------------------------------------------------------------------------|
+| `talk/the-ceiling.html`    | The slides (reveal.js). Open in a browser; press `s` for speaker notes.         |
+| `talk/the-ceiling.org`     | The source of the slides, the notes, and the demo Ruby.                         |
+| `talk/img/`                | The swim diagrams.                                                              |
+| `src/`                     | The demo programs. Generated from the talk file; don't edit by hand.            |
+| `captures/`                | Raw compiler output every slide listing is cut from.                            |
+| `bin/capture`              | Re-runs the captures.                                                           |
+| `bin/check`                | Checks that every line on a slide exists in a capture, and more.                |
+| `bin/export`               | Re-exports the slides.                                                          |
+| `docs/`                    | The design and build plan for this repo.                                        |
 | `analysis/yjit-vs-zjit.md` | The formal comparison: how each JIT works, every experiment, status and limits. |
-| `references/README.md` | Annotated sources, with the exact quotes used and where. |
+| `references/README.md`     | Annotated sources, with the exact quotes used and where.                        |
 
 
 ## Reproduce it
 
-You need Ruby 4.1.0-preview1 built with both JITs in developer mode
-(needed for `--yjit-dump-disasm`), plus activesupport:
+You need Ruby 4.1.0-preview1 (pinned in `.tool-versions`) and
+activesupport 8.1.4.1. The captures were made with both JITs built in
+developer mode, which is what we recommend; `bin/check env` checks that
+your Ruby actually prints YJIT disassembly and ZJIT's HIR.
 
 ```sh
 RUBY_CONFIGURE_OPTS="--enable-yjit=dev --enable-zjit=dev" asdf install ruby 4.1.0-preview1
-gem install activesupport          # from this directory, so .tool-versions applies
+gem install activesupport -v 8.1.4.1   # from this directory, so .tool-versions applies
 bin/check env                      # tells you exactly what's missing, if anything
 bin/capture                        # writes captures/*.txt
 bin/check                          # every check should print "ok"
@@ -53,16 +55,16 @@ libyaml (`brew install libyaml` on macOS) and retry.
 Try it on your own code:
 
 ```sh
-ruby -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'   # bytecode
-ruby --zjit --zjit-dump-hir   your_hot_path.rb                      # ZJIT's plan
-ruby --zjit --zjit-stats      your_hot_path.rb                      # what it did
+ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'   # bytecode of m
+ruby --zjit --zjit-dump-hir   your_file.rb   # ZJIT's plan
+ruby --zjit --zjit-stats      your_file.rb   # what it did
 ```
 
 ## Presenting
 
 - Present `talk/the-ceiling.html` in a browser (press `s` for the speaker
   view with notes and timer).
-- The one live demo ("How Ruby runs your code") runs from Emacs: open
+- The one live demo ("The bytecode" slide) runs from Emacs: open
   `talk/the-ceiling.org` and `C-c C-c` the `ruby -r ./distance` block. It
   tangles `src/` first and runs under the pinned Ruby via asdf.
 - Don't present the `.org` file with org-tree-slide or org-present: they

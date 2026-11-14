@@ -71,8 +71,8 @@ deleted_defer_block_count:       150 (13.0%)
 versions_per_block:            1.338
 max_inline_versions:               0
 compiled_branch_count:         1,768
-yjit_active_ms:                  179
-compile_time_ms:                  25 (14.0%)
+yjit_active_ms:                  189
+compile_time_ms:                  30 (15.9%)
 block_next_count:              1,066
 defer_count:                     503
 defer_empty_count:               155
@@ -113,8 +113,8 @@ Top-20 most frequent C calls (50.2% of C calls):
       357 ( 0.1%): Regexp#match?
       329 ( 0.1%): String#===
       216 ( 0.1%): Array#fetch
-      150 ( 0.0%): String#-@
       150 ( 0.0%): Kernel#instance_variable_defined?
+      150 ( 0.0%): String#-@
       116 ( 0.0%): String#delete_prefix!
       110 ( 0.0%): String#to_i
        74 ( 0.0%): String#chomp!
@@ -122,10 +122,10 @@ Top-20 most frequent C calls (50.2% of C calls):
        72 ( 0.0%): Array#any?
        69 ( 0.0%): String#gsub!
        59 ( 0.0%): Array#map!
-       58 ( 0.0%): String#start_with?
-       58 ( 0.0%): String#[]
-       58 ( 0.0%): Class#join
        58 ( 0.0%): Class#open
+       58 ( 0.0%): Class#join
+       58 ( 0.0%): String#[]
+       58 ( 0.0%): String#start_with?
        55 ( 0.0%): Array#delete
 Top-20 most frequent ISEQ calls (80.0% of ISEQ calls):
   199,971 (39.7%): convert_key@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/gems/4.1.0+5/gems/activesupport-8.1.4.1/lib/active_support/hash_with_indifferent_access.rb:411
@@ -135,16 +135,16 @@ Top-20 most frequent ISEQ calls (80.0% of ISEQ calls):
       130 ( 0.0%): new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:64
        94 ( 0.0%): version@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:184
        79 ( 0.0%): correct?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:193
-       72 ( 0.0%): platforms@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:746
-       72 ( 0.0%): match_gem?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:47
        72 ( 0.0%): match_platforms?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:22
+       72 ( 0.0%): match_gem?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:47
+       72 ( 0.0%): platforms@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:746
        71 ( 0.0%): new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:216
        69 ( 0.0%): internal_init@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/basic_specification.rb:233
-       58 ( 0.0%): open_file@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:866
-       58 ( 0.0%): match_spec?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:32
-       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/basic_specification.rb:33
-       58 ( 0.0%): platform@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:179
-       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:40
        58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:79
+       58 ( 0.0%): match_spec?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:32
+       58 ( 0.0%): platform@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:179
+       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/basic_specification.rb:33
        58 ( 0.0%): match?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/content_address.rb:33
-       43 ( 0.0%): default_gemspec_stub@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:69
+       58 ( 0.0%): open_file@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:866
+       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:40
+       43 ( 0.0%): prerelease?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:316

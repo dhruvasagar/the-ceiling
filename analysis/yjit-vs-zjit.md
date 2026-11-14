@@ -28,9 +28,10 @@ and **where their type information comes from**:
 The team built ZJIT to "raise the performance ceiling (bigger compilation
 unit size and SSA IR) and encourage more outside contribution (by becoming
 a more traditional method compiler)" [2]. Our experiments show one
-concrete form of that ceiling: across a small method call, ZJIT inlines
-the callee and reuses a type it has already proved, while YJIT, in our
-case, compiles the callee separately and checks the type again (E3).
+concrete form of that ceiling. At a small method call, at default
+settings, ZJIT inlines the callee into the caller and reuses a type it has
+already proved; YJIT makes a real call into a separately compiled, general
+version of the callee, which checks its argument again (E3).
 
 ## 1. How CRuby runs code
 
@@ -41,8 +42,9 @@ every execution it has to establish what those values are
 ([`yarv-distance.txt`](../captures/yarv-distance.txt)). A JIT compiler
 removes most of that repeated work by generating machine code that checks
 the types once (a **guard**) and then performs the specialised operation.
-If a guard fails, execution returns to the interpreter (a **side exit**)
-[7].
+If a guard fails, the compiled code cannot continue: it leaves for a slower
+path, either the interpreter (a **side exit** [7]) or, in YJIT's case,
+often another compiled version for the new type (§2).
 
 Both JITs start from the same bytecode. Neither can optimise inside
 methods written in C (`Hash#[]`, `Math.sqrt`, `Integer#+` when not
@@ -114,7 +116,7 @@ will frequently side-exit into the interpreter" [2].
 | Representation | per-block code with a type context | SSA graph (HIR) for the method |
 | Knowledge travels | forward, block to block | across the whole method graph |
 | Polymorphic sites | one block version per type seen | type switch in one compiled body |
-| Calls to small Ruby methods | separate compiled code (in our E3) | can be inlined (E3) |
+| Calls to small Ruby methods | a real call into separately compiled code (E3, default settings) | inlined into the caller (E3) |
 | Default call threshold (preview1) | 30 (E0) | 30 [7] (E0) |
 | Memory on Shopify SFR | 125 MiB [3] | 101 MiB [3] |
 | Status | mature; evaluated in production at Shopify [11] | 4.0: slower than YJIT [4]; 4.1 previews: faster on many benchmarks [5] |
@@ -152,13 +154,19 @@ Both compilers guard the receivers' class and shape, read `@x`/`@y`
 directly instead of calling the readers, guard the operands as fixnums,
 and emit an overflow-checked subtract. Both call `Math.sqrt` in C.
 
-**E2. Knowledge lost mid-method.** Same captures. Between computing
-`dx`/`dy` and multiplying them, the method evaluates the constant `Math`.
-YJIT's block for `opt_getconstant_path` contains `clear local variable
-types`, and the following `opt_mult` blocks re-emit `guard arg0 fixnum` /
-`guard arg1 fixnum` as real tests (`tst`/`b.eq` in the disassembly). ZJIT
-emits `FixnumMult v95, v95` with no guard: `v95` was produced by
-`FixnumSub` and is a fixnum by construction.
+**E2. Knowledge kept within the method.** Same captures. Neither compiler
+re-checks `dx` before `dx * dx`. ZJIT emits `FixnumMult v95, v95` with no
+guard: `v95` was produced by `FixnumSub` and is a fixnum by construction.
+YJIT's type context carries "fixnum" from the subtract to the multiply, and
+its `opt_mult` blocks at 0030 and 0036 go straight to the multiply.
+
+A caution about capture settings. With `--yjit-call-threshold=1`, YJIT
+compiles `distance` on its first call, before the `Math` constant cache is
+filled. That first version takes a slow constant lookup that clears its
+local types, so its multiply *does* re-check `dx`. YJIT later invalidates
+and recompiles that block, and the recompiled multiply has no check. An
+earlier draft of this talk mistook that cold-start version for YJIT's
+steady state. Every capture behind the talk now uses default settings.
 
 **E3. One more call: `sq`.**
 [`yjit-sq.txt`](../captures/yjit-sq.txt),
@@ -169,26 +177,34 @@ def sq(n) = n * n
 # distance now ends: Math.sqrt(sq(dx) + sq(dy))
 ```
 
-YJIT emits a real call (`call to Object#sq`, `push callee control frame`,
-`clear local variable types`) and compiles `sq` as its own blocks, whose
-`opt_mult` re-emits `guard arg0 fixnum` / `guard arg1 fixnum`. ZJIT
-inlines `sq` at both call sites: `PushInlineFrame :sq …`,
-`FixnumMult v95, v95`, `PopInlineFrame`, with no guard on `n`, because
-`n` *is* `v95`.
+At default settings `sq` is called twice per call of `distance`, so it
+reaches the threshold first and YJIT compiles it on its own, for any
+caller: its `opt_mult` guards both operands (`guard arg0 fixnum`,
+`guard arg1 fixnum`). When `distance` is compiled later, YJIT emits a real
+call (`call to Object#sq`, `push callee control frame`) and jumps into that
+existing code (`gen_direct_jmp: existing block`); `sq` then pops its frame
+and returns. ZJIT inlines `sq` at both call sites: `PushInlineFrame :sq …`,
+`FixnumMult v95, v95`, `PopInlineFrame`, with no call and no guard on `n`,
+because `n` *is* `v95`.
 
-This should be read narrowly. The team says YJIT's architecture "allows
-for easy interprocedural type-based specialization" [1]; this capture
-shows that in this build, for this call, YJIT did not carry the type
-across. The general claim is the one the team makes: ZJIT's architecture
-"gives more code at once to the optimizer" [1], and inlining is one thing
-the optimizer can do with it.
+The difference that holds in every run is **a real call versus no call**.
+Whether YJIT re-checks `n` depends on what it compiled first. With
+`--yjit-call-threshold=1`
+([`yjit-sq-eager.txt`](../captures/yjit-sq-eager.txt)) YJIT compiles
+`distance` before `sq`, and once its blocks settle, the version of `sq`
+reached from `distance` multiplies with no guard: YJIT carried "`n` is a
+fixnum" across the call. That is the team's point that YJIT's architecture
+"allows for easy interprocedural type-based specialization" [1]. The call
+itself, with its frame push and pop, remains. ZJIT's architecture "gives
+more code at once to the optimizer" [1], and inlining is one thing the
+optimizer does with it.
 
 **E4. A gem method: `HashWithIndifferentAccess#[]`.**
 [`hwia-source.txt`](../captures/hwia-source.txt),
 [`hwia-yjit-stats.txt`](../captures/hwia-yjit-stats.txt),
 [`hwia-zjit-stats.txt`](../captures/hwia-zjit-stats.txt).
-This is what Rails `params` is. 100,000 iterations, each looking up one
-Symbol key and one String key:
+Rails `params` (`ActionController::Parameters`) is built on it. 100,000
+iterations, each looking up one Symbol key and one String key:
 
 ```ruby
 def [](key)
@@ -203,30 +219,33 @@ end
 ZJIT's statistics list `Hash#[]` as its most frequent call into C from JIT
 code (199,971 calls, 64.4% of all such calls). YJIT's `invokesuper` exit
 counters are all zero; it fell back to a generic `super` 57 times (reason
-`singleton_class`). Neither compiler side-exits on the `super`. The cost of
-this method is dominated by `Hash#[]`, implemented in C, which neither
-compiler can optimise.
+`singleton_class`). Neither compiler side-exits on the `super`. These are
+call counts, not timings: we did not profile where the time goes. What
+they show is that the work this method delegates is `Hash#[]`, implemented
+in C, which neither compiler can optimise.
 
 **E5. Polymorphism: `double(x) = x + x`.**
 [`zjit-calm.txt`](../captures/zjit-calm.txt),
 [`zjit-choppy.txt`](../captures/zjit-choppy.txt),
-[`yjit-choppy.txt`](../captures/yjit-choppy.txt).
-Two programs. *Calm*: only Integers. *Choppy*: Integer, Float, String,
-Array and Rational from the first call.
+[`yjit-choppy.txt`](../captures/yjit-choppy.txt),
+[`zjit-choppy-stats.txt`](../captures/zjit-choppy-stats.txt),
+[`yjit-choppy-stats.txt`](../captures/yjit-choppy-stats.txt).
+Two programs, default settings. *Calm*: only Integers. *Choppy*: Integer,
+Float, String, Array and Rational from the first call. In both, ZJIT
+inlines `double` into the same caller, so the two plans compare like for
+like.
 
-- ZJIT, calm: `double` is inlined into its caller, with one
-  `GuardType … Fixnum` and one `FixnumAdd`.
-- ZJIT, choppy: the profile shows five types, so the compiled body is a
+- ZJIT, calm: one `GuardType … Fixnum` and one `FixnumAdd`.
+- ZJIT, choppy: the profile shows five types, so the inlined body is a
   chain of `CondBranchHasType` tests, each followed by a
   `CCallWithFrame` to that class's `#+` (including `Integer#+`, no longer
   an inline add), and a final generic `Send` marked `polymorphic fallback`.
 - YJIT, choppy: one block version per type: an inline fixnum add, plus
   calls to `Float#+`, `String#+`, `Array#+` and `Rational#+`.
 
-In an earlier run of a related program, ZJIT side-exited only 11 times in
-500,000 calls and YJIT not at all. Neither compiler "bails out" here; both
-stop specialising and fall back to general calls. The cost of polymorphism
-is the lost fast path, not exits.
+Both statistics captures report `side_exit_count: 0`. Neither compiler
+"bails out" here; both stop specialising and fall back to general calls.
+The cost of polymorphism is the lost fast path, not exits.
 
 ## 7. Where no JIT helps
 
@@ -269,9 +288,10 @@ to "faster than YJIT" [4], and the latest sources are hedged [3][5].
 - **Developer builds.** `--enable-yjit=dev --enable-zjit=dev` enables the
   disassembly and dump options. We compare *what* each compiler emits, not
   how fast it runs; no timings in this document come from these builds.
-- **Low thresholds.** Most captures force early compilation
-  (`--yjit-call-threshold=1`, `--zjit-call-threshold=2`) so small programs
-  get compiled. E0 uses the defaults.
+- **Settings.** Every capture uses default JIT settings except
+  `yjit-sq-eager.txt`, which forces `--yjit-call-threshold=1` on purpose
+  (E3). Forcing early compilation changes what YJIT emits (E2), so
+  compare compilers only at the same settings.
 - **Toy workloads.** E1–E3 and E5 are deliberately small. They isolate a
   mechanism; they do not predict application speed-ups. For that, see the
   team's own measurements [3][11].

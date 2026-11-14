@@ -1,4 +1,4 @@
-# $ ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir calm.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+# $ ruby --zjit --zjit-dump-hir calm.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
 Optimized HIR:
 fn block (2 levels) in <main>@calm.rb:3:
 bb1():
@@ -14,7 +14,7 @@ bb2():
   Jump bb3(v6, v7)
 bb3(v9:BasicObject, v10:BasicObject):
   PatchPoint MethodRedefined(Object, double)
-  v23:ObjectSubclass[class_exact*:Object@VALUE(0x100eb0ea0)] = GuardType v9, ObjectSubclass[class_exact*:Object@VALUE(0x100eb0ea0)] recompile
+  v23:ObjectSubclass[class_exact*:Object@VALUE(0x100b50ee0)] = GuardType v9, ObjectSubclass[class_exact*:Object@VALUE(0x100b50ee0)] recompile
   PushInlineFrame :double, v23, num_args=1
   PatchPoint MethodRedefined(Integer, +)
   v44:Fixnum = GuardType v10, Fixnum recompile
@@ -34,11 +34,11 @@ bb2():
   v4:BasicObject = LoadArg :self@0
   Jump bb3(v4)
 bb3(v6:BasicObject):
-  v10:ArrayExact[VALUE(0x11cdb0cc0)] = Const Value(VALUE(0x11cdb0cc0))
+  v10:ArrayExact[VALUE(0x11cb80cc0)] = Const Value(VALUE(0x11cb80cc0))
   v11:ArrayExact = ArrayDup v10
   PatchPoint NoSingletonClass(Array)
   PatchPoint MethodRedefined(Array, each)
-  v22:BasicObject = SendDirect v11, 0x101009e60, :each
+  v22:BasicObject = SendDirect v11, 0x100ca9e60, :each
   CheckInterrupts
   Return v22
 
@@ -83,7 +83,7 @@ bb7():
   v84:CInt64[-4] = Const CInt64(-4)
   v85:CInt64 = IntAnd v80, v84
   v86:Iseq = LoadField v85, :code_iseq
-  v87:Iseq[VALUE(0x101009e60)] = GuardBitEquals v86, Value(VALUE(0x101009e60)) recompile
+  v87:Iseq[VALUE(0x100ca9e60)] = GuardBitEquals v86, Value(VALUE(0x100ca9e60)) recompile
   v88:BasicObject = InvokeBlockIseqDirect, v85, v77
   v92:Fixnum[1] = Const Value(1)
   v93:Fixnum = FixnumAdd v49, v92

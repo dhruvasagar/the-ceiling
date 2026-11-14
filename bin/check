@@ -5,6 +5,9 @@
 cd "$(dirname "$0")/.." || exit 2
 export PATH="$HOME/.asdf/shims:$PATH"
 failed=0
+TALK=talk/the-ceiling.org
+REFS=references/README.md
+ANALYSIS=analysis/yjit-vs-zjit.md
 
 ok()   { echo "ok   $1"; }
 fail() { echo "FAIL $1: $2"; failed=1; }
@@ -22,15 +25,22 @@ check_env() {
   why=""
   v=$(ruby -v 2>&1)
   case $v in *4.1.0preview1*) ;; *) why="ruby is '$v'; want 4.1.0-preview1 (asdf install ruby 4.1.0-preview1). " ;; esac
-  ruby --yjit --yjit-dump-disasm -e 1 >/dev/null 2>&1 \
-    || why="${why}YJIT disasm unavailable: build Ruby with RUBY_CONFIGURE_OPTS='--enable-yjit=dev --enable-zjit=dev'. "
+  ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm -e 'def f = 1; f' 2>&1 | grep -q '# Block:' \
+    || why="${why}this Ruby prints no YJIT disassembly: build it with RUBY_CONFIGURE_OPTS='--enable-yjit=dev --enable-zjit=dev'. "
+  ruby --zjit --zjit-call-threshold=1 --zjit-dump-hir -e 'def f = 1; f' 2>&1 | grep -q '^fn ' \
+    || why="${why}this Ruby prints no ZJIT HIR (--zjit-dump-hir). "
+  git ls-files --error-unmatch .tool-versions >/dev/null 2>&1 \
+    || why="${why}.tool-versions is not committed (a global gitignore may hide it: git add -f .tool-versions). "
   ruby -ractive_support -e 1 >/dev/null 2>&1 \
-    || why="${why}activesupport missing: gem install activesupport. "
+    || why="${why}activesupport missing: gem install activesupport -v 8.1.4.1. "
   verdict env "$why"
 }
 
 check_tangle_current() {
   why=""
+  if ! command -v emacs >/dev/null 2>&1; then
+    verdict tangle_current "emacs not found: it is needed to generate src/ from talk/the-ceiling.org. "; return
+  fi
   emacs --batch -Q --eval '(progn (require (quote ob-tangle)) (org-babel-tangle-file "talk/the-ceiling.org"))' \
     >/dev/null 2>&1 || why="tangle failed (emacs --batch). "
   git diff --quiet -- src/ 2>/dev/null || why="${why}src/ differs from talk/the-ceiling.org after tangling; commit the tangled files. "
@@ -47,10 +57,15 @@ marker() {
 
 check_captures() {
   why="$(marker yarv-distance.txt 'opt_minus')"
-  why="$why$(marker yjit-distance.txt 'clear local variable types')"
+  why="$why$(marker yjit-distance.txt 'guard shape')"
+  why="$why$(marker yjit-distance.txt 'defer_compilation')"
   why="$why$(marker zjit-distance.txt 'FixnumMult (v[0-9]+), (v[0-9]+)')"
   why="$why$(marker yjit-sq.txt 'call to Object#sq')"
   why="$why$(marker yjit-sq.txt 'guard arg0 fixnum')"
+  why="$why$(marker yjit-sq.txt 'gen_direct_jmp: existing block')"
+  why="$why$(marker yjit-sq-eager.txt 'call to Object#sq')"
+  why="$why$(marker zjit-choppy-stats.txt '^side_exit_count: +0$')"
+  why="$why$(marker yjit-choppy-stats.txt '^side_exit_count: +0$')"
   why="$why$(marker zjit-sq.txt 'PushInlineFrame :sq')"
   why="$why$(marker hwia-source.txt 'Symbol === key')"
   why="$why$(marker hwia-zjit-stats.txt 'Hash#\[\]')"
@@ -109,7 +124,7 @@ check_listings() {
   verdict listings "$(listings talk/the-ceiling.org captures | tr '\n' ' ')"
 }
 
-DIAGRAMS="head-up sighting buoy-to-buoy course-map first-wave turn-buoy two-beat-kick fog-chop feed-stop"
+DIAGRAMS="head-up sighting buoy-to-buoy plateau course-map turn-buoy two-beat-kick fog-chop feed-stop"
 
 check_diagrams() {
   why=""
@@ -128,7 +143,6 @@ check_diagrams() {
   verdict diagrams "$why"
 }
 
-TALK=talk/the-ceiling.org
 TAKEAWAY="YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a whole method at once, so it can see through small method calls and stop paying for them. That's the room Ruby needed to keep getting faster."
 
 # What the audience sees on slides: exported headings' body text, minus
@@ -146,8 +160,16 @@ slide_text() {
 }
 
 check_stale_wording() {
-  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call' "$TALK" | tr '\n' ' ')
+  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call|straight away|first wave|YJIT guesses|guesses as it goes|which is what params is|is what params is' \
+           "$TALK" talk/img/*.svg "$ANALYSIS" 2>/dev/null | tr '\n' ' ')
   verdict stale_wording "${hits:+stale wording: $hits}"
+}
+
+# Not a failure while drafting: a reminder that the projector must not show it.
+check_repo_url() {
+  n=$(grep -c '\[REPO-URL\]' "$TALK")
+  if [ "$n" -gt 0 ]; then echo "warn repo_url: [REPO-URL] still appears $n times in $TALK; replace it before the talk"
+  else ok repo_url; fi
 }
 
 check_jargon() {
@@ -164,6 +186,28 @@ check_timing() {
   [ "$total" -ge 1110 ] && [ "$total" -le 1200 ] \
     || why="slides add up to $((total / 60)):$(printf %02d $((total % 60))); want 18:30-20:00"
   verdict timing "$why"
+}
+
+# Spoken notes must fit each slide's :DURATION: at ~140 words a minute.
+# [Bracketed] text is stage direction or depth-if-asked, not spoken.
+check_note_budget() {
+  over=$(awk '
+    function flush() {
+      if (title != "" && secs > 0) {
+        gsub(/\[[^]]*\]/, "", notes); n = split(notes, w, /[ \t\n]+/)
+        words = 0; for (i = 1; i <= n; i++) if (w[i] != "") words++
+        budget = int(secs * 140 / 60) + 10
+        if (words > budget) printf "%s: %d words for %d s (max %d); ", title, words, secs, budget
+      }
+      title = ""; secs = 0; notes = ""
+    }
+    /^\* / { flush(); if ($0 !~ /:noexport:/) { title = substr($0, 3) } ; next }
+    title != "" && /:DURATION:/ { split($2, t, ":"); secs = t[1] * 60 + t[2] }
+    /^#\+begin_notes/ { inn = 1; next }
+    /^#\+end_notes/   { inn = 0; next }
+    inn && title != "" { notes = notes " " $0 }
+    END { flush() }' "$TALK")
+  verdict note_budget "$over"
 }
 
 check_takeaway() {
@@ -191,8 +235,6 @@ check_export() {
   verdict export "$why"
 }
 
-REFS=references/README.md
-ANALYSIS=analysis/yjit-vs-zjit.md
 
 # citation numbers [n] used in a file
 cites() { grep -oE '\[[0-9]+\]' "$1" 2>/dev/null | sort -u; }

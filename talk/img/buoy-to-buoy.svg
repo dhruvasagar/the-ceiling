@@ -8,7 +8,7 @@
   <g font-size="36" text-anchor="middle" fill="#7a5a00">
     <text x="360" y="560">decide this leg</text><text x="760" y="560">decide this leg</text><text x="1160" y="560">decide this leg</text>
   </g>
-  <text x="80" y="720" font-size="48" fill="#1b2733">In the water straight away. At each buoy: look, decide the next leg.</text>
-  <text x="80" y="790" font-size="40" fill="#4a5a6a">Compile a little, run it, see the real values, compile the next bit.</text>
+  <text x="80" y="720" font-size="48" fill="#1b2733">Once it's warmed up: swim a leg, look, decide the next leg.</text>
+  <text x="80" y="790" font-size="40" fill="#4a5a6a">Compile a little, run it, look at the real values, compile the next bit.</text>
   <text x="80" y="850" font-size="40" fill="#4a5a6a">25 small compiles for our five-line method.</text>
 </svg>
