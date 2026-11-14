@@ -31,18 +31,18 @@ STORY beat (30 s).
 | 13 | 9:15 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
 | 14 | 10:45 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
 | 15 | 12:00 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
-| 16 | 12:30 | In the ZJIT team's words | 0:45 | 0:53 | -0:08 | OVER  |
-| 17 | 13:15 | Measured: the ZJIT team's results, and ours | 1:00 | 0:46 | 0:14 |  |
-| 18 | 14:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
-| 19 | 14:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
-| 20 | 15:30 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
-| 21 | 16:15 | The feed stop | 0:30 | 0:20 | 0:10 |  |
-| 22 | 16:45 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
+| 16 | 12:30 | In the ZJIT team's words | 1:00 | 0:53 | 0:07 |  |
+| 17 | 13:30 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 18 | 14:00 | params, through both | 0:45 | 0:44 | 0:01 |  |
+| 19 | 14:45 | The feed stop | 0:30 | 0:20 | 0:10 |  |
+| 20 | 15:15 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
+| 21 | 16:00 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
+| 22 | 17:00 | Measured: the ZJIT team's results, and ours | 0:45 | 0:47 | -0:02 |  |
 | 23 | 17:45 | Read your own code | 0:30 | 0:29 | 0:01 |  |
-| 24 | 18:15 | What it means for Ruby | 0:45 | 0:42 | 0:03 |  |
+| 24 | 18:15 | What it means for Ruby | 0:45 | 0:30 | 0:15 |  |
 | 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *18:03* | *1:42* | |
+|   |        | *Total* | *19:45* | *17:52* | *1:53* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -448,7 +448,7 @@ callee together.
 
 /Next: In the ZJIT team's words/
 
-** 16. In the ZJIT team's words  (12:30, 0:45)
+** 16. In the ZJIT team's words  (12:30, 1:00)
 
 /On screen:/
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
@@ -474,44 +474,9 @@ side-exit into the interpreter"); merge post 2025-05-14 ("a more
 traditional “textbook” compiler so it is easy for the community to
 contribute to").]
 
-/Next: Measured: the ZJIT team's results, and ours/
-
-** 17. Measured: the ZJIT team's results, and ours  (13:15, 1:00)
-
-/On screen:/
-- | What                                      | YJIT    | ZJIT    | Source                      |
-- |-------------------------------------------+---------+---------+-----------------------------|
-- | Instance-variable writes (setivar), per run | 5 ms    | 2 ms    | ZJIT team, Mar 2026          |
-- | JIT memory, Shopify storefront            | 125 MiB | 101 MiB | ZJIT team, Oct 2026          |
-- | Ruby calls in ~params[:name].present?~    | 4       | 0       | ours                        |
-- | Machine code for our ~params~ program     | 320 KiB | 352 KiB | ours                        |
-- | Bail-outs to the interpreter, choppy water | 0       | 0       | ours                        |
-- The team, Oct 2026: ZJIT is "probably as fast as or faster than YJIT" on Shopify's storefront, and "there are definitely some where we are worse". Ours are counts and sizes from this talk's captures, not timings.
-- <p class~"ver">Sources: <a href~"https://railsatscale.com/2026-03-18-how-zjit-removes-redundant-object-loads-and-stores/">Denbeaux, Rails at Scale, 2026-03-18</a> · <a href~"https://railsatscale.com/2026-10-09-zjit-is-now-as-fast-as-yjit/">Bernstein, Rails at Scale, 2026-10-09</a> · ours: captures/ in the repo</p>
-
-/Say:/
-
-Don't take my word for it. Here's what the ZJIT team has measured, and
-what we saw ourselves.
-
-Theirs: on a benchmark of instance-variable writes, ZJIT is over twice as
-fast as YJIT, from an optimization that works across the whole method. On
-Shopify's storefront, it uses less memory, and they call it probably as
-fast as or faster than YJIT. In their words, there are still some where
-it's worse.
-
-Ours are counts, not timings: four calls gone in our params line, no
-bail-outs in chop. And ZJIT generated a bit more machine code, which the
-team says too.
-
-[Depth: team, Oct 2026: "we generate more code (less precise than LBBV and
-more versions) and probably bigger code". Sizes are each compiler's
-reported code region (code_region_size / code_region_bytes), captures
-hwia-yjit-stats and hwia-zjit-stats.]
-
 /Next: Race day: params/
 
-** 18. Race day: params  (14:15, 0:30)
+** 17. Race day: params  (13:30, 0:30)
 
 /On screen:/
 - listing (captures/hwia-source.txt):
@@ -536,7 +501,7 @@ method calling a small method.
 
 /Next: params, through both/
 
-** 19. params, through both  (14:45, 0:45)
+** 18. params, through both  (14:00, 0:45)
 
 /On screen:/
 - YJIT at ~[]~:
@@ -571,21 +536,36 @@ in C.
 [Depth: where the caller passes a literal like :id, ZJIT inlines [] and
 convert_key into it and folds "Symbol === :id" away entirely.]
 
+/Next: The feed stop/
+
+** 19. The feed stop  (14:45, 0:30)
+
+/On screen:/
+- diagram img/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
+
+/Say:/
+
+And that's the feed stop. Hashing the key and finding it happens in C, and
+no Ruby compiler speeds up the C itself. Same for waiting on the database, and for
+garbage collection. A better stroke doesn't shorten the stop at the boat.
+
 /Next: A glimpse: seven everyday lines/
 
-** 20. A glimpse: seven everyday lines  (15:30, 0:45)
+** 20. A glimpse: seven everyday lines  (15:15, 0:45)
 
 /On screen:/
 - Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
-- | One line | YJIT: real calls into Ruby methods | ZJIT: inlined into one plan |
-- |----------+------------------------------------+-----------------------------|
-- | ~params[:name].present?~ | 4 calls | all 4 inlined |
-- | ~name.presence~ | 3 calls | all 3 inlined |
-- | ~text.squish~ | 2 calls | both inlined |
-- | ~list.second~ | 1 call | 1 inlined |
-- | ~5.minutes~ | 3 calls | 2 inlined, 1 call |
-- | ~obj.try(:upcase)~ | 1 call | 1 call (not inlined) |
-- | ~nil.blank?~ | inlined | folded to a constant |
+
+| One line | YJIT: real calls into Ruby methods | ZJIT: inlined into one plan |
+|----------+------------------------------------+-----------------------------|
+| =params[:name].present?= | 4 calls | all 4 inlined |
+| =name.presence= | 3 calls | all 3 inlined |
+| =text.squish= | 2 calls | both inlined |
+| =list.second= | 1 call | 1 inlined |
+| =5.minutes= | 3 calls | 2 inlined, 1 call |
+| =obj.try(:upcase)= | 1 call | 1 call (not inlined) |
+| =nil.blank?= | inlined | folded to a constant |
+
 - Fewer jumps and fewer checks, not free: ZJIT still sets up a light frame for each. We counted calls; we didn't time them.
 - activesupport 8.1.4.1 · Ruby 4.1.0-preview1 · default settings
 
@@ -600,22 +580,9 @@ at all. And nil.blank? YJIT inlines that one as well.
 And inlined isn't free: ZJIT still sets up a light frame for each. We
 counted calls. We didn't time them.
 
-/Next: The feed stop/
-
-** 21. The feed stop  (16:15, 0:30)
-
-/On screen:/
-- diagram img/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
-
-/Say:/
-
-And that's the feed stop. Hashing the key and finding it happens in C, and
-no Ruby compiler speeds up the C itself. Same for waiting on the database, and for
-garbage collection. A better stroke doesn't shorten the stop at the boat.
-
 /Next: Calm water, choppy water/
 
-** 22. Calm water, choppy water  (16:45, 1:00)
+** 21. Calm water, choppy water  (16:00, 1:00)
 
 /On screen:/
 - code:
@@ -653,6 +620,43 @@ still saves the call to double itself. That's this build, today.
 [Depth: neither bailed out to the interpreter, 0 side exits each
 (captures zjit-choppy-stats, yjit-choppy-stats).]
 
+/Next: Measured: the ZJIT team's results, and ours/
+
+** 22. Measured: the ZJIT team's results, and ours  (17:00, 0:45)
+
+/On screen:/
+
+| What                                      | YJIT    | ZJIT    | Source                      |
+|-------------------------------------------+---------+---------+-----------------------------|
+| Instance-variable writes (setivar), per run | 5 ms    | 2 ms    | ZJIT team, Mar 2026          |
+| JIT memory, Shopify storefront            | 125 MiB | 101 MiB | ZJIT team, Oct 2026          |
+| Ruby calls in =params[:name].present?=    | 4       | 0       | ours                        |
+| Machine code for our =params= program     | 320 KiB | 352 KiB | ours                        |
+| Bail-outs to the interpreter, choppy water | 0       | 0       | ours                        |
+
+- The team, Oct 2026: ZJIT is "probably as fast as or faster than YJIT" on Shopify's storefront, and "there are definitely some where we are worse". Ours are counts and sizes from this talk's captures, not timings.
+- Sources: Denbeaux, Rails at Scale, 2026-03-18 · Bernstein, Rails at Scale, 2026-10-09 · ours: captures/ in the repo
+
+/Say:/
+
+Don't take my word for it. Here's what the ZJIT team has measured, next to
+what we've seen today.
+
+Theirs: on a benchmark of instance-variable writes, ZJIT is over twice as
+fast as YJIT, from an optimization that works across the whole method. On
+Shopify's storefront, it uses less memory, and they call it probably as
+fast as or faster than YJIT. In their words, there are still some where
+it's worse.
+
+Ours are counts, not timings: four calls gone in our params line, no
+bail-outs in chop. And ZJIT generated a bit more machine code, which the
+team says too.
+
+[Depth: team, Oct 2026: "we generate more code (less precise than LBBV and
+more versions) and probably bigger code". Sizes are each compiler's
+reported code region (code_region_size / code_region_bytes), captures
+hwia-yjit-stats and hwia-zjit-stats.]
+
 /Next: Read your own code/
 
 ** 23. Read your own code  (17:45, 0:30)
@@ -665,7 +669,7 @@ ruby --zjit --zjit-dump-hir   your_file.rb
 ruby --zjit --zjit-stats      your_file.rb
 #+end_example
 - Look for:
-- 1. A call that didn't disappear: a turn you could make easier
+- 1. A call that's still a call: a turn you could make easier
 - 2. Checks you didn't expect: a value that isn't one type
 - 3. Calls into C: time mostly out of the compiler's reach
 
@@ -694,13 +698,11 @@ For you: small, clear methods are exactly what inlining is for. The 4.1
 notes list "method inlining" for small Ruby methods.
 
 The 4.0 release notes call ZJIT "the next generation of YJIT", and set the
-goal "faster than YJIT and production-ready in Ruby 4.1". In October the
-team wrote that it's "probably as fast as or faster than YJIT" on
-Shopify's storefront, in a couple of small regions, and the 4.1 notes say
-it can still be slower on larger apps. 4.1 ships in a few weeks. Try it with --zjit.
+goal "faster than YJIT and production-ready in Ruby 4.1". The 4.1 notes
+say it can still be slower on larger apps. 4.1 ships in a few weeks. Try
+it with --zjit.
 
-[Sources: Ruby 4.0.0 release notes, 2025-12-25; Rails at Scale,
-2026-10-09, measured in "a couple small regions".]
+[Sources: Ruby 4.0.0 release notes, 2025-12-25; Ruby 4.1 NEWS.]
 
 /Next: Head down/
 

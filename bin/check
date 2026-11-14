@@ -219,7 +219,8 @@ check_note_budget() {
 check_narration() {
   if [ ! -f talk/narration.org ]; then verdict narration "talk/narration.org missing: run bin/narration. "; return
   fi
-  if bin/narration - | cmp -s - talk/narration.org; then ok narration
+  if ! fresh=$(bin/narration - 2>&1); then fail narration "bin/narration failed: $fresh"; return; fi
+  if printf '%s\n' "$fresh" | cmp -s - talk/narration.org; then ok narration
   else fail narration "talk/narration.org is out of date: run bin/narration"; fi
 }
 

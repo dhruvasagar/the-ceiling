@@ -13,6 +13,7 @@
 cd "$(dirname "$0")/.." || exit 2
 out=talk/narration.org
 [ "${1:-}" = "-" ] && out=/dev/stdout
+tmp=$(mktemp) || exit 1
 
 awk '
 function clock(x) { x = int(x + 0.5); return sprintf("%d:%02d", int(x / 60), x % 60) }
@@ -52,6 +53,11 @@ inq { quote = quote " " $0; qtxt = qtxt $0 " "; next }
 }
 /^#\+end_(example|src)/ { inb = 0; screen = screen "#+end_example\n"; next }
 inb { screen = screen $0 "\n"; next }
+/^#\+begin_export html/ { inx = 1; next }
+/^#\+end_export/ { inx = 0; next }
+inx { xt = $0; gsub(/<[^>]*>/, "", xt); screen = screen "- " xt "\n"; next }
+/^\|/ { if (!intable) screen = screen "\n"; intable = 1; screen = screen $0 "\n"; next }
+intable && !/^\|/ { intable = 0; screen = screen "\n" }
 /^# capture: / { cap = $0; sub(/^# capture: /, "", cap); next }
 /^#\+attr_html: :alt / { alt = $0; sub(/^#\+attr_html: :alt /, "", alt); next }
 /^\[\[file:img\// { f = $0; gsub(/^\[\[file:|\]\]$/, "", f); screen = screen "- diagram " f (alt != "" ? ": " alt : "") "\n"; alt = ""; next }
@@ -107,5 +113,6 @@ END {
     if (i < N) { print ""; printf "/Next: %s/\n", T[i + 1] }
     start += D[i]
   }
-}' talk/the-ceiling.org > "$out"
-[ "$out" = /dev/stdout ] || echo "wrote $out"
+}' talk/the-ceiling.org > "$tmp" || { echo "narration: generator failed" >&2; rm -f "$tmp"; exit 1; }
+if [ "$out" = /dev/stdout ]; then cat "$tmp"; rm -f "$tmp"
+else mv "$tmp" "$out"; echo "wrote $out"; fi
