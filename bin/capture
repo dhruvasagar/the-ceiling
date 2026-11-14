@@ -44,7 +44,9 @@ scrub() {
 mkdir -p captures
 version=$(ruby -v)
 status=0
-for name in ${*:-$TARGETS}; do
+# shellcheck disable=SC2086  # TARGETS is a space-separated word list
+[ $# -gt 0 ] || set -- $TARGETS
+for name in "$@"; do
   cmd=$(command_for "$name") || { echo "unknown target: $name (one of: $TARGETS)" >&2; status=1; continue; }
   out="captures/$name.txt"
   { echo "# \$ $cmd   ($version)"; (cd src && sh -c "$cmd") 2>&1; } | scrub > "$out.tmp"
