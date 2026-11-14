@@ -116,10 +116,54 @@ check_diagrams() {
     fi
   done
   # every image the talk references exists
+  # shellcheck disable=SC2013  # one path per match, no spaces possible
   for ref in $(grep -oE 'img/[a-z0-9-]+\.svg' talk/the-ceiling.org | sort -u); do
     [ -f "talk/$ref" ] || why="${why}talk references missing $ref. "
   done
   verdict diagrams "$why"
+}
+
+TALK=talk/the-ceiling.org
+TAKEAWAY="YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a whole method at once, so it can see through small method calls and stop paying for them. That's the room Ruby needed to keep getting faster."
+
+# What the audience sees on slides: exported headings' body text, minus
+# speaker notes, listings, source blocks, verbatim quotes (their words are
+# not ours to change), comments and :noexport: subtrees.
+slide_text() {
+  awk '
+    /^\* / { skip = ($0 ~ /:noexport:/) }
+    skip { next }
+    /^#\+begin_(notes|example|src|quote)/ { blk = 1; next }
+    /^#\+end_(notes|example|src|quote)/   { blk = 0; next }
+    blk || /^#/ || /^[ \t]*:/ { next }
+    { print }
+  ' "$TALK"
+}
+
+check_stale_wording() {
+  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call' "$TALK" | tr '\n' ' ')
+  verdict stale_wording "${hits:+stale wording: $hits}"
+}
+
+check_jargon() {
+  hits=$(slide_text | grep -oiE 'SSA|side.exit|PatchPoint|\bshapes?\b|Fixnum|basic block' | sort -u | tr '\n' ' ')
+  verdict jargon "${hits:+jargon on slides (move to notes): $hits}"
+}
+
+check_timing() {
+  total=$(awk '
+    /^\* / { skip = ($0 ~ /:noexport:/) }
+    !skip && /:DURATION:/ { split($2, t, ":"); s += t[1] * 60 + t[2] }
+    END { print s + 0 }' "$TALK")
+  why=""
+  [ "$total" -ge 1110 ] && [ "$total" -le 1200 ] \
+    || why="slides add up to $((total / 60)):$(printf %02d $((total % 60))); want 18:30-20:00"
+  verdict timing "$why"
+}
+
+check_takeaway() {
+  if tr '\n' ' ' < "$TALK" | tr -s ' ' | grep -qF -- "$TAKEAWAY"; then ok takeaway
+  else fail takeaway "takeaway sentence not found verbatim"; fi
 }
 
 # --- run --------------------------------------------------------------------
