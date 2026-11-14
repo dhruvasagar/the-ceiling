@@ -33,49 +33,18 @@
 
 * Timing plan                                                      :noexport:
 
+The per-slide timing, estimates and the end-to-end script are generated
+into [[file:narration.org][narration.org]] by =bin/narration= from the
+speaker notes below. Change the notes or a =:DURATION:=, then run it.
+
 The spine is technical: one method through both compilers, a tie, then
-one extra call that only one of them can see through, and why. My
-swimming is texture, not the plot: long-distance swimming is about
-efficiency, not power, and so is a JIT. It shows up only where it makes
-an idea easier to hold.
+one extra call that only one of them can see through, and why. Swimming
+is texture: long-distance swimming is about efficiency, not power, and so
+is a JIT.
 
-| Slide                              | Budget |
-|------------------------------------+--------|
-| Every time you lift your head      |   1:00 |
-| Ruby swims with its head up        |   0:30 |
-| Our five lines                     |   0:30 |
-| The bytecode                       |   0:45 |
-| Learning to sight                  |   0:45 |
-| YJIT: compile as you go            |   1:00 |
-| ZJIT: watch, then plan             |   0:45 |
-| ZJIT: the IR on one slide          |   1:00 |
-| 25 compiles, or one                |   0:30 |
-| On five lines, a tie               |   0:45 |
-| The plateau                        |   1:00 |
-| One more call                      |   0:30 |
-| One more call is one more buoy     |   0:30 |
-| At the turn buoy                   |   1:30 |
-| Why it's a ceiling                 |   1:15 |
-| The 2-beat kick                    |   0:30 |
-| In the ZJIT team's words           |   0:45 |
-| Race day: params                   |   0:30 |
-| params, through both               |   1:00 |
-| The feed stop                      |   0:30 |
-| Calm water, choppy water           |   1:00 |
-| Read your own code                 |   0:45 |
-| What it means for Ruby             |   0:45 |
-| Head down                          |   0:45 |
-|------------------------------------+--------|
-| total                              |  18:30 |
-
-1:30 of slack. Cut order if long: (1) "25 compiles, or one"; (2) "The
-2-beat kick" (say its one line on the quote slide). Never cut "On five
-lines, a tie", "Why it's a ceiling" or "At the turn buoy": they are the
-argument.
-
-The [STORY: …] lines are mine to fill, in my own words. Everything in
-square brackets in the notes is stage direction or depth-if-asked, not
-spoken.
+Cut order if long: (1) "25 compiles, or one"; (2) "The 2-beat kick" (say
+its one line on the quote slide). Never cut "On five lines, a tie", "At
+the turn buoy" or "Why it's a ceiling": they are the argument.
 
 * Every time you lift your head
 :PROPERTIES:

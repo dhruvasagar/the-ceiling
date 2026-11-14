@@ -212,6 +212,13 @@ check_note_budget() {
   verdict note_budget "$over"
 }
 
+check_narration() {
+  if [ ! -f talk/narration.org ]; then verdict narration "talk/narration.org missing: run bin/narration. "; return
+  fi
+  if bin/narration - | cmp -s - talk/narration.org; then ok narration
+  else fail narration "talk/narration.org is out of date: run bin/narration"; fi
+}
+
 check_takeaway() {
   if tr '\n' ' ' < "$TALK" | tr -s ' ' | grep -qF -- "$TAKEAWAY"; then ok takeaway
   else fail takeaway "takeaway sentence not found verbatim"; fi
