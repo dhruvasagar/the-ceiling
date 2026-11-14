@@ -21,10 +21,11 @@
 #   comment "# capture: FILE" above a listing names its source.
 
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.6.1
+#+REVEAL_VERSION: 4
 #+REVEAL_THEME: white
 #+REVEAL_TRANS: none
 #+REVEAL_INIT_OPTIONS: width: 1600, height: 900, margin: 0.04, slideNumber: true, hash: true
-#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:70vh;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}</style>
+#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:70vh;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:92vh}</style>
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><p>%a · %d</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 
 * Timing plan                                                      :noexport:
@@ -155,6 +156,7 @@ method. So every single time this runs, the interpreter checks.
 * The interpreter: head up, every stroke
 :PROPERTIES:
 :DURATION: 0:00
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt The beginner swimmer lifts their head every stroke
@@ -169,6 +171,7 @@ slide's 1:15.]
 * What a JIT does
 :PROPERTIES:
 :DURATION: 1:00
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt A trained swimmer looks once, then keeps their head down
@@ -193,6 +196,7 @@ what to check, and how much of the course they look at before they start.
 * YJIT: buoy to buoy
 :PROPERTIES:
 :DURATION: 1:15
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt YJIT swims buoy to buoy
@@ -267,6 +271,7 @@ in a machine word.]
 * ZJIT: study the course
 :PROPERTIES:
 :DURATION: 1:00
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt ZJIT studies the course before swimming
@@ -296,9 +301,9 @@ work out what must be true, instead of checking again.
 #+begin_example
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
-  v79:ObjectSubclass[class_exact:Point] = GuardType v16, ObjectSubclass[class_exact:Point] recompile
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16
   v83:BasicObject = LoadField v79, :@x
-  v86:ObjectSubclass[class_exact:Point] = GuardType v17, ObjectSubclass[class_exact:Point] recompile
+  v86:ObjectSubclass[class_exact:Point] = GuardType v17
   v90:BasicObject = LoadField v86, :@x
   v93:Fixnum = GuardType v83, Fixnum recompile
   v94:Fixnum = GuardType v90, Fixnum
@@ -385,11 +390,22 @@ the default is 5 profiled calls.]
 
 * A first wave
 :PROPERTIES:
-:DURATION: 1:00
+:DURATION: 0:30
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt A wave mid-leg: YJIT looks up again, ZJIT's line holds
 [[file:img/first-wave.svg]]
+
+#+begin_notes
+I expected these two to produce the same code for something this simple.
+They nearly do. But there's a wave.
+#+end_notes
+
+* A first wave, in the output
+:PROPERTIES:
+:DURATION: 0:30
+:END:
 
 # capture: yjit-distance.txt, zjit-distance.txt
 #+begin_example
@@ -401,9 +417,6 @@ YJIT                                                ZJIT
 #+end_example
 
 #+begin_notes
-I expected these two to produce the same code for something this simple.
-They nearly do. But there's a wave.
-
 Between computing dx and squaring it, the method looks up the constant
 Math. When YJIT does that, it clears what it knew about the local
 variables. So at dx times dx it checks again: is dx still a number?
@@ -417,7 +430,7 @@ that chain makes it look up again.
 
 * One more call
 :PROPERTIES:
-:DURATION: 1:15
+:DURATION: 0:45
 :END:
 
 #+name: distance-v2
@@ -431,13 +444,21 @@ def distance(a, b)
 end
 #+end_src
 
+#+begin_notes
+Now the smallest refactor you'd ever make. Pull n times n out into a
+helper called sq. Tidy. The kind of thing we do without thinking.
+#+end_notes
+
+* One more call is one more buoy
+:PROPERTIES:
+:DURATION: 0:30
+:REVEAL_EXTRA_ATTR: class="diagram"
+:END:
+
 #+attr_html: :alt One more call is one more turn buoy
 [[file:img/turn-buoy.svg]]
 
 #+begin_notes
-Now the smallest refactor you'd ever make. Pull n times n out into a
-helper called sq. Tidy. The kind of thing we do without thinking.
-
 In swimming terms, we've added a turn buoy.
 
 YJIT gets to the turn and has to look up. sq is a different method, with
@@ -590,14 +611,12 @@ see the analysis in the repo.]
 
 * Where it gives up
 :PROPERTIES:
-:DURATION: 1:15
+:DURATION: 0:45
+:REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
 #+attr_html: :alt Fog and chop: everyone swims head-up
 [[file:img/fog-chop.svg]]
-
-#+attr_html: :alt A feed stop: a better stroke doesn't make it shorter
-[[file:img/feed-stop.svg]]
 
 #+begin_notes
 Two kinds of water where no JIT helps much.
@@ -611,7 +630,18 @@ guessing and swim with their head up: general, slower code.
 five different types barely bailed out at all. ZJIT side-exited 11 times
 in 500,000 calls, YJIT zero. They didn't crash out; they quietly switched
 to the slow, general path.]
+#+end_notes
 
+* The feed stop
+:PROPERTIES:
+:DURATION: 0:30
+:REVEAL_EXTRA_ATTR: class="diagram"
+:END:
+
+#+attr_html: :alt A feed stop: a better stroke doesn't make it shorter
+[[file:img/feed-stop.svg]]
+
+#+begin_notes
 And the feed stops: waiting on the database or the network, code written
 in C, garbage collection. If a request spends 80% of its time waiting on
 Postgres, any JIT, or a rewrite in another language, only touches the

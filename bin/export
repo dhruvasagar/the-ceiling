@@ -1,0 +1,22 @@
+#!/bin/sh
+# Export talk/the-ceiling.org to talk/the-ceiling.html (reveal.js).
+# Uses a clean Emacs (-Q, your init is not loaded) and installs
+# org-re-reveal from MELPA into .emacs-deps/ (git-ignored) on first run.
+cd "$(dirname "$0")/.." || exit 2
+exec emacs --batch -Q --eval '
+(progn
+  (require (quote package))
+  (setq package-user-dir (expand-file-name ".emacs-deps")
+        package-archives (quote (("gnu" . "https://elpa.gnu.org/packages/")
+                                 ("melpa" . "https://melpa.org/packages/"))))
+  (package-initialize)
+  (unless (package-installed-p (quote org-re-reveal))
+    (package-refresh-contents)
+    (package-install (quote org-re-reveal)))
+  (require (quote org-re-reveal))
+  (setq org-confirm-babel-evaluate nil
+        org-export-use-babel nil
+        org-html-htmlize-output-type nil)
+  (find-file "talk/the-ceiling.org")
+  (let ((out (org-re-reveal-export-to-html)))
+    (message "exported %s" out)))'

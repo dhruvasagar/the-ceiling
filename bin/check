@@ -166,6 +166,24 @@ check_takeaway() {
   else fail takeaway "takeaway sentence not found verbatim"; fi
 }
 
+check_export() {
+  html=talk/the-ceiling.html
+  why=""
+  bin/export >/dev/null 2>&1 || why="bin/export failed (run it to see why). "
+  if [ ! -s "$html" ]; then
+    why="${why}$html missing. "
+  else
+    [ "$html" -nt "$TALK" ] || why="${why}$html older than $TALK. "
+    grep -q 'reveal.js@4.6.1' "$html" || why="${why}not using reveal.js@4.6.1. "
+    grep -q 'class="notes"' "$html" || why="${why}speaker notes missing. "
+    grep -q '#+begin_' "$html" && why="${why}raw org markup leaked into HTML. "
+    awk '/^\* / && !/:noexport:/ { sub(/^\* /, ""); print }' "$TALK" | while read -r h; do
+      grep -qF -- "$h" "$html" || echo "slide missing from HTML: $h"
+    done | grep -q . && why="${why}some slides missing from HTML. "
+  fi
+  verdict export "$why"
+}
+
 # --- run --------------------------------------------------------------------
 all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
 [ $# -gt 0 ] && all="$*"
