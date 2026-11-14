@@ -48,7 +48,7 @@ the turn buoy" or "Why it's a ceiling": they are the argument.
 
 * Every time you lift your head
 :PROPERTIES:
-:DURATION: 1:00
+:DURATION: 1:15
 :END:
 
 /"Every time you lift your head, you slow down."/
@@ -125,7 +125,7 @@ interpreter runs that.
 
 * The bytecode
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 1:00
 :END:
 
 # LIVE: C-c C-c on stage. Instant, the same every run. Fallback below.
@@ -162,7 +162,7 @@ and checks. You can run this line on your own code tonight.
 
 * Learning to sight
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 1:00
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -222,7 +222,7 @@ instance-variable layout.]
 
 * ZJIT: watch, then plan
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :END:
 
 - While the interpreter runs the method, record which types turn up: a *profile*
@@ -269,6 +269,9 @@ Ruby 4.1.0-preview1 · =ruby --zjit --zjit-dump-hir=
 #+begin_notes
 This is ZJIT's plan for our five lines. The whole method fits on one
 slide.
+
+Read one line and you can read them all. "v95, colon, Fixnum, equals,
+FixnumSub v93, v94": a name, its type, then the operation and its inputs.
 
 Every value gets a name, set exactly once. v16 is a. GuardType: is it a
 Point? GuardBitEquals: laid out as expected? The same checks YJIT made.
@@ -424,9 +427,11 @@ Ruby 4.1.0-preview1 · default settings
 Here's the turn, in each compiler's own words.
 
 YJIT, left. sq is called twice per distance, so it got hot first and YJIT
-compiled it on its own, for any caller. So distance makes a real call: a
-new stack frame, a jump into that sq, and back. Since that sq serves
-everyone, it checks n.
+compiled it on its own, for any caller. So distance makes a real call.
+
+A call isn't free. Save where you are, set up a new frame for sq, jump
+there, run it, tear the frame down, jump back. All of that to multiply two
+numbers. And since that sq serves everyone, it checks n as well.
 
 ZJIT, right. The call is gone. PushInlineFrame is just a note that sq is
 "on the stack". What's left is FixnumMult v95, v95: dx times dx.
@@ -467,7 +472,7 @@ more code at once to the optimizer".]
 
 * The 2-beat kick
 :PROPERTIES:
-:DURATION: 0:30
+:DURATION: 0:45
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -539,7 +544,7 @@ method calling a small method.
 
 * params, through both
 :PROPERTIES:
-:DURATION: 1:00
+:DURATION: 0:45
 :END:
 
 #+attr_html: :class cap
@@ -642,7 +647,7 @@ planning.
 
 * Read your own code
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :END:
 
 #+begin_src sh :eval never
