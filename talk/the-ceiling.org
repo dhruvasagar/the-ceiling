@@ -52,10 +52,10 @@ an idea easier to hold.
 | 25 compiles, or one                |   0:30 |
 | On five lines, a tie               |   0:45 |
 | The plateau                        |   1:00 |
-| Why it's a ceiling                 |   1:15 |
 | One more call                      |   0:30 |
 | One more call is one more buoy     |   0:30 |
 | At the turn buoy                   |   1:30 |
+| Why it's a ceiling                 |   1:15 |
 | The 2-beat kick                    |   0:30 |
 | In the ZJIT team's words           |   0:45 |
 | Race day: params                   |   0:30 |
@@ -96,8 +96,14 @@ That turns out to be how compilers make Ruby fast too: not by doing each
 step harder, but by wasting less.
 
 Ruby 4.0 came out last Christmas with two just-in-time compilers. YJIT has
-made real Rails apps faster for years. ZJIT is new, from the same team.
-Why build a second one? Let's follow one five-line method through both.
+made real Rails apps faster for years. ZJIT is new, from the same team,
+and 4.1 ships in a few weeks. Most of us will upgrade without ever looking
+at what changed.
+
+So why build a second one? We'll follow one five-line method through
+both, and by the end you'll see the exact line where one compiler has to
+stop and the other doesn't. And next time someone says "Ruby is slow",
+you'll have a better question to ask.
 
 [Bio, one line: fifteen years of Ruby; I write Rust, which both are
 written in.]
@@ -326,6 +332,10 @@ Default settings. Both start at call 30. YJIT: *25* pieces. ZJIT: *1* plan.
 #+begin_notes
 You can count it. Both wait until call 30. Then YJIT compiles twenty-five
 pieces of this method; ZJIT compiles one plan.
+
+Neither number wins on its own. What matters is the shape: twenty-five
+pieces already turned into machine code, or one plan that can still be
+changed. Hold onto that.
 #+end_notes
 
 * On five lines, a tie
@@ -374,35 +384,8 @@ fine. I was losing it at the turns." Keep only what's true for you.]
 YJIT hit the same kind of wall. The easy wins are taken. What's left is at
 the turns, and in Ruby the turns are method calls. We write small methods
 calling small methods. That's how we're taught.
-#+end_notes
 
-* Why it's a ceiling
-:PROPERTIES:
-:DURATION: 1:15
-:REVEAL_EXTRA_ATTR: class="diagram"
-:END:
-
-#+attr_html: :alt YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
-[[file:img/ceiling.svg]]
-
-#+begin_notes
-Why can't YJIT just get faster at calls? Because of its shape.
-
-YJIT turns each piece into machine code as soon as it reaches it. There's
-never a picture of the whole method, so there's nothing to rearrange
-afterwards. A call to another method stays a real call.
-
-ZJIT builds the whole method as a plan first. And a plan can be rewritten
-before it runs: splice a small method in, drop a check that's already been
-done.
-
-That's the ceiling. The ZJIT team put it exactly this way: instead of one
-piece at a time, one entire method at a time, which gives the optimizer
-more code to work with.
-
-[Sources: Bernstein, Rails at Scale, 2025-05-14: "Instead of compiling one
-basic block at a time, it compiles one entire method at a time"; "gives
-more code at once to the optimizer".]
+Let's add one turn to our five lines.
 #+end_notes
 
 * One more call
@@ -422,8 +405,8 @@ end
 #+end_src
 
 #+begin_notes
-Let's add a turn. The smallest refactor you'd ever make: pull n times n
-into a helper called sq.
+The smallest refactor you'd ever make: pull n times n into a helper
+called sq.
 #+end_notes
 
 * One more call is one more buoy
@@ -482,6 +465,35 @@ ZJIT, right. The call is gone. PushInlineFrame is just a note that sq is
 [Fair to YJIT, if asked: force it to compile early and it carries "n is a
 number" into sq, so no check there. Its team says its design "allows for
 easy interprocedural type-based specialization". The call stays.]
+#+end_notes
+
+* Why it's a ceiling
+:PROPERTIES:
+:DURATION: 1:15
+:REVEAL_EXTRA_ATTR: class="diagram"
+:END:
+
+#+attr_html: :alt YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
+[[file:img/ceiling.svg]]
+
+#+begin_notes
+So why can't YJIT just do what ZJIT did? Because of its shape.
+
+YJIT turns each piece into machine code as soon as it reaches it. There's
+never a picture of the whole method, so there's nothing to rearrange
+afterwards. A call to another method stays a real call.
+
+ZJIT builds the whole method as a plan first. And a plan can be rewritten
+before it runs: splice a small method in, drop a check that's already been
+done.
+
+That's the ceiling. The ZJIT team put it exactly this way: instead of one
+piece at a time, one entire method at a time, which gives the optimizer
+more code to work with.
+
+[Sources: Bernstein, Rails at Scale, 2025-05-14: "Instead of compiling one
+basic block at a time, it compiles one entire method at a time"; "gives
+more code at once to the optimizer".]
 #+end_notes
 
 * The 2-beat kick
@@ -693,6 +705,11 @@ whole method at once, so it can see through small method calls and stop
 paying for them. That's the room Ruby needed to keep getting faster.
 
 #+begin_notes
+[Read the slide.]
+
+For you: keep writing small, clear methods. The compiler is learning to
+stop charging you for them.
+
 The 4.0 release notes call ZJIT "the next generation of YJIT", and set the
 goal "faster than YJIT and production-ready in Ruby 4.1". In October the
 team wrote that it's "probably as fast as or faster than YJIT" on
