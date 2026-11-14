@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <title>A feed stop: a better stroke doesn't make it shorter</title>
+  <rect width="1600" height="900" fill="#e6f2fb"/>
+  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">The feed stop</text>
+  <!-- boat -->
+  <path d="M900 380 L1400 380 L1340 470 L960 470 Z" fill="#ffffff" stroke="#1b2733" stroke-width="5"/>
+  <rect x="1080" y="300" width="160" height="80" fill="#ffffff" stroke="#1b2733" stroke-width="5"/>
+  <text x="1150" y="560" font-size="36" text-anchor="middle" fill="#1b2733">support boat</text>
+  <!-- swimmer treading water -->
+  <circle cx="760" cy="440" r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/>
+  <path d="M700 470 Q760 500 820 470" stroke="#1b2733" stroke-width="5" fill="none"/>
+  <g transform="translate(760,338)"><circle r="30" fill="#fff" stroke="#1b2733" stroke-width="5"/><rect x="-7" y="-44" width="14" height="12" fill="#1b2733"/><path d="M0 0 V-20 M0 0 L14 8" stroke="#b23a3a" stroke-width="5" stroke-linecap="round"/></g>
+  <text x="760" y="560" font-size="36" text-anchor="middle" fill="#4a5a6a">stopped, drinking</text>
+  <text x="80" y="700" font-size="48" fill="#1b2733">A better stroke doesn't make the stop shorter.</text>
+  <text x="80" y="780" font-size="40" fill="#4a5a6a">Waiting on the database or the network. Code written in C.</text>
+  <text x="80" y="835" font-size="40" fill="#4a5a6a">Garbage collection. No JIT speeds these up.</text>
+</svg>

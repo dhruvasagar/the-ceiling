@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <title>A wave mid-leg: YJIT looks up again, ZJIT's line holds</title>
+  <rect width="1600" height="900" fill="#e6f2fb"/>
+  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">Same five lines, a first wave</text>
+  <!-- the wave -->
+  <path d="M700 230 Q760 170 820 230 Q880 290 940 230" fill="none" stroke="#3b7fb8" stroke-width="10"/>
+  <text x="820" y="320" font-size="36" text-anchor="middle" fill="#3b7fb8">looking up Math</text>
+  <!-- YJIT lane -->
+  <text x="80" y="460" font-size="44" font-weight="700" fill="#7a5a00">YJIT</text>
+  <path d="M260 450 H1400" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14"/>
+  <g font-size="52" text-anchor="middle"><g transform="translate(300,402)"><ellipse cx="-15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><ellipse cx="15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><circle cx="-12" cy="3" r="6" fill="#1b2733"/><circle cx="18" cy="3" r="6" fill="#1b2733"/></g><g transform="translate(980,402)"><ellipse cx="-15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><ellipse cx="15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><circle cx="-12" cy="3" r="6" fill="#1b2733"/><circle cx="18" cy="3" r="6" fill="#1b2733"/></g></g>
+  <text x="980" y="510" font-size="36" text-anchor="middle" fill="#7a5a00">"is dx still a number?" again</text>
+  <!-- ZJIT lane -->
+  <text x="80" y="680" font-size="44" font-weight="700" fill="#1f6a2c">ZJIT</text>
+  <path d="M260 670 H1400" stroke="#2e8b3e" stroke-width="10"/>
+  <g transform="translate(300,618)"><path d="M-36 -22 L-12 -30 L12 -22 L36 -30 L36 26 L12 34 L-12 26 L-36 34 Z" fill="#fdf6df" stroke="#1b2733" stroke-width="4"/><path d="M-12 -30 V26 M12 -22 V34" stroke="#1b2733" stroke-width="3"/><path d="M-28 18 Q-6 -10 28 -14" stroke="#2e8b3e" stroke-width="4" fill="none" stroke-dasharray="6 5"/></g>
+  <text x="980" y="730" font-size="36" text-anchor="middle" fill="#1f6a2c">already proved: dx is a number</text>
+  <text x="80" y="850" font-size="44" fill="#1b2733">The wave washed away what YJIT knew. ZJIT's plan didn't depend on it.</text>
+</svg>

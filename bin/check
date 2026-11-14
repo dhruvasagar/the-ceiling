@@ -104,6 +104,24 @@ check_listings() {
   verdict listings "$(listings talk/the-ceiling.org captures | tr '\n' ' ')"
 }
 
+DIAGRAMS="head-up sighting buoy-to-buoy course-map first-wave turn-buoy two-beat-kick fog-chop feed-stop"
+
+check_diagrams() {
+  why=""
+  for d in $DIAGRAMS; do
+    f=talk/img/$d.svg
+    if [ ! -f "$f" ]; then why="$why$f missing. "
+    elif ! xmllint --noout "$f" 2>/dev/null; then why="$why$f is not valid XML. "
+    elif ! grep -q 'viewBox="0 0 1600 900"' "$f"; then why="$why$f is not 16:9 (viewBox 0 0 1600 900). "
+    fi
+  done
+  # every image the talk references exists
+  for ref in $(grep -oE 'img/[a-z0-9-]+\.svg' talk/the-ceiling.org | sort -u); do
+    [ -f "talk/$ref" ] || why="${why}talk references missing $ref. "
+  done
+  verdict diagrams "$why"
+}
+
 # --- run --------------------------------------------------------------------
 all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
 [ $# -gt 0 ] && all="$*"

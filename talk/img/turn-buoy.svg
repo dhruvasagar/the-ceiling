@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <title>One more call is one more buoy</title>
+  <rect width="1600" height="900" fill="#e6f2fb"/>
+  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">One more call = one more turn buoy</text>
+  <g fill="#f08a24"><circle cx="220" cy="470" r="28"/><circle cx="800" cy="470" r="28"/><circle cx="1380" cy="470" r="28"/></g>
+  <g font-size="38" text-anchor="middle" fill="#1b2733">
+    <text x="220" y="535">start</text><text x="800" y="535">sq(dx)</text><text x="1380" y="535">finish</text>
+  </g>
+  <!-- YJIT lane -->
+  <text x="80" y="250" font-size="44" font-weight="700" fill="#7a5a00">YJIT</text>
+  <path d="M220 300 Q510 240 800 300 Q1090 240 1380 300" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
+  <g font-size="56" text-anchor="middle"><g transform="translate(220,252)"><ellipse cx="-15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><ellipse cx="15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><circle cx="-12" cy="3" r="6" fill="#1b2733"/><circle cx="18" cy="3" r="6" fill="#1b2733"/></g><g transform="translate(800,252)"><ellipse cx="-15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><ellipse cx="15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><circle cx="-12" cy="3" r="6" fill="#1b2733"/><circle cx="18" cy="3" r="6" fill="#1b2733"/></g><g transform="translate(1380,252)"><ellipse cx="-15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><ellipse cx="15" cy="0" rx="13" ry="17" fill="#fff" stroke="#1b2733" stroke-width="4"/><circle cx="-12" cy="3" r="6" fill="#1b2733"/><circle cx="18" cy="3" r="6" fill="#1b2733"/></g></g>
+  <text x="800" y="200" font-size="36" text-anchor="middle" fill="#7a5a00">head up at the turn: "is n still a number?"</text>
+  <!-- ZJIT lane -->
+  <text x="80" y="700" font-size="44" font-weight="700" fill="#1f6a2c">ZJIT</text>
+  <path d="M220 650 Q800 610 1380 650" stroke="#2e8b3e" stroke-width="10" fill="none"/>
+  <g transform="translate(220,698)"><path d="M-36 -22 L-12 -30 L12 -22 L36 -30 L36 26 L12 34 L-12 26 L-36 34 Z" fill="#fdf6df" stroke="#1b2733" stroke-width="4"/><path d="M-12 -30 V26 M12 -22 V34" stroke="#1b2733" stroke-width="3"/><path d="M-28 18 Q-6 -10 28 -14" stroke="#2e8b3e" stroke-width="4" fill="none" stroke-dasharray="6 5"/></g>
+  <text x="800" y="740" font-size="36" text-anchor="middle" fill="#1f6a2c">planned on the beach: swims straight through the turn</text>
+  <text x="80" y="850" font-size="44" fill="#1b2733">Seeing through the call and swimming on: <tspan font-weight="700">inlining</tspan>.</text>
+</svg>
