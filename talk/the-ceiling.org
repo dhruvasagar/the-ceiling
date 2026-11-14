@@ -23,12 +23,12 @@
 #+REVEAL_ROOT: https://cdn.jsdelivr.net/npm/reveal.js@4.6.1
 #+REVEAL_VERSION: 4
 #+REVEAL_PLUGINS: (highlight notes search zoom)
-#+REVEAL_HIGHLIGHT_CSS: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css
+#+REVEAL_HIGHLIGHT_CSS: https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css
 #+REVEAL_THEME: white
 #+REVEAL_TRANS: none
 #+REVEAL_MARGIN: 0.04
 #+REVEAL_INIT_OPTIONS: slideNumber: true, hash: true
-#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style>
+#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.62em;width:fit-content;min-width:55%%;max-width:96%%;margin:18px auto;padding:44px 26px 20px;background:#1e1f29;color:#e6e6e6;border-radius:12px;position:relative;box-shadow:0 20px 48px rgba(0,0,0,.35);text-align:left;overflow:hidden}.reveal pre::before{content:'';position:absolute;top:0;left:0;right:0;height:30px;background:#2c2d3a;border-radius:12px 12px 0 0}.reveal pre::after{content:'';position:absolute;top:10px;left:16px;width:12px;height:12px;border-radius:50%%;background:#ff5f56;box-shadow:20px 0 #ffbd2e,40px 0 #27c93f}.reveal pre code{max-height:none;line-height:1.4;background:transparent;padding:0;color:inherit}.reveal pre.example{color:#d6deeb}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style>
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><p>%a · %d</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 
 * Timing plan                                                      :noexport:

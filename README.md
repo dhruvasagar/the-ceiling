@@ -13,7 +13,7 @@ they did it.
 > whole method at once, so it can see through small method calls and stop
 > paying for them. That's the room Ruby needed to keep getting faster.
 
-**Status: draft.** Every capture was made on **Ruby 4.1.0-preview1**.
+**Status: draft for RubyConf.** Every capture was made on **Ruby 4.1.0-preview1**.
 Ruby 4.1.0 ships 2026-12-25; the captures will be re-run then.
 
 ## What's here
@@ -29,9 +29,9 @@ Ruby 4.1.0 ships 2026-12-25; the captures will be re-run then.
 | `bin/check` | Checks that every line on a slide exists in a capture, and more. |
 | `bin/export` | Re-exports the slides. |
 | `docs/` | The design and build plan for this repo. |
+| `analysis/yjit-vs-zjit.md` | The formal comparison: how each JIT works, every experiment, status and limits. |
+| `references/README.md` | Annotated sources, with the exact quotes used and where. |
 
-A formal written comparison of YJIT and ZJIT, and annotated references,
-are coming in `analysis/` and `references/` before the talk.
 
 ## Reproduce it
 
