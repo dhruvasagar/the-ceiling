@@ -1,0 +1,134 @@
+# $ ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance_sq.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+Optimized HIR:
+fn initialize@distance_sq.rb:3:
+bb1():
+  EntryPoint interpreter
+  v1:HeapBasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :x@-0x28
+  v4:BasicObject = LoadField v2, :y@-0x20
+  Jump bb3(v1, v3, v4)
+bb2():
+  EntryPoint JIT(0)
+  v7:HeapBasicObject = LoadArg :self@0
+  v8:BasicObject = LoadArg :x@1
+  v9:BasicObject = LoadArg :y@2
+  Jump bb3(v7, v8, v9)
+bb3(v11:HeapBasicObject, v12:BasicObject, v13:BasicObject):
+  v19:ArrayExact = NewArray v12, v13
+  v23:CInt64 = ArrayLength v19
+  v24:CInt64[1] = Const CInt64(1)
+  v25:BasicObject = ArrayArefChecked v19, v24, v23
+  v26:CInt64[0] = Const CInt64(0)
+  v27:BasicObject = ArrayArefChecked v19, v26, v23
+  v30:CShape = LoadField v11, :shape_id
+  v31:CShape[0x100000] = GuardBitEquals v30, CShape(0x100000) recompile
+  StoreField v11, :@x, v27
+  WriteBarrier v11, v27
+  v34:CShape[0x100079] = Const CShape(0x100079)
+  StoreField v11, :shape_id, v34
+  StoreField v11, :@y, v25
+  WriteBarrier v11, v25
+  v43:CShape[0x10007a] = Const CShape(0x10007a)
+  StoreField v11, :shape_id, v43
+  CheckInterrupts
+  Return v19
+
+Optimized HIR:
+fn sq@distance_sq.rb:6:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :n@-0x20
+  Jump bb3(v1, v3)
+bb2():
+  EntryPoint JIT(0)
+  v6:BasicObject = LoadArg :self@0
+  v7:BasicObject = LoadArg :n@1
+  Jump bb3(v6, v7)
+bb3(v9:BasicObject, v10:BasicObject):
+  PatchPoint MethodRedefined(Integer, *)
+  v25:Fixnum = GuardType v10, Fixnum recompile
+  v27:Fixnum = FixnumMult v25, v25
+  CheckInterrupts
+  Return v27
+
+Optimized HIR:
+fn block in <main>@distance_sq.rb:16:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  Jump bb3(v1)
+bb2():
+  EntryPoint JIT(0)
+  v4:BasicObject = LoadArg :self@0
+  Jump bb3(v4)
+bb3(v6:BasicObject):
+  v11:CPtr = GetEP 1
+  v12:BasicObject = LoadField v11, :a@-0x20
+  v14:CPtr = GetEP 1
+  v15:BasicObject = LoadField v14, :b@-0x18
+  PatchPoint MethodRedefined(Object, distance)
+  v24:ObjectSubclass[class_exact*:Object@VALUE(0x102b70ea0)] = GuardType v6, ObjectSubclass[class_exact*:Object@VALUE(0x102b70ea0)] recompile
+  v25:BasicObject = SendDirect v24, 0x0, :distance, v12, v15
+  CheckInterrupts
+  Return v25
+
+Optimized HIR:
+fn distance@distance_sq.rb:9:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :a@-0x38
+  v4:BasicObject = LoadField v2, :b@-0x30
+  Jump bb3(v1, v3, v4)
+bb2():
+  EntryPoint JIT(0)
+  v9:BasicObject = LoadArg :self@0
+  v10:BasicObject = LoadArg :a@1
+  v11:BasicObject = LoadArg :b@2
+  Jump bb3(v9, v10, v11)
+bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
+  v165:NilClass = Const Value(nil)
+  v164:NilClass = Const Value(nil)
+  PatchPoint NoSingletonClass(Point)
+  PatchPoint MethodRedefined(Point, x)
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16, ObjectSubclass[class_exact:Point] recompile
+  v81:CShape = LoadField v79, :shape_id
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a) recompile
+  v83:BasicObject = LoadField v79, :@x
+  PatchPoint NoEPEscape(distance)
+  v86:ObjectSubclass[class_exact:Point] = GuardType v17, ObjectSubclass[class_exact:Point] recompile
+  v88:CShape = LoadField v86, :shape_id
+  v89:CShape[0x10007a] = GuardBitEquals v88, CShape(0x10007a) recompile
+  v90:BasicObject = LoadField v86, :@x
+  PatchPoint MethodRedefined(Integer, -)
+  v93:Fixnum = GuardType v83, Fixnum recompile
+  v94:Fixnum = GuardType v90, Fixnum
+  v95:Fixnum = FixnumSub v93, v94
+  PatchPoint MethodRedefined(Point, y)
+  v102:BasicObject = LoadField v79, :@y
+  v109:BasicObject = LoadField v86, :@y
+  v112:Fixnum = GuardType v102, Fixnum recompile
+  v113:Fixnum = GuardType v109, Fixnum
+  v114:Fixnum = FixnumSub v112, v113
+  PatchPoint StableConstantNames(Math)
+  v54:ModuleSubclass[Math] = Const Value(VALUE(0x102bd1de0))
+  PatchPoint MethodRedefined(Object, sq)
+  v116:ObjectSubclass[class_exact*:Object@VALUE(0x102b70ea0)] = GuardType v15, ObjectSubclass[class_exact*:Object@VALUE(0x102b70ea0)] recompile
+  PushInlineFrame :sq, v116, num_args=1
+  PatchPoint MethodRedefined(Integer, *)
+  v169:Fixnum = FixnumMult v95, v95
+  PopInlineFrame
+  PushInlineFrame :sq, v116, num_args=1
+  v173:Fixnum = FixnumMult v114, v114
+  PopInlineFrame
+  PatchPoint MethodRedefined(Integer, +)
+  v125:Fixnum = FixnumAdd v169, v173
+  PatchPoint MethodRedefined(Module, sqrt)
+  v129:BasicObject = CCallWithFrame v54, :Math.sqrt, v125
+  CheckInterrupts
+  Return v129
+

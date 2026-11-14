@@ -1,0 +1,4172 @@
+# $ ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance_sq.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+  # exit from leave
+  0x158002004: ldr x21, [sp], #0x10
+  0x158002008: ldr x20, [sp], #0x10
+  0x15800200c: ldr x19, [sp], #0x10
+  0x158002010: mov sp, x29
+  0x158002014: ldp x29, x30, [sp], #0x10
+  0x158002018: mov x0, x0
+  0x15800201c: ret
+
+  # push return value through cfp->sp
+  0x158002020: ldur x11, [x19, #8]
+  0x158002024: stur x0, [x11]
+  0x158002028: adds x11, x11, #8
+  0x15800202c: stur x11, [x19, #8]
+  # exit from exception
+  0x158002030: ldr x21, [sp], #0x10
+  0x158002034: ldr x20, [sp], #0x10
+  0x158002038: ldr x19, [sp], #0x10
+  0x15800203c: mov sp, x29
+  0x158002040: ldp x29, x30, [sp], #0x10
+  0x158002044: mov x0, #0x24
+  0x158002048: ret
+
+  # exit from branch stub
+  0x15800204c: ldr x21, [sp], #0x10
+  0x158002050: ldr x20, [sp], #0x10
+  0x158002054: ldr x19, [sp], #0x10
+  0x158002058: mov sp, x29
+  0x15800205c: ldp x29, x30, [sp], #0x10
+  0x158002060: mov x0, #0x24
+  0x158002064: ret
+
+  # branch_stub_hit() trampoline
+  0x158002068: mov x2, x20
+  0x15800206c: mov x16, #0x7b78
+  0x158002070: movk x16, #0x2ab, lsl #16
+  0x158002074: movk x16, #1, lsl #32
+  0x158002078: blr x16
+  0x15800207c: mov x11, x0
+  0x158002080: ldr x0, [sp], #0x10
+  0x158002084: ldr x15, [sp], #0x10
+  0x158002088: ldr x14, [sp], #0x10
+  0x15800208c: ldr x10, [sp], #0x10
+  0x158002090: ldr x9, [sp], #0x10
+  0x158002094: ldr x1, [sp], #0x10
+  0x158002098: br x11
+
+  # entry_stub_hit() trampoline
+  0x15800209c: mov x1, x20
+  0x1580020a0: mov x16, #0x7b4c
+  0x1580020a4: movk x16, #0x2ab, lsl #16
+  0x1580020a8: movk x16, #1, lsl #32
+  0x1580020ac: blr x16
+  0x1580020b0: br x0
+
+  # full cfunc return
+  0x1580020b4: mov x1, x0
+  0x1580020b8: mov x0, x20
+  0x1580020bc: mov x16, #0xa834
+  0x1580020c0: movk x16, #0x28e, lsl #16
+  0x1580020c4: movk x16, #1, lsl #32
+  0x1580020c8: blr x16
+  0x1580020cc: ldr x21, [sp], #0x10
+  0x1580020d0: ldr x20, [sp], #0x10
+  0x1580020d4: ldr x19, [sp], #0x10
+  0x1580020d8: mov sp, x29
+  0x1580020dc: ldp x29, x30, [sp], #0x10
+  0x1580020e0: mov x0, #0x24
+  0x1580020e4: ret
+
+  # YJIT entry point: <main>@distance_sq.rb:1
+  0x158000004: stp x29, x30, [sp, #-0x10]!
+  0x158000008: mov x29, sp
+  0x15800000c: str x19, [sp, #-0x10]!
+  0x158000010: str x20, [sp, #-0x10]!
+  0x158000014: str x21, [sp, #-0x10]!
+  0x158000018: mov x20, x0
+  0x15800001c: mov x19, x1
+  0x158000020: ldur x21, [x19, #8]
+  0x158000024: mov x11, #0x2004
+  0x158000028: movk x11, #0x5800, lsl #16
+  0x15800002c: movk x11, #1, lsl #32
+  0x158000030: stur x11, [x19, #0x30]
+
+  # Block: <main>@distance_sq.rb:1 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 putspecialobject (stack_size: 0)
+  # exit to interpreter on putspecialobject
+  0x158000034: mov x11, #0x2b98
+  0x158000038: movk x11, #0x24f2, lsl #16
+  0x15800003c: movk x11, #1, lsl #32
+  0x158000040: stur x11, [x19]
+  0x158000044: ldr x21, [sp], #0x10
+  0x158000048: ldr x20, [sp], #0x10
+  0x15800004c: ldr x19, [sp], #0x10
+  0x158000050: mov sp, x29
+  0x158000054: ldp x29, x30, [sp], #0x10
+  0x158000058: mov x0, #0x24
+  0x15800005c: ret
+
+  # YJIT entry point: initialize@distance_sq.rb:3
+  0x158000060: stp x29, x30, [sp, #-0x10]!
+  0x158000064: mov x29, sp
+  0x158000068: str x19, [sp, #-0x10]!
+  0x15800006c: str x20, [sp, #-0x10]!
+  0x158000070: str x21, [sp, #-0x10]!
+  0x158000074: mov x20, x0
+  0x158000078: mov x19, x1
+  0x15800007c: ldur x21, [x19, #8]
+  0x158000080: mov x11, #0x2004
+  0x158000084: movk x11, #0x5800, lsl #16
+  0x158000088: movk x11, #1, lsl #32
+  0x15800008c: stur x11, [x19, #0x30]
+
+  # exit to interpreter on getlocal_WC_0
+  0x1580020e8: mov x11, #0x1a78
+  0x1580020ec: movk x11, #0x225, lsl #16
+  0x1580020f0: movk x11, #0x6000, lsl #32
+  0x1580020f4: stur x11, [x19]
+  0x1580020f8: ldr x21, [sp], #0x10
+  0x1580020fc: ldr x20, [sp], #0x10
+  0x158002100: ldr x19, [sp], #0x10
+  0x158002104: mov sp, x29
+  0x158002108: ldp x29, x30, [sp], #0x10
+  0x15800210c: mov x0, #0x24
+  0x158002110: ret
+
+  # branch stub hit
+  0x158002114: str x1, [sp, #-0x10]!
+  0x158002118: str x9, [sp, #-0x10]!
+  0x15800211c: str x10, [sp, #-0x10]!
+  0x158002120: str x14, [sp, #-0x10]!
+  0x158002124: str x15, [sp, #-0x10]!
+  0x158002128: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x15800212c: stur x1, [x21]
+  0x158002130: mov x11, #0x3810
+  0x158002134: movk x11, #0x1e5, lsl #16
+  0x158002138: movk x11, #0x6000, lsl #32
+  0x15800213c: mov x0, x11
+  0x158002140: mov x1, #0
+  0x158002144: b #0x158002068
+
+  # Block: initialize@distance_sq.rb:3 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000090: ldur x1, [x21, #-0x28]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000094: b #0x158002114
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158002148: stur x1, [x21]
+  0x15800214c: add x11, x21, #8
+  0x158002150: stur x11, [x19, #8]
+  0x158002154: mov x11, #0x1a88
+  0x158002158: movk x11, #0x225, lsl #16
+  0x15800215c: movk x11, #0x6000, lsl #32
+  0x158002160: stur x11, [x19]
+  0x158002164: ldr x21, [sp], #0x10
+  0x158002168: ldr x20, [sp], #0x10
+  0x15800216c: ldr x19, [sp], #0x10
+  0x158002170: mov sp, x29
+  0x158002174: ldp x29, x30, [sp], #0x10
+  0x158002178: mov x0, #0x24
+  0x15800217c: ret
+
+  # exit to interpreter on dup
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158002180: stur x1, [x21, #-0x10]
+  0x158002184: sub x11, x21, #8
+  0x158002188: stur x11, [x19, #8]
+  0x15800218c: mov x11, #0x1aa8
+  0x158002190: movk x11, #0x225, lsl #16
+  0x158002194: movk x11, #0x6000, lsl #32
+  0x158002198: stur x11, [x19]
+  0x15800219c: ldr x21, [sp], #0x10
+  0x1580021a0: ldr x20, [sp], #0x10
+  0x1580021a4: ldr x19, [sp], #0x10
+  0x1580021a8: mov sp, x29
+  0x1580021ac: ldp x29, x30, [sp], #0x10
+  0x1580021b0: mov x0, #0x24
+  0x1580021b4: ret
+
+  # branch stub hit
+  0x1580021b8: str x1, [sp, #-0x10]!
+  0x1580021bc: str x9, [sp, #-0x10]!
+  0x1580021c0: str x10, [sp, #-0x10]!
+  0x1580021c4: str x14, [sp, #-0x10]!
+  0x1580021c8: str x15, [sp, #-0x10]!
+  0x1580021cc: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580021d0: stur x1, [x21, #-0x10]
+  0x1580021d4: stur x9, [x21, #-8]
+  0x1580021d8: mov x11, #0x3990
+  0x1580021dc: movk x11, #0x1e5, lsl #16
+  0x1580021e0: movk x11, #0x6000, lsl #32
+  0x1580021e4: mov x0, x11
+  0x1580021e8: mov x1, #0
+  0x1580021ec: b #0x158002068
+
+  # regenerate_branch
+  # Block: initialize@distance_sq.rb:3 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  0x158000094: ldur x9, [x21, #-0x20]
+  # Insn: 0004 newarray (stack_size: 2)
+  # save PC to CFP
+  0x158000098: mov x11, #0x1aa8
+  0x15800009c: movk x11, #0x225, lsl #16
+  0x1580000a0: movk x11, #0x6000, lsl #32
+  0x1580000a4: stur x11, [x19]
+  # save SP to CFP
+  0x1580000a8: add x11, x21, #0x10
+  0x1580000ac: mov x21, x11
+  0x1580000b0: stur x21, [x19, #8]
+  # load pointer to array elements
+  0x1580000b4: sub x11, x21, #0x10
+  # set stack canary
+  0x1580000b8: mov x12, #0xf359
+  0x1580000bc: movk x12, #0x774e, lsl #16
+  0x1580000c0: movk x12, #0x4c69, lsl #32
+  0x1580000c4: movk x12, #0x4bff, lsl #48
+  0x1580000c8: stur x12, [x21]
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580000cc: stur x1, [x21, #-0x10]
+  0x1580000d0: stur x9, [x21, #-8]
+  0x1580000d4: mov x2, x11
+  0x1580000d8: mov x1, #2
+  0x1580000dc: mov x0, x20
+  0x1580000e0: mov x16, #0x2fe0
+  0x1580000e4: movk x16, #0x252, lsl #16
+  0x1580000e8: movk x16, #1, lsl #32
+  0x1580000ec: blr x16
+  0x1580000f0: stur xzr, [x21]
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x1580000f4: mov x1, x0
+  # Insn: 0006 dup (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  0x1580000f8: mov x9, x1
+  # Insn: 0007 expandarray (stack_size: 2)
+  # defer_compilation
+  0x1580000fc: b #0x1580021b8
+
+  # branch stub hit
+  0x1580021f0: str x1, [sp, #-0x10]!
+  0x1580021f4: str x9, [sp, #-0x10]!
+  0x1580021f8: str x10, [sp, #-0x10]!
+  0x1580021fc: str x14, [sp, #-0x10]!
+  0x158002200: str x15, [sp, #-0x10]!
+  0x158002204: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x158002208: stur x1, [x21, #-0x10]
+  0x15800220c: stur x9, [x21, #-8]
+  0x158002210: mov x11, #0x3780
+  0x158002214: movk x11, #0x1e5, lsl #16
+  0x158002218: movk x11, #0x6000, lsl #32
+  0x15800221c: mov x0, x11
+  0x158002220: mov x1, #0
+  0x158002224: b #0x158002068
+
+  # branch stub hit
+  0x158002228: str x1, [sp, #-0x10]!
+  0x15800222c: str x9, [sp, #-0x10]!
+  0x158002230: str x10, [sp, #-0x10]!
+  0x158002234: str x14, [sp, #-0x10]!
+  0x158002238: str x15, [sp, #-0x10]!
+  0x15800223c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158002240: stur x1, [x21, #-0x10]
+  0x158002244: stur x9, [x21, #-8]
+  0x158002248: stur x10, [x21]
+  0x15800224c: mov x11, #0x3a80
+  0x158002250: movk x11, #0x1e5, lsl #16
+  0x158002254: movk x11, #0x6000, lsl #32
+  0x158002258: mov x0, x11
+  0x15800225c: mov x1, #0
+  0x158002260: b #0x158002068
+
+  # regenerate_branch
+  # Block: initialize@distance_sq.rb:3 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  # Insn: 0007 expandarray (stack_size: 2)
+  0x1580000fc: mov x11, x9
+  # get array length for embedded or heap
+  0x158000100: ldur x12, [x11]
+  0x158000104: and x12, x12, #0x3f8000
+  0x158000108: asr x12, x12, #0xf
+  0x15800010c: ldur x13, [x11]
+  0x158000110: tst x13, #0x2000
+  0x158000114: ldur x11, [x11, #0x10]
+  0x158000118: csel x12, x12, x11, ne
+  # guard array length >= 2
+  0x15800011c: cmp x12, #2
+  0x158000120: b.lo #0x1580021f0
+  0x158000124: nop
+  0x158000128: mov x11, x9
+  # get array pointer for embedded or heap
+  0x15800012c: ldur x12, [x11]
+  0x158000130: tst x12, #0x2000
+  0x158000134: add x12, x11, #0x10
+  0x158000138: ldur x11, [x11, #0x20]
+  0x15800013c: csel x12, x12, x11, ne
+  # load array[1]
+  0x158000140: ldur x9, [x12, #8]
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  # load array[0]
+  0x158000144: ldur x10, [x12]
+  # Insn: 0010 setinstancevariable (stack_size: 3)
+  # defer_compilation
+  0x158000148: b #0x158002228
+
+  # branch stub hit
+  0x158002264: str x1, [sp, #-0x10]!
+  0x158002268: str x9, [sp, #-0x10]!
+  0x15800226c: str x10, [sp, #-0x10]!
+  0x158002270: str x14, [sp, #-0x10]!
+  0x158002274: str x15, [sp, #-0x10]!
+  0x158002278: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x15800227c: stur x1, [x21, #-0x10]
+  0x158002280: stur x9, [x21, #-8]
+  0x158002284: stur x10, [x21]
+  0x158002288: mov x11, #0x3a50
+  0x15800228c: movk x11, #0x1e5, lsl #16
+  0x158002290: movk x11, #0x6000, lsl #32
+  0x158002294: mov x0, x11
+  0x158002298: mov x1, #0
+  0x15800229c: b #0x158002068
+
+  # branch stub hit
+  0x1580022a0: str x1, [sp, #-0x10]!
+  0x1580022a4: str x9, [sp, #-0x10]!
+  0x1580022a8: str x10, [sp, #-0x10]!
+  0x1580022ac: str x14, [sp, #-0x10]!
+  0x1580022b0: str x15, [sp, #-0x10]!
+  0x1580022b4: str x0, [sp, #-0x10]!
+  0x1580022b8: mov x11, #0x3750
+  0x1580022bc: movk x11, #0x1e5, lsl #16
+  0x1580022c0: movk x11, #0x6000, lsl #32
+  0x1580022c4: mov x0, x11
+  0x1580022c8: mov x1, #0
+  0x1580022cc: b #0x158002068
+
+  # exit to interpreter on setinstancevariable
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x1580022d0: stur x1, [x21, #-0x10]
+  0x1580022d4: stur x9, [x21, #-8]
+  0x1580022d8: stur x10, [x21]
+  0x1580022dc: add x11, x21, #8
+  0x1580022e0: stur x11, [x19, #8]
+  0x1580022e4: mov x11, #0x1ac8
+  0x1580022e8: movk x11, #0x225, lsl #16
+  0x1580022ec: movk x11, #0x6000, lsl #32
+  0x1580022f0: stur x11, [x19]
+  0x1580022f4: ldr x21, [sp], #0x10
+  0x1580022f8: ldr x20, [sp], #0x10
+  0x1580022fc: ldr x19, [sp], #0x10
+  0x158002300: mov sp, x29
+  0x158002304: ldp x29, x30, [sp], #0x10
+  0x158002308: mov x0, #0x24
+  0x15800230c: ret
+
+  # regenerate_branch
+  # Block: initialize@distance_sq.rb:3 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  # Insn: 0010 setinstancevariable (stack_size: 3)
+  0x158000148: ldur x11, [x19, #0x18]
+  # guard object is heap
+  0x15800014c: tst x11, #7
+  0x158000150: b.ne #0x1580022d0
+  0x158000154: cbz x11, #0x1580022d0
+  # guard shape
+  0x158000158: ldur w12, [x11, #4]
+  0x15800015c: cmp w12, #0x100, lsl #12
+  0x158000160: b.ne #0x158002264
+  0x158000164: nop
+  # write shape
+  0x158000168: mov x12, #0x79
+  0x15800016c: movk x12, #0x10, lsl #16
+  0x158000170: stur w12, [x11, #4]
+  # write IV
+  0x158000174: stur x10, [x11, #0x10]
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158000178: stur x1, [x21, #-0x10]
+  0x15800017c: stur x9, [x21, #-8]
+  0x158000180: stur x10, [x21]
+  0x158000184: ldur x12, [x21]
+  0x158000188: tst x12, #7
+  0x15800018c: b.ne #0x1580001b4
+  0x158000190: ldur x12, [x21]
+  0x158000194: cmp x12, #4
+  0x158000198: b.ls #0x1580001b4
+  # write barrier
+  0x15800019c: ldur x1, [x21]
+  0x1580001a0: mov x0, x11
+  0x1580001a4: mov x16, #0x6154
+  0x1580001a8: movk x16, #0x261, lsl #16
+  0x1580001ac: movk x16, #1, lsl #32
+  0x1580001b0: blr x16
+  # Insn: 0013 setinstancevariable (stack_size: 2)
+  # defer_compilation
+  0x1580001b4: b #0x1580022a0
+
+  # branch stub hit
+  0x158002310: str x1, [sp, #-0x10]!
+  0x158002314: str x9, [sp, #-0x10]!
+  0x158002318: str x10, [sp, #-0x10]!
+  0x15800231c: str x14, [sp, #-0x10]!
+  0x158002320: str x15, [sp, #-0x10]!
+  0x158002324: str x0, [sp, #-0x10]!
+  0x158002328: mov x11, #0x3b70
+  0x15800232c: movk x11, #0x1e5, lsl #16
+  0x158002330: movk x11, #0x6000, lsl #32
+  0x158002334: mov x0, x11
+  0x158002338: mov x1, #0
+  0x15800233c: b #0x158002068
+
+  # exit to interpreter on leave
+  0x158002340: sub x11, x21, #8
+  0x158002344: stur x11, [x19, #8]
+  0x158002348: mov x11, #0x1af8
+  0x15800234c: movk x11, #0x225, lsl #16
+  0x158002350: movk x11, #0x6000, lsl #32
+  0x158002354: stur x11, [x19]
+  0x158002358: ldr x21, [sp], #0x10
+  0x15800235c: ldr x20, [sp], #0x10
+  0x158002360: ldr x19, [sp], #0x10
+  0x158002364: mov sp, x29
+  0x158002368: ldp x29, x30, [sp], #0x10
+  0x15800236c: mov x0, #0x24
+  0x158002370: ret
+
+  # regenerate_branch
+  # Block: initialize@distance_sq.rb:3 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0013 setinstancevariable (stack_size: 2)
+  0x1580001b4: ldur x11, [x19, #0x18]
+  # guard shape
+  0x1580001b8: ldur w12, [x11, #4]
+  0x1580001bc: mov x13, #0x79
+  0x1580001c0: movk x13, #0x10, lsl #16
+  0x1580001c4: cmp w12, w13
+  0x1580001c8: b.ne #0x158002310
+  0x1580001cc: nop
+  # write shape
+  0x1580001d0: mov x12, #0x7a
+  0x1580001d4: movk x12, #0x10, lsl #16
+  0x1580001d8: stur w12, [x11, #4]
+  # write IV
+  0x1580001dc: ldur x12, [x21, #-8]
+  0x1580001e0: stur x12, [x11, #0x18]
+  0x1580001e4: ldur x12, [x21, #-8]
+  0x1580001e8: tst x12, #7
+  0x1580001ec: b.ne #0x158000214
+  0x1580001f0: ldur x12, [x21, #-8]
+  0x1580001f4: cmp x12, #4
+  0x1580001f8: b.ls #0x158000214
+  # write barrier
+  0x1580001fc: ldur x1, [x21, #-8]
+  0x158000200: mov x0, x11
+  0x158000204: mov x16, #0x6154
+  0x158000208: movk x16, #0x261, lsl #16
+  0x15800020c: movk x16, #1, lsl #32
+  0x158000210: blr x16
+  # Insn: 0016 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x158000214: ldur w11, [x20, #0x20]
+  0x158000218: cbnz w11, #0x158002340
+  # pop stack frame
+  0x15800021c: adds x11, x19, #0x38
+  0x158000220: mov x19, x11
+  0x158000224: stur x19, [x20, #0x10]
+  0x158000228: ldur x0, [x21, #-0x10]
+  0x15800022c: ldur x11, [x19, #-8]
+  0x158000230: br x11
+
+  # YJIT entry point: times@<internal:numeric>:257
+  0x158000234: stp x29, x30, [sp, #-0x10]!
+  0x158000238: mov x29, sp
+  0x15800023c: str x19, [sp, #-0x10]!
+  0x158000240: str x20, [sp, #-0x10]!
+  0x158000244: str x21, [sp, #-0x10]!
+  0x158000248: mov x20, x0
+  0x15800024c: mov x19, x1
+  0x158000250: ldur x21, [x19, #8]
+  0x158000254: mov x11, #0x2004
+  0x158000258: movk x11, #0x5800, lsl #16
+  0x15800025c: movk x11, #1, lsl #32
+  0x158000260: stur x11, [x19, #0x30]
+
+  # branch stub hit
+  0x158002374: str x1, [sp, #-0x10]!
+  0x158002378: str x9, [sp, #-0x10]!
+  0x15800237c: str x10, [sp, #-0x10]!
+  0x158002380: str x14, [sp, #-0x10]!
+  0x158002384: str x15, [sp, #-0x10]!
+  0x158002388: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x15800238c: mov x11, #0x3d50
+  0x158002390: movk x11, #0x1e5, lsl #16
+  0x158002394: movk x11, #0x6000, lsl #32
+  0x158002398: mov x0, x11
+  0x15800239c: mov x1, #0
+  0x1580023a0: b #0x158002068
+
+  # branch stub hit
+  0x1580023a4: str x1, [sp, #-0x10]!
+  0x1580023a8: str x9, [sp, #-0x10]!
+  0x1580023ac: str x10, [sp, #-0x10]!
+  0x1580023b0: str x14, [sp, #-0x10]!
+  0x1580023b4: str x15, [sp, #-0x10]!
+  0x1580023b8: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x1580023bc: mov x11, #0x3d50
+  0x1580023c0: movk x11, #0x1e5, lsl #16
+  0x1580023c4: movk x11, #0x6000, lsl #32
+  0x1580023c8: mov x0, x11
+  0x1580023cc: mov x1, #1
+  0x1580023d0: b #0x158002068
+
+  # Block: times@<internal:numeric>:257 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 putnil (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000264: mov x1, #4
+  # Insn: 0001 defined (stack_size: 1)
+  # block_given?
+  # get_lep(level: 0)
+  0x158000268: ldur x11, [x19, #0x20]
+  0x15800026c: ldur x11, [x11, #-8]
+  0x158000270: cmp x11, #0
+  0x158000274: mov x11, #0x14
+  0x158000278: mov x12, #4
+  0x15800027c: csel x11, x11, x12, ne
+  0x158000280: mov x1, x11
+  # Insn: 0005 branchif (stack_size: 1)
+  0x158000284: tst x1, #-5
+  0x158000288: b.ne #0x158002374
+  0x15800028c: nop
+  0x158000290: b #0x1580023a4
+
+  # regenerate_branch
+  0x158000288: b.eq #0x1580023a4
+  0x15800028c: nop
+
+  # branch stub hit
+  0x1580023d4: str x1, [sp, #-0x10]!
+  0x1580023d8: str x9, [sp, #-0x10]!
+  0x1580023dc: str x10, [sp, #-0x10]!
+  0x1580023e0: str x14, [sp, #-0x10]!
+  0x1580023e4: str x15, [sp, #-0x10]!
+  0x1580023e8: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x1580023ec: stur x1, [x21]
+  0x1580023f0: mov x11, #0x3cf0
+  0x1580023f4: movk x11, #0x1e5, lsl #16
+  0x1580023f8: movk x11, #0x6000, lsl #32
+  0x1580023fc: mov x0, x11
+  0x158002400: mov x1, #0
+  0x158002404: b #0x158002068
+
+  # Block: times@<internal:numeric>:260 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0011 putobject_INT2FIX_0_ (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000290: mov x1, #1
+  # Insn: 0012 setlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000294: b #0x1580023d4
+
+  # regenerate_branch
+  0x158000288: b.eq #0x1580023a4
+  0x15800028c: nop
+
+  # exit to interpreter on setlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158002408: stur x1, [x21]
+  0x15800240c: add x11, x21, #8
+  0x158002410: stur x11, [x19, #8]
+  0x158002414: mov x11, #0xbc38
+  0x158002418: movk x11, #0x2712, lsl #16
+  0x15800241c: movk x11, #1, lsl #32
+  0x158002420: stur x11, [x19]
+  0x158002424: ldr x21, [sp], #0x10
+  0x158002428: ldr x20, [sp], #0x10
+  0x15800242c: ldr x19, [sp], #0x10
+  0x158002430: mov sp, x29
+  0x158002434: ldp x29, x30, [sp], #0x10
+  0x158002438: mov x0, #0x24
+  0x15800243c: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:260 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0012 setlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158000294: mov x15, x1
+
+  # branch stub hit
+  0x158002440: str x1, [sp, #-0x10]!
+  0x158002444: str x9, [sp, #-0x10]!
+  0x158002448: str x10, [sp, #-0x10]!
+  0x15800244c: str x14, [sp, #-0x10]!
+  0x158002450: str x15, [sp, #-0x10]!
+  0x158002454: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002458: stur x15, [x21, #-0x20]
+  0x15800245c: mov x11, #0x3f90
+  0x158002460: movk x11, #0x1e5, lsl #16
+  0x158002464: movk x11, #0x6000, lsl #32
+  0x158002468: mov x0, x11
+  0x15800246c: mov x1, #0
+  0x158002470: b #0x158002068
+
+  # Insn: 0014 jump (stack_size: 0)
+  # gen_direct_jmp: fallthrough
+  # Block: times@<internal:numeric>:261 
+  # reg_mapping: [None, None, None, None, Some(Local(0))]
+  # Insn: 0031 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x158000298: b #0x158002440
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002474: stur x15, [x21, #-0x20]
+  0x158002478: mov x11, #0xbcd0
+  0x15800247c: movk x11, #0x2712, lsl #16
+  0x158002480: movk x11, #1, lsl #32
+  0x158002484: stur x11, [x19]
+  0x158002488: ldr x21, [sp], #0x10
+  0x15800248c: ldr x20, [sp], #0x10
+  0x158002490: ldr x19, [sp], #0x10
+  0x158002494: mov sp, x29
+  0x158002498: ldp x29, x30, [sp], #0x10
+  0x15800249c: mov x0, #0x24
+  0x1580024a0: ret
+
+  # branch stub hit
+  0x1580024a4: str x1, [sp, #-0x10]!
+  0x1580024a8: str x9, [sp, #-0x10]!
+  0x1580024ac: str x10, [sp, #-0x10]!
+  0x1580024b0: str x14, [sp, #-0x10]!
+  0x1580024b4: str x15, [sp, #-0x10]!
+  0x1580024b8: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x1580024bc: stur x1, [x21]
+  0x1580024c0: stur x9, [x21, #8]
+  0x1580024c4: stur x15, [x21, #-0x20]
+  0x1580024c8: mov x11, #0xc0f0
+  0x1580024cc: movk x11, #0x1e7, lsl #16
+  0x1580024d0: movk x11, #0x6000, lsl #32
+  0x1580024d4: mov x0, x11
+  0x1580024d8: mov x1, #0
+  0x1580024dc: b #0x158002068
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:261 
+  # reg_mapping: [None, None, None, None, Some(Local(0))]
+  # Insn: 0031 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158000298: mov x1, x15
+  # Insn: 0033 putself (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))]
+  0x15800029c: ldur x9, [x19, #0x18]
+  # Insn: 0034 opt_lt (stack_size: 2)
+  # defer_compilation
+  0x1580002a0: b #0x1580024a4
+
+  # exit to interpreter on opt_lt
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x1580024e0: stur x1, [x21]
+  0x1580024e4: stur x9, [x21, #8]
+  0x1580024e8: stur x15, [x21, #-0x20]
+  0x1580024ec: add x11, x21, #0x10
+  0x1580024f0: stur x11, [x19, #8]
+  0x1580024f4: mov x11, #0xbce8
+  0x1580024f8: movk x11, #0x2712, lsl #16
+  0x1580024fc: movk x11, #1, lsl #32
+  0x158002500: stur x11, [x19]
+  0x158002504: ldr x21, [sp], #0x10
+  0x158002508: ldr x20, [sp], #0x10
+  0x15800250c: ldr x19, [sp], #0x10
+  0x158002510: mov sp, x29
+  0x158002514: ldp x29, x30, [sp], #0x10
+  0x158002518: mov x0, #0x24
+  0x15800251c: ret
+
+  # branch stub hit
+  0x158002520: str x1, [sp, #-0x10]!
+  0x158002524: str x9, [sp, #-0x10]!
+  0x158002528: str x10, [sp, #-0x10]!
+  0x15800252c: str x14, [sp, #-0x10]!
+  0x158002530: str x15, [sp, #-0x10]!
+  0x158002534: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002538: stur x1, [x21]
+  0x15800253c: stur x9, [x21, #8]
+  0x158002540: stur x15, [x21, #-0x20]
+  0x158002544: mov x11, #0xc0c0
+  0x158002548: movk x11, #0x1e7, lsl #16
+  0x15800254c: movk x11, #0x6000, lsl #32
+  0x158002550: mov x0, x11
+  0x158002554: mov x1, #0
+  0x158002558: b #0x158002068
+
+  # branch stub hit
+  0x15800255c: str x1, [sp, #-0x10]!
+  0x158002560: str x9, [sp, #-0x10]!
+  0x158002564: str x10, [sp, #-0x10]!
+  0x158002568: str x14, [sp, #-0x10]!
+  0x15800256c: str x15, [sp, #-0x10]!
+  0x158002570: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002574: stur x15, [x21, #-0x20]
+  0x158002578: mov x11, #0xc030
+  0x15800257c: movk x11, #0x1e7, lsl #16
+  0x158002580: movk x11, #0x6000, lsl #32
+  0x158002584: mov x0, x11
+  0x158002588: mov x1, #0
+  0x15800258c: b #0x158002068
+
+  # branch stub hit
+  0x158002590: str x1, [sp, #-0x10]!
+  0x158002594: str x9, [sp, #-0x10]!
+  0x158002598: str x10, [sp, #-0x10]!
+  0x15800259c: str x14, [sp, #-0x10]!
+  0x1580025a0: str x15, [sp, #-0x10]!
+  0x1580025a4: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x1580025a8: stur x15, [x21, #-0x20]
+  0x1580025ac: mov x11, #0xc030
+  0x1580025b0: movk x11, #0x1e7, lsl #16
+  0x1580025b4: movk x11, #0x6000, lsl #32
+  0x1580025b8: mov x0, x11
+  0x1580025bc: mov x1, #1
+  0x1580025c0: b #0x158002068
+
+  # exit to interpreter on branchif
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x1580025c4: stur x1, [x21]
+  0x1580025c8: stur x15, [x21, #-0x20]
+  0x1580025cc: add x11, x21, #8
+  0x1580025d0: stur x11, [x19, #8]
+  0x1580025d4: mov x11, #0xbcf8
+  0x1580025d8: movk x11, #0x2712, lsl #16
+  0x1580025dc: movk x11, #1, lsl #32
+  0x1580025e0: stur x11, [x19]
+  0x1580025e4: ldr x21, [sp], #0x10
+  0x1580025e8: ldr x20, [sp], #0x10
+  0x1580025ec: ldr x19, [sp], #0x10
+  0x1580025f0: mov sp, x29
+  0x1580025f4: ldp x29, x30, [sp], #0x10
+  0x1580025f8: mov x0, #0x24
+  0x1580025fc: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:261 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))]
+  # Insn: 0034 opt_lt (stack_size: 2)
+  # guard arg1 fixnum
+  0x1580002a0: tst x9, #1
+  0x1580002a4: b.eq #0x158002520
+  0x1580002a8: nop
+  0x1580002ac: cmp x1, x9
+  0x1580002b0: mov x11, #0x14
+  0x1580002b4: mov x12, #0
+  0x1580002b8: csel x11, x11, x12, lt
+  0x1580002bc: mov x1, x11
+  # Insn: 0036 branchif (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x1580002c0: ldur w11, [x20, #0x20]
+  0x1580002c4: cbnz w11, #0x1580025c4
+  0x1580002c8: tst x1, #-5
+  0x1580002cc: b.ne #0x15800255c
+  0x1580002d0: nop
+  0x1580002d4: b #0x158002590
+
+  # regenerate_branch
+  0x1580002cc: b.eq #0x158002590
+  0x1580002d0: nop
+
+  # exit to interpreter on getlocal_WC_0
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002600: stur x15, [x21, #-0x20]
+  0x158002604: mov x11, #0xbc78
+  0x158002608: movk x11, #0x2712, lsl #16
+  0x15800260c: movk x11, #1, lsl #32
+  0x158002610: stur x11, [x19]
+  0x158002614: ldr x21, [sp], #0x10
+  0x158002618: ldr x20, [sp], #0x10
+  0x15800261c: ldr x19, [sp], #0x10
+  0x158002620: mov sp, x29
+  0x158002624: ldp x29, x30, [sp], #0x10
+  0x158002628: mov x0, #0x24
+  0x15800262c: ret
+
+  # branch stub hit
+  0x158002630: str x1, [sp, #-0x10]!
+  0x158002634: str x9, [sp, #-0x10]!
+  0x158002638: str x10, [sp, #-0x10]!
+  0x15800263c: str x14, [sp, #-0x10]!
+  0x158002640: str x15, [sp, #-0x10]!
+  0x158002644: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002648: stur x1, [x21]
+  0x15800264c: stur x15, [x21, #-0x20]
+  0x158002650: mov x11, #0xc300
+  0x158002654: movk x11, #0x1e7, lsl #16
+  0x158002658: movk x11, #0x6000, lsl #32
+  0x15800265c: mov x0, x11
+  0x158002660: mov x1, #0
+  0x158002664: b #0x158002068
+
+  # Block: times@<internal:numeric>:262 
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))]
+  # Insn: 0020 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x1580002d4: mov x1, x15
+  # Insn: 0022 invokeblock (stack_size: 1)
+  # defer_compilation
+  0x1580002d8: b #0x158002630
+
+  # regenerate_branch
+  0x1580002cc: b.eq #0x158002590
+  0x1580002d0: nop
+
+  # branch stub hit
+  0x158002668: str x1, [sp, #-0x10]!
+  0x15800266c: str x9, [sp, #-0x10]!
+  0x158002670: str x10, [sp, #-0x10]!
+  0x158002674: str x14, [sp, #-0x10]!
+  0x158002678: str x15, [sp, #-0x10]!
+  0x15800267c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158002680: stur x1, [x21]
+  0x158002684: stur x15, [x21, #-0x20]
+  0x158002688: mov x11, #0xc2a0
+  0x15800268c: movk x11, #0x1e7, lsl #16
+  0x158002690: movk x11, #0x6000, lsl #32
+  0x158002694: mov x0, x11
+  0x158002698: mov x1, #0
+  0x15800269c: b #0x158002068
+
+  # exit to interpreter on pop
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x1580026a0: stur x1, [x21, #-8]
+  0x1580026a4: mov x11, #0xbc98
+  0x1580026a8: movk x11, #0x2712, lsl #16
+  0x1580026ac: movk x11, #1, lsl #32
+  0x1580026b0: stur x11, [x19]
+  0x1580026b4: ldr x21, [sp], #0x10
+  0x1580026b8: ldr x20, [sp], #0x10
+  0x1580026bc: ldr x19, [sp], #0x10
+  0x1580026c0: mov sp, x29
+  0x1580026c4: ldp x29, x30, [sp], #0x10
+  0x1580026c8: mov x0, #0x24
+  0x1580026cc: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:262 
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))]
+  # Insn: 0022 invokeblock (stack_size: 1)
+  # get local EP
+  # get_lep(level: 0)
+  0x1580002d8: ldur x11, [x19, #0x20]
+  0x1580002dc: ldur x11, [x11, #-8]
+  # guard block_handler type
+  0x1580002e0: and x11, x11, #3
+  0x1580002e4: cmp x11, #1
+  0x1580002e8: b.ne #0x158002668
+  0x1580002ec: nop
+  # save PC to CFP
+  0x1580002f0: mov x11, #0xbc98
+  0x1580002f4: movk x11, #0x2712, lsl #16
+  0x1580002f8: movk x11, #1, lsl #32
+  0x1580002fc: stur x11, [x19]
+  # save SP to CFP
+  0x158000300: add x11, x21, #8
+  0x158000304: mov x21, x11
+  0x158000308: stur x21, [x19, #8]
+  # clear local variable types
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x15800030c: stur x1, [x21, #-8]
+  0x158000310: stur x15, [x21, #-0x28]
+  0x158000314: mov x2, #0x5d48
+  0x158000318: movk x2, #0x54, lsl #16
+  0x15800031c: movk x2, #0x6000, lsl #32
+  0x158000320: mov x1, x19
+  0x158000324: mov x0, x20
+  0x158000328: mov x16, #0x9c2c
+  0x15800032c: movk x16, #0x281, lsl #16
+  0x158000330: movk x16, #1, lsl #32
+  0x158000334: blr x16
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000338: mov x1, x0
+  0x15800033c: stur x21, [x19, #8]
+
+  # branch stub hit
+  0x1580026d0: str x1, [sp, #-0x10]!
+  0x1580026d4: str x9, [sp, #-0x10]!
+  0x1580026d8: str x10, [sp, #-0x10]!
+  0x1580026dc: str x14, [sp, #-0x10]!
+  0x1580026e0: str x15, [sp, #-0x10]!
+  0x1580026e4: str x0, [sp, #-0x10]!
+  0x1580026e8: mov x11, #0xc450
+  0x1580026ec: movk x11, #0x1e7, lsl #16
+  0x1580026f0: movk x11, #0x6000, lsl #32
+  0x1580026f4: mov x0, x11
+  0x1580026f8: mov x1, #0
+  0x1580026fc: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: times@<internal:numeric>:262 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0024 pop (stack_size: 1)
+  # Insn: 0025 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x158000340: b #0x1580026d0
+
+  # YJIT entry point: block in <main>@distance_sq.rb:16
+  0x158000344: stp x29, x30, [sp, #-0x10]!
+  0x158000348: mov x29, sp
+  0x15800034c: str x19, [sp, #-0x10]!
+  0x158000350: str x20, [sp, #-0x10]!
+  0x158000354: str x21, [sp, #-0x10]!
+  0x158000358: mov x20, x0
+  0x15800035c: mov x19, x1
+  0x158000360: ldur x21, [x19, #8]
+  0x158000364: mov x11, #0x2004
+  0x158000368: movk x11, #0x5800, lsl #16
+  0x15800036c: movk x11, #1, lsl #32
+  0x158000370: stur x11, [x19, #0x30]
+
+  # branch stub hit
+  0x158002700: str x1, [sp, #-0x10]!
+  0x158002704: str x9, [sp, #-0x10]!
+  0x158002708: str x10, [sp, #-0x10]!
+  0x15800270c: str x14, [sp, #-0x10]!
+  0x158002710: str x15, [sp, #-0x10]!
+  0x158002714: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158002718: stur x1, [x21]
+  0x15800271c: stur x9, [x21, #8]
+  0x158002720: stur x10, [x21, #0x10]
+  0x158002724: mov x11, #0xc540
+  0x158002728: movk x11, #0x1e7, lsl #16
+  0x15800272c: movk x11, #0x6000, lsl #32
+  0x158002730: mov x0, x11
+  0x158002734: mov x1, #0
+  0x158002738: b #0x158002068
+
+  # Block: block in <main>@distance_sq.rb:16 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 putself (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000374: ldur x1, [x19, #0x18]
+  # Insn: 0001 getlocal_WC_1 (stack_size: 1)
+  0x158000378: ldur x11, [x19, #0x20]
+  0x15800037c: ldur x11, [x11, #-8]
+  0x158000380: and x11, x11, #0xfffffffffffffffc
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  0x158000384: ldur x9, [x11, #-0x20]
+  # Insn: 0003 getlocal_WC_1 (stack_size: 2)
+  0x158000388: ldur x11, [x19, #0x20]
+  0x15800038c: ldur x11, [x11, #-8]
+  0x158000390: and x11, x11, #0xfffffffffffffffc
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  0x158000394: ldur x10, [x11, #-0x18]
+  # Insn: 0005 opt_send_without_block (stack_size: 3)
+  # defer_compilation
+  0x158000398: b #0x158002700
+
+  # branch stub hit
+  0x15800273c: str x1, [sp, #-0x10]!
+  0x158002740: str x9, [sp, #-0x10]!
+  0x158002744: str x10, [sp, #-0x10]!
+  0x158002748: str x14, [sp, #-0x10]!
+  0x15800274c: str x15, [sp, #-0x10]!
+  0x158002750: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158002754: stur x1, [x21]
+  0x158002758: stur x9, [x21, #8]
+  0x15800275c: stur x10, [x21, #0x10]
+  0x158002760: mov x11, #0xc4e0
+  0x158002764: movk x11, #0x1e7, lsl #16
+  0x158002768: movk x11, #0x6000, lsl #32
+  0x15800276c: mov x0, x11
+  0x158002770: mov x1, #0
+  0x158002774: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158002778: stur x1, [x21]
+  0x15800277c: stur x9, [x21, #8]
+  0x158002780: stur x10, [x21, #0x10]
+  0x158002784: add x11, x21, #0x18
+  0x158002788: stur x11, [x19, #8]
+  0x15800278c: mov x11, #0xad30
+  0x158002790: movk x11, #0x331, lsl #16
+  0x158002794: movk x11, #0x6000, lsl #32
+  0x158002798: stur x11, [x19]
+  0x15800279c: ldr x21, [sp], #0x10
+  0x1580027a0: ldr x20, [sp], #0x10
+  0x1580027a4: ldr x19, [sp], #0x10
+  0x1580027a8: mov sp, x29
+  0x1580027ac: ldp x29, x30, [sp], #0x10
+  0x1580027b0: mov x0, #0x24
+  0x1580027b4: ret
+
+  # branch stub hit
+  0x1580027b8: ldur x21, [x19, #8]
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  0x1580027bc: mov x1, x0
+  0x1580027c0: str x1, [sp, #-0x10]!
+  0x1580027c4: str x9, [sp, #-0x10]!
+  0x1580027c8: str x10, [sp, #-0x10]!
+  0x1580027cc: str x14, [sp, #-0x10]!
+  0x1580027d0: str x15, [sp, #-0x10]!
+  0x1580027d4: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [Some(Stack(0)), None, None, None, None]
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x1580027d8: stur x1, [x21]
+  0x1580027dc: mov x11, #0xc1b0
+  0x1580027e0: movk x11, #0x1e7, lsl #16
+  0x1580027e4: movk x11, #0x6000, lsl #32
+  0x1580027e8: mov x0, x11
+  0x1580027ec: mov x1, #0
+  0x1580027f0: b #0x158002068
+
+  # regenerate_branch
+  # Block: block in <main>@distance_sq.rb:16 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  # Insn: 0005 opt_send_without_block (stack_size: 3)
+  # call to Object#distance
+  # guard known object with singleton class
+  0x158000398: ldr x11, #0x1580003a0
+  0x15800039c: b #0x1580003a8
+  0x1580003a0: .byte 0xa0, 0x00, 0xe7, 0x00
+  0x1580003a4: udf #1
+  0x1580003a8: cmp x1, x11
+  0x1580003ac: b.ne #0x15800273c
+  0x1580003b0: nop
+  # stack overflow check
+  0x1580003b4: add x11, x21, #0xc8
+  0x1580003b8: cmp x19, x11
+  0x1580003bc: b.ls #0x158002778
+  # nil-initialize locals
+  0x1580003c0: mov x11, #4
+  0x1580003c4: stur x11, [x21, #0x18]
+  0x1580003c8: mov x11, #4
+  0x1580003cc: stur x11, [x21, #0x20]
+  # store caller sp
+  0x1580003d0: add x11, x21, #0
+  0x1580003d4: stur x11, [x19, #8]
+  # save PC to CFP
+  0x1580003d8: mov x11, #0xad40
+  0x1580003dc: movk x11, #0x331, lsl #16
+  0x1580003e0: movk x11, #0x6000, lsl #32
+  0x1580003e4: stur x11, [x19]
+  0x1580003e8: add x11, x21, #0x40
+  # push cme, specval, frame type
+  0x1580003ec: ldr x12, #0x1580003f4
+  0x1580003f0: b #0x1580003fc
+  0x1580003f4: ldr s24, #0x157fa7be8
+  0x1580003f8: udf #1
+  0x1580003fc: stur x12, [x11, #-0x18]
+  0x158000400: stur xzr, [x11, #-0x10]
+  0x158000404: mov x12, #3
+  0x158000408: movk x12, #0x1111, lsl #16
+  0x15800040c: stur x12, [x11, #-8]
+  # push callee control frame
+  0x158000410: stur x11, [x19, #-0x30]
+  0x158000414: ldr x12, #0x15800041c
+  0x158000418: b #0x158000424
+  0x15800041c: .byte 0x80, 0x9e, 0xfb, 0x00
+  0x158000420: udf #1
+  0x158000424: stur x12, [x19, #-0x28]
+  0x158000428: stur x1, [x19, #-0x20]
+  0x15800042c: stur xzr, [x19, #-0x10]
+  0x158000430: subs x12, x11, #8
+  0x158000434: stur x12, [x19, #-0x18]
+  # local maps: [None, Some(Local(0)), Some(Local(1)), None, None]
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x158000438: stur x1, [x21]
+  0x15800043c: mov x21, x11
+  # clear local variable types
+  # update cfp->jit_return
+  0x158000440: mov x11, #0x27b8
+  0x158000444: movk x11, #0x5800, lsl #16
+  0x158000448: movk x11, #1, lsl #32
+  0x15800044c: stur x11, [x19, #-8]
+  # switch to new CFP
+  0x158000450: subs x11, x19, #0x38
+  0x158000454: mov x19, x11
+  0x158000458: stur x19, [x20, #0x10]
+
+  # branch stub hit
+  0x1580027f4: str x1, [sp, #-0x10]!
+  0x1580027f8: str x9, [sp, #-0x10]!
+  0x1580027fc: str x10, [sp, #-0x10]!
+  0x158002800: str x14, [sp, #-0x10]!
+  0x158002804: str x15, [sp, #-0x10]!
+  0x158002808: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x15800280c: stur x9, [x21, #-0x38]
+  0x158002810: stur x10, [x21, #-0x30]
+  0x158002814: mov x11, #0xc750
+  0x158002818: movk x11, #0x1e7, lsl #16
+  0x15800281c: movk x11, #0x6000, lsl #32
+  0x158002820: mov x0, x11
+  0x158002824: mov x1, #0
+  0x158002828: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x15800045c: b #0x1580027f4
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x15800282c: stur x9, [x21, #-0x38]
+  0x158002830: stur x10, [x21, #-0x30]
+  0x158002834: mov x11, #0x30b8
+  0x158002838: movk x11, #0x24f2, lsl #16
+  0x15800283c: movk x11, #1, lsl #32
+  0x158002840: stur x11, [x19]
+  0x158002844: ldr x21, [sp], #0x10
+  0x158002848: ldr x20, [sp], #0x10
+  0x15800284c: ldr x19, [sp], #0x10
+  0x158002850: mov sp, x29
+  0x158002854: ldp x29, x30, [sp], #0x10
+  0x158002858: mov x0, #0x24
+  0x15800285c: ret
+
+  # branch stub hit
+  0x158002860: str x1, [sp, #-0x10]!
+  0x158002864: str x9, [sp, #-0x10]!
+  0x158002868: str x10, [sp, #-0x10]!
+  0x15800286c: str x14, [sp, #-0x10]!
+  0x158002870: str x15, [sp, #-0x10]!
+  0x158002874: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x158002878: stur x1, [x21]
+  0x15800287c: stur x9, [x21, #-0x38]
+  0x158002880: stur x10, [x21, #-0x30]
+  0x158002884: mov x11, #0xc720
+  0x158002888: movk x11, #0x1e7, lsl #16
+  0x15800288c: movk x11, #0x6000, lsl #32
+  0x158002890: mov x0, x11
+  0x158002894: mov x1, #0
+  0x158002898: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), None, None] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None]
+  0x15800045c: mov x1, x9
+  # Insn: 0002 opt_send_without_block (stack_size: 1)
+  # defer_compilation
+  0x158000460: b #0x158002860
+
+  # branch stub hit
+  0x15800289c: str x1, [sp, #-0x10]!
+  0x1580028a0: str x9, [sp, #-0x10]!
+  0x1580028a4: str x10, [sp, #-0x10]!
+  0x1580028a8: str x14, [sp, #-0x10]!
+  0x1580028ac: str x15, [sp, #-0x10]!
+  0x1580028b0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x1580028b4: stur x1, [x21]
+  0x1580028b8: stur x9, [x21, #-0x38]
+  0x1580028bc: stur x10, [x21, #-0x30]
+  0x1580028c0: mov x11, #0xc870
+  0x1580028c4: movk x11, #0x1e7, lsl #16
+  0x1580028c8: movk x11, #0x6000, lsl #32
+  0x1580028cc: mov x0, x11
+  0x1580028d0: mov x1, #0
+  0x1580028d4: b #0x158002068
+
+  # branch stub hit
+  0x1580028d8: str x1, [sp, #-0x10]!
+  0x1580028dc: str x9, [sp, #-0x10]!
+  0x1580028e0: str x10, [sp, #-0x10]!
+  0x1580028e4: str x14, [sp, #-0x10]!
+  0x1580028e8: str x15, [sp, #-0x10]!
+  0x1580028ec: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x1580028f0: stur x1, [x21]
+  0x1580028f4: stur x9, [x21, #-0x38]
+  0x1580028f8: stur x10, [x21, #-0x30]
+  0x1580028fc: mov x11, #0xc8a0
+  0x158002900: movk x11, #0x1e7, lsl #16
+  0x158002904: movk x11, #0x6000, lsl #32
+  0x158002908: mov x0, x11
+  0x15800290c: mov x1, #0
+  0x158002910: b #0x158002068
+
+  # branch stub hit
+  0x158002914: str x1, [sp, #-0x10]!
+  0x158002918: str x9, [sp, #-0x10]!
+  0x15800291c: str x10, [sp, #-0x10]!
+  0x158002920: str x14, [sp, #-0x10]!
+  0x158002924: str x15, [sp, #-0x10]!
+  0x158002928: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x15800292c: stur x1, [x21]
+  0x158002930: stur x9, [x21, #-0x38]
+  0x158002934: stur x10, [x21, #-0x30]
+  0x158002938: mov x11, #0xc8d0
+  0x15800293c: movk x11, #0x1e7, lsl #16
+  0x158002940: movk x11, #0x6000, lsl #32
+  0x158002944: mov x0, x11
+  0x158002948: mov x1, #0
+  0x15800294c: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x158002950: stur x1, [x21]
+  0x158002954: stur x9, [x21, #-0x38]
+  0x158002958: stur x10, [x21, #-0x30]
+  0x15800295c: add x11, x21, #8
+  0x158002960: stur x11, [x19, #8]
+  0x158002964: mov x11, #0x30c8
+  0x158002968: movk x11, #0x24f2, lsl #16
+  0x15800296c: movk x11, #1, lsl #32
+  0x158002970: stur x11, [x19]
+  0x158002974: ldr x21, [sp], #0x10
+  0x158002978: ldr x20, [sp], #0x10
+  0x15800297c: ldr x19, [sp], #0x10
+  0x158002980: mov sp, x29
+  0x158002984: ldp x29, x30, [sp], #0x10
+  0x158002988: mov x0, #0x24
+  0x15800298c: ret
+
+  # branch stub hit
+  0x158002990: str x1, [sp, #-0x10]!
+  0x158002994: str x9, [sp, #-0x10]!
+  0x158002998: str x10, [sp, #-0x10]!
+  0x15800299c: str x14, [sp, #-0x10]!
+  0x1580029a0: str x15, [sp, #-0x10]!
+  0x1580029a4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x1580029a8: stur x1, [x21]
+  0x1580029ac: stur x9, [x21, #-0x38]
+  0x1580029b0: stur x10, [x21, #-0x30]
+  0x1580029b4: mov x11, #0xc900
+  0x1580029b8: movk x11, #0x1e7, lsl #16
+  0x1580029bc: movk x11, #0x6000, lsl #32
+  0x1580029c0: mov x0, x11
+  0x1580029c4: mov x1, #0
+  0x1580029c8: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0002 opt_send_without_block (stack_size: 1)
+  # call to Point#x
+  # guard not immediate
+  0x158000460: tst x1, #7
+  0x158000464: b.ne #0x15800289c
+  0x158000468: nop
+  0x15800046c: cmp x1, #0
+  0x158000470: b.eq #0x1580028d8
+  0x158000474: nop
+  0x158000478: mov x11, x1
+  # guard known class
+  0x15800047c: ldr x12, #0x158000484
+  0x158000480: b #0x15800048c
+  0x158000484: ldr s0, #0x157fa4eb8
+  0x158000488: udf #1
+  0x15800048c: ldur x11, [x11, #8]
+  0x158000490: cmp x11, x12
+  0x158000494: b.ne #0x158002914
+  0x158000498: nop
+  0x15800049c: mov x11, x1
+  # guard shape
+  0x1580004a0: ldur w12, [x11, #4]
+  0x1580004a4: mov x13, #0x7a
+  0x1580004a8: movk x13, #0x10, lsl #16
+  0x1580004ac: cmp w12, w13
+  0x1580004b0: b.ne #0x158002990
+  0x1580004b4: nop
+  0x1580004b8: ldur x1, [x11, #0x10]
+
+  # branch stub hit
+  0x1580029cc: str x1, [sp, #-0x10]!
+  0x1580029d0: str x9, [sp, #-0x10]!
+  0x1580029d4: str x10, [sp, #-0x10]!
+  0x1580029d8: str x14, [sp, #-0x10]!
+  0x1580029dc: str x15, [sp, #-0x10]!
+  0x1580029e0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x1580029e4: stur x1, [x21]
+  0x1580029e8: stur x9, [x21, #-0x38]
+  0x1580029ec: stur x10, [x21, #-0x30]
+  0x1580029f0: mov x11, #0xca20
+  0x1580029f4: movk x11, #0x1e7, lsl #16
+  0x1580029f8: movk x11, #0x6000, lsl #32
+  0x1580029fc: mov x0, x11
+  0x158002a00: mov x1, #0
+  0x158002a04: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0004 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x1580004bc: b #0x1580029cc
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x158002a08: stur x1, [x21]
+  0x158002a0c: stur x9, [x21, #-0x38]
+  0x158002a10: stur x10, [x21, #-0x30]
+  0x158002a14: add x11, x21, #8
+  0x158002a18: stur x11, [x19, #8]
+  0x158002a1c: mov x11, #0x30d8
+  0x158002a20: movk x11, #0x24f2, lsl #16
+  0x158002a24: movk x11, #1, lsl #32
+  0x158002a28: stur x11, [x19]
+  0x158002a2c: ldr x21, [sp], #0x10
+  0x158002a30: ldr x20, [sp], #0x10
+  0x158002a34: ldr x19, [sp], #0x10
+  0x158002a38: mov sp, x29
+  0x158002a3c: ldp x29, x30, [sp], #0x10
+  0x158002a40: mov x0, #0x24
+  0x158002a44: ret
+
+  # branch stub hit
+  0x158002a48: str x1, [sp, #-0x10]!
+  0x158002a4c: str x9, [sp, #-0x10]!
+  0x158002a50: str x10, [sp, #-0x10]!
+  0x158002a54: str x14, [sp, #-0x10]!
+  0x158002a58: str x15, [sp, #-0x10]!
+  0x158002a5c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002a60: stur x1, [x21]
+  0x158002a64: stur x14, [x21, #8]
+  0x158002a68: stur x9, [x21, #-0x38]
+  0x158002a6c: stur x10, [x21, #-0x30]
+  0x158002a70: mov x11, #0xc7b0
+  0x158002a74: movk x11, #0x1e7, lsl #16
+  0x158002a78: movk x11, #0x6000, lsl #32
+  0x158002a7c: mov x0, x11
+  0x158002a80: mov x1, #0
+  0x158002a84: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0004 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None]
+  0x1580004bc: mov x14, x10
+  # Insn: 0006 opt_send_without_block (stack_size: 2)
+  # defer_compilation
+  0x1580004c0: b #0x158002a48
+
+  # branch stub hit
+  0x158002a88: str x1, [sp, #-0x10]!
+  0x158002a8c: str x9, [sp, #-0x10]!
+  0x158002a90: str x10, [sp, #-0x10]!
+  0x158002a94: str x14, [sp, #-0x10]!
+  0x158002a98: str x15, [sp, #-0x10]!
+  0x158002a9c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002aa0: stur x1, [x21]
+  0x158002aa4: stur x14, [x21, #8]
+  0x158002aa8: stur x9, [x21, #-0x38]
+  0x158002aac: stur x10, [x21, #-0x30]
+  0x158002ab0: mov x11, #0xca50
+  0x158002ab4: movk x11, #0x1e7, lsl #16
+  0x158002ab8: movk x11, #0x6000, lsl #32
+  0x158002abc: mov x0, x11
+  0x158002ac0: mov x1, #0
+  0x158002ac4: b #0x158002068
+
+  # branch stub hit
+  0x158002ac8: str x1, [sp, #-0x10]!
+  0x158002acc: str x9, [sp, #-0x10]!
+  0x158002ad0: str x10, [sp, #-0x10]!
+  0x158002ad4: str x14, [sp, #-0x10]!
+  0x158002ad8: str x15, [sp, #-0x10]!
+  0x158002adc: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002ae0: stur x1, [x21]
+  0x158002ae4: stur x14, [x21, #8]
+  0x158002ae8: stur x9, [x21, #-0x38]
+  0x158002aec: stur x10, [x21, #-0x30]
+  0x158002af0: mov x11, #0xcb10
+  0x158002af4: movk x11, #0x1e7, lsl #16
+  0x158002af8: movk x11, #0x6000, lsl #32
+  0x158002afc: mov x0, x11
+  0x158002b00: mov x1, #0
+  0x158002b04: b #0x158002068
+
+  # branch stub hit
+  0x158002b08: str x1, [sp, #-0x10]!
+  0x158002b0c: str x9, [sp, #-0x10]!
+  0x158002b10: str x10, [sp, #-0x10]!
+  0x158002b14: str x14, [sp, #-0x10]!
+  0x158002b18: str x15, [sp, #-0x10]!
+  0x158002b1c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002b20: stur x1, [x21]
+  0x158002b24: stur x14, [x21, #8]
+  0x158002b28: stur x9, [x21, #-0x38]
+  0x158002b2c: stur x10, [x21, #-0x30]
+  0x158002b30: mov x11, #0xcb40
+  0x158002b34: movk x11, #0x1e7, lsl #16
+  0x158002b38: movk x11, #0x6000, lsl #32
+  0x158002b3c: mov x0, x11
+  0x158002b40: mov x1, #0
+  0x158002b44: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002b48: stur x1, [x21]
+  0x158002b4c: stur x14, [x21, #8]
+  0x158002b50: stur x9, [x21, #-0x38]
+  0x158002b54: stur x10, [x21, #-0x30]
+  0x158002b58: add x11, x21, #0x10
+  0x158002b5c: stur x11, [x19, #8]
+  0x158002b60: mov x11, #0x30e8
+  0x158002b64: movk x11, #0x24f2, lsl #16
+  0x158002b68: movk x11, #1, lsl #32
+  0x158002b6c: stur x11, [x19]
+  0x158002b70: ldr x21, [sp], #0x10
+  0x158002b74: ldr x20, [sp], #0x10
+  0x158002b78: ldr x19, [sp], #0x10
+  0x158002b7c: mov sp, x29
+  0x158002b80: ldp x29, x30, [sp], #0x10
+  0x158002b84: mov x0, #0x24
+  0x158002b88: ret
+
+  # branch stub hit
+  0x158002b8c: str x1, [sp, #-0x10]!
+  0x158002b90: str x9, [sp, #-0x10]!
+  0x158002b94: str x10, [sp, #-0x10]!
+  0x158002b98: str x14, [sp, #-0x10]!
+  0x158002b9c: str x15, [sp, #-0x10]!
+  0x158002ba0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002ba4: stur x1, [x21]
+  0x158002ba8: stur x14, [x21, #8]
+  0x158002bac: stur x9, [x21, #-0x38]
+  0x158002bb0: stur x10, [x21, #-0x30]
+  0x158002bb4: mov x11, #0xcb70
+  0x158002bb8: movk x11, #0x1e7, lsl #16
+  0x158002bbc: movk x11, #0x6000, lsl #32
+  0x158002bc0: mov x0, x11
+  0x158002bc4: mov x1, #0
+  0x158002bc8: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None]
+  # Insn: 0006 opt_send_without_block (stack_size: 2)
+  # call to Point#x
+  # guard not immediate
+  0x1580004c0: tst x14, #7
+  0x1580004c4: b.ne #0x158002a88
+  0x1580004c8: nop
+  0x1580004cc: cmp x14, #0
+  0x1580004d0: b.eq #0x158002ac8
+  0x1580004d4: nop
+  0x1580004d8: mov x11, x14
+  # guard known class
+  0x1580004dc: ldr x12, #0x1580004e4
+  0x1580004e0: b #0x1580004ec
+  0x1580004e4: ldr s0, #0x157fa4f18
+  0x1580004e8: udf #1
+  0x1580004ec: ldur x11, [x11, #8]
+  0x1580004f0: cmp x11, x12
+  0x1580004f4: b.ne #0x158002b08
+  0x1580004f8: nop
+  0x1580004fc: mov x11, x14
+  # guard shape
+  0x158000500: ldur w12, [x11, #4]
+  0x158000504: mov x13, #0x7a
+  0x158000508: movk x13, #0x10, lsl #16
+  0x15800050c: cmp w12, w13
+  0x158000510: b.ne #0x158002b8c
+  0x158000514: nop
+  0x158000518: ldur x14, [x11, #0x10]
+
+  # branch stub hit
+  0x158002bcc: str x1, [sp, #-0x10]!
+  0x158002bd0: str x9, [sp, #-0x10]!
+  0x158002bd4: str x10, [sp, #-0x10]!
+  0x158002bd8: str x14, [sp, #-0x10]!
+  0x158002bdc: str x15, [sp, #-0x10]!
+  0x158002be0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002be4: stur x1, [x21]
+  0x158002be8: stur x14, [x21, #8]
+  0x158002bec: stur x9, [x21, #-0x38]
+  0x158002bf0: stur x10, [x21, #-0x30]
+  0x158002bf4: mov x11, #0xcc60
+  0x158002bf8: movk x11, #0x1e7, lsl #16
+  0x158002bfc: movk x11, #0x6000, lsl #32
+  0x158002c00: mov x0, x11
+  0x158002c04: mov x1, #0
+  0x158002c08: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None]
+  # Insn: 0008 opt_minus (stack_size: 2)
+  # defer_compilation
+  0x15800051c: b #0x158002bcc
+
+  # exit to interpreter on opt_minus
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002c0c: stur x1, [x21]
+  0x158002c10: stur x14, [x21, #8]
+  0x158002c14: stur x9, [x21, #-0x38]
+  0x158002c18: stur x10, [x21, #-0x30]
+  0x158002c1c: add x11, x21, #0x10
+  0x158002c20: stur x11, [x19, #8]
+  0x158002c24: mov x11, #0x30f8
+  0x158002c28: movk x11, #0x24f2, lsl #16
+  0x158002c2c: movk x11, #1, lsl #32
+  0x158002c30: stur x11, [x19]
+  0x158002c34: ldr x21, [sp], #0x10
+  0x158002c38: ldr x20, [sp], #0x10
+  0x158002c3c: ldr x19, [sp], #0x10
+  0x158002c40: mov sp, x29
+  0x158002c44: ldp x29, x30, [sp], #0x10
+  0x158002c48: mov x0, #0x24
+  0x158002c4c: ret
+
+  # branch stub hit
+  0x158002c50: str x1, [sp, #-0x10]!
+  0x158002c54: str x9, [sp, #-0x10]!
+  0x158002c58: str x10, [sp, #-0x10]!
+  0x158002c5c: str x14, [sp, #-0x10]!
+  0x158002c60: str x15, [sp, #-0x10]!
+  0x158002c64: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002c68: stur x1, [x21]
+  0x158002c6c: stur x14, [x21, #8]
+  0x158002c70: stur x9, [x21, #-0x38]
+  0x158002c74: stur x10, [x21, #-0x30]
+  0x158002c78: mov x11, #0xca80
+  0x158002c7c: movk x11, #0x1e7, lsl #16
+  0x158002c80: movk x11, #0x6000, lsl #32
+  0x158002c84: mov x0, x11
+  0x158002c88: mov x1, #0
+  0x158002c8c: b #0x158002068
+
+  # branch stub hit
+  0x158002c90: str x1, [sp, #-0x10]!
+  0x158002c94: str x9, [sp, #-0x10]!
+  0x158002c98: str x10, [sp, #-0x10]!
+  0x158002c9c: str x14, [sp, #-0x10]!
+  0x158002ca0: str x15, [sp, #-0x10]!
+  0x158002ca4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None] -> [None, None, None, None, None]
+  0x158002ca8: stur x1, [x21]
+  0x158002cac: stur x14, [x21, #8]
+  0x158002cb0: stur x9, [x21, #-0x38]
+  0x158002cb4: stur x10, [x21, #-0x30]
+  0x158002cb8: mov x11, #0xcc30
+  0x158002cbc: movk x11, #0x1e7, lsl #16
+  0x158002cc0: movk x11, #0x6000, lsl #32
+  0x158002cc4: mov x0, x11
+  0x158002cc8: mov x1, #0
+  0x158002ccc: b #0x158002068
+
+  # branch stub hit
+  0x158002cd0: str x1, [sp, #-0x10]!
+  0x158002cd4: str x9, [sp, #-0x10]!
+  0x158002cd8: str x10, [sp, #-0x10]!
+  0x158002cdc: str x14, [sp, #-0x10]!
+  0x158002ce0: str x15, [sp, #-0x10]!
+  0x158002ce4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x158002ce8: stur x1, [x21]
+  0x158002cec: stur x9, [x21, #-0x38]
+  0x158002cf0: stur x10, [x21, #-0x30]
+  0x158002cf4: mov x11, #0xcd20
+  0x158002cf8: movk x11, #0x1e7, lsl #16
+  0x158002cfc: movk x11, #0x6000, lsl #32
+  0x158002d00: mov x0, x11
+  0x158002d04: mov x1, #0
+  0x158002d08: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), None]
+  # Insn: 0008 opt_minus (stack_size: 2)
+  # guard arg0 fixnum
+  0x15800051c: tst x1, #1
+  0x158000520: b.eq #0x158002c50
+  0x158000524: nop
+  # guard arg1 fixnum
+  0x158000528: tst x14, #1
+  0x15800052c: b.eq #0x158002c90
+  0x158000530: nop
+  0x158000534: subs x11, x1, x14
+  0x158000538: b.vs #0x158002c0c
+  0x15800053c: adds x11, x11, #1
+  0x158000540: mov x1, x11
+  # Insn: 0010 setlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000544: b #0x158002cd0
+
+  # exit to interpreter on setlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [None, None, None, None, None]
+  0x158002d0c: stur x1, [x21]
+  0x158002d10: stur x9, [x21, #-0x38]
+  0x158002d14: stur x10, [x21, #-0x30]
+  0x158002d18: add x11, x21, #8
+  0x158002d1c: stur x11, [x19, #8]
+  0x158002d20: mov x11, #0x3108
+  0x158002d24: movk x11, #0x24f2, lsl #16
+  0x158002d28: movk x11, #1, lsl #32
+  0x158002d2c: stur x11, [x19]
+  0x158002d30: ldr x21, [sp], #0x10
+  0x158002d34: ldr x20, [sp], #0x10
+  0x158002d38: ldr x19, [sp], #0x10
+  0x158002d3c: mov sp, x29
+  0x158002d40: ldp x29, x30, [sp], #0x10
+  0x158002d44: mov x0, #0x24
+  0x158002d48: ret
+
+  # branch stub hit
+  0x158002d4c: str x1, [sp, #-0x10]!
+  0x158002d50: str x9, [sp, #-0x10]!
+  0x158002d54: str x10, [sp, #-0x10]!
+  0x158002d58: str x14, [sp, #-0x10]!
+  0x158002d5c: str x15, [sp, #-0x10]!
+  0x158002d60: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002d64: stur x9, [x21, #-0x38]
+  0x158002d68: stur x10, [x21, #-0x30]
+  0x158002d6c: stur x15, [x21, #-0x28]
+  0x158002d70: mov x11, #0xce70
+  0x158002d74: movk x11, #0x1e7, lsl #16
+  0x158002d78: movk x11, #0x6000, lsl #32
+  0x158002d7c: mov x0, x11
+  0x158002d80: mov x1, #0
+  0x158002d84: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:9 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None]
+  # Insn: 0010 setlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, None] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  0x158000544: mov x15, x1
+  # Insn: 0012 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x158000548: b #0x158002d4c
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002d88: stur x9, [x21, #-0x38]
+  0x158002d8c: stur x10, [x21, #-0x30]
+  0x158002d90: stur x15, [x21, #-0x28]
+  0x158002d94: mov x11, #0x3118
+  0x158002d98: movk x11, #0x24f2, lsl #16
+  0x158002d9c: movk x11, #1, lsl #32
+  0x158002da0: stur x11, [x19]
+  0x158002da4: ldr x21, [sp], #0x10
+  0x158002da8: ldr x20, [sp], #0x10
+  0x158002dac: ldr x19, [sp], #0x10
+  0x158002db0: mov sp, x29
+  0x158002db4: ldp x29, x30, [sp], #0x10
+  0x158002db8: mov x0, #0x24
+  0x158002dbc: ret
+
+  # branch stub hit
+  0x158002dc0: str x1, [sp, #-0x10]!
+  0x158002dc4: str x9, [sp, #-0x10]!
+  0x158002dc8: str x10, [sp, #-0x10]!
+  0x158002dcc: str x14, [sp, #-0x10]!
+  0x158002dd0: str x15, [sp, #-0x10]!
+  0x158002dd4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002dd8: stur x1, [x21]
+  0x158002ddc: stur x9, [x21, #-0x38]
+  0x158002de0: stur x10, [x21, #-0x30]
+  0x158002de4: stur x15, [x21, #-0x28]
+  0x158002de8: mov x11, #0xce10
+  0x158002dec: movk x11, #0x1e7, lsl #16
+  0x158002df0: movk x11, #0x6000, lsl #32
+  0x158002df4: mov x0, x11
+  0x158002df8: mov x1, #0
+  0x158002dfc: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  # Insn: 0012 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  0x158000548: mov x1, x9
+  # Insn: 0014 opt_send_without_block (stack_size: 1)
+  # defer_compilation
+  0x15800054c: b #0x158002dc0
+
+  # branch stub hit
+  0x158002e00: str x1, [sp, #-0x10]!
+  0x158002e04: str x9, [sp, #-0x10]!
+  0x158002e08: str x10, [sp, #-0x10]!
+  0x158002e0c: str x14, [sp, #-0x10]!
+  0x158002e10: str x15, [sp, #-0x10]!
+  0x158002e14: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002e18: stur x1, [x21]
+  0x158002e1c: stur x9, [x21, #-0x38]
+  0x158002e20: stur x10, [x21, #-0x30]
+  0x158002e24: stur x15, [x21, #-0x28]
+  0x158002e28: mov x11, #0xc780
+  0x158002e2c: movk x11, #0x1e7, lsl #16
+  0x158002e30: movk x11, #0x6000, lsl #32
+  0x158002e34: mov x0, x11
+  0x158002e38: mov x1, #0
+  0x158002e3c: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002e40: stur x1, [x21]
+  0x158002e44: stur x9, [x21, #-0x38]
+  0x158002e48: stur x10, [x21, #-0x30]
+  0x158002e4c: stur x15, [x21, #-0x28]
+  0x158002e50: add x11, x21, #8
+  0x158002e54: stur x11, [x19, #8]
+  0x158002e58: mov x11, #0x3128
+  0x158002e5c: movk x11, #0x24f2, lsl #16
+  0x158002e60: movk x11, #1, lsl #32
+  0x158002e64: stur x11, [x19]
+  0x158002e68: ldr x21, [sp], #0x10
+  0x158002e6c: ldr x20, [sp], #0x10
+  0x158002e70: ldr x19, [sp], #0x10
+  0x158002e74: mov sp, x29
+  0x158002e78: ldp x29, x30, [sp], #0x10
+  0x158002e7c: mov x0, #0x24
+  0x158002e80: ret
+
+  # branch stub hit
+  0x158002e84: str x1, [sp, #-0x10]!
+  0x158002e88: str x9, [sp, #-0x10]!
+  0x158002e8c: str x10, [sp, #-0x10]!
+  0x158002e90: str x14, [sp, #-0x10]!
+  0x158002e94: str x15, [sp, #-0x10]!
+  0x158002e98: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002e9c: stur x1, [x21]
+  0x158002ea0: stur x9, [x21, #-0x38]
+  0x158002ea4: stur x10, [x21, #-0x30]
+  0x158002ea8: stur x15, [x21, #-0x28]
+  0x158002eac: mov x11, #0xcdb0
+  0x158002eb0: movk x11, #0x1e7, lsl #16
+  0x158002eb4: movk x11, #0x6000, lsl #32
+  0x158002eb8: mov x0, x11
+  0x158002ebc: mov x1, #0
+  0x158002ec0: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  # Insn: 0014 opt_send_without_block (stack_size: 1)
+  # call to Point#y
+  0x15800054c: mov x11, x1
+  # guard known class
+  0x158000550: ldr x12, #0x158000558
+  0x158000554: b #0x158000560
+  0x158000558: ldr s0, #0x157fa4f8c
+  0x15800055c: udf #1
+  0x158000560: ldur x11, [x11, #8]
+  0x158000564: cmp x11, x12
+  0x158000568: b.ne #0x158002e00
+  0x15800056c: nop
+  0x158000570: mov x11, x1
+  # guard shape
+  0x158000574: ldur w12, [x11, #4]
+  0x158000578: mov x13, #0x7a
+  0x15800057c: movk x13, #0x10, lsl #16
+  0x158000580: cmp w12, w13
+  0x158000584: b.ne #0x158002e84
+  0x158000588: nop
+  0x15800058c: ldur x1, [x11, #0x18]
+
+  # branch stub hit
+  0x158002ec4: str x1, [sp, #-0x10]!
+  0x158002ec8: str x9, [sp, #-0x10]!
+  0x158002ecc: str x10, [sp, #-0x10]!
+  0x158002ed0: str x14, [sp, #-0x10]!
+  0x158002ed4: str x15, [sp, #-0x10]!
+  0x158002ed8: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002edc: stur x1, [x21]
+  0x158002ee0: stur x9, [x21, #-0x38]
+  0x158002ee4: stur x10, [x21, #-0x30]
+  0x158002ee8: stur x15, [x21, #-0x28]
+  0x158002eec: mov x11, #0xd080
+  0x158002ef0: movk x11, #0x1e7, lsl #16
+  0x158002ef4: movk x11, #0x6000, lsl #32
+  0x158002ef8: mov x0, x11
+  0x158002efc: mov x1, #0
+  0x158002f00: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  # Insn: 0016 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000590: b #0x158002ec4
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158002f04: stur x1, [x21]
+  0x158002f08: stur x9, [x21, #-0x38]
+  0x158002f0c: stur x10, [x21, #-0x30]
+  0x158002f10: stur x15, [x21, #-0x28]
+  0x158002f14: add x11, x21, #8
+  0x158002f18: stur x11, [x19, #8]
+  0x158002f1c: mov x11, #0x3138
+  0x158002f20: movk x11, #0x24f2, lsl #16
+  0x158002f24: movk x11, #1, lsl #32
+  0x158002f28: stur x11, [x19]
+  0x158002f2c: ldr x21, [sp], #0x10
+  0x158002f30: ldr x20, [sp], #0x10
+  0x158002f34: ldr x19, [sp], #0x10
+  0x158002f38: mov sp, x29
+  0x158002f3c: ldp x29, x30, [sp], #0x10
+  0x158002f40: mov x0, #0x24
+  0x158002f44: ret
+
+  # branch stub hit
+  0x158002f48: str x1, [sp, #-0x10]!
+  0x158002f4c: str x9, [sp, #-0x10]!
+  0x158002f50: str x10, [sp, #-0x10]!
+  0x158002f54: str x14, [sp, #-0x10]!
+  0x158002f58: str x15, [sp, #-0x10]!
+  0x158002f5c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158002f60: stur x1, [x21]
+  0x158002f64: stur x14, [x21, #8]
+  0x158002f68: stur x9, [x21, #-0x38]
+  0x158002f6c: stur x10, [x21, #-0x30]
+  0x158002f70: stur x15, [x21, #-0x28]
+  0x158002f74: mov x11, #0xcf00
+  0x158002f78: movk x11, #0x1e7, lsl #16
+  0x158002f7c: movk x11, #0x6000, lsl #32
+  0x158002f80: mov x0, x11
+  0x158002f84: mov x1, #0
+  0x158002f88: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  # Insn: 0016 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))]
+  0x158000590: mov x14, x10
+  # Insn: 0018 opt_send_without_block (stack_size: 2)
+  # defer_compilation
+  0x158000594: b #0x158002f48
+
+  # branch stub hit
+  0x158002f8c: str x1, [sp, #-0x10]!
+  0x158002f90: str x9, [sp, #-0x10]!
+  0x158002f94: str x10, [sp, #-0x10]!
+  0x158002f98: str x14, [sp, #-0x10]!
+  0x158002f9c: str x15, [sp, #-0x10]!
+  0x158002fa0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158002fa4: stur x1, [x21]
+  0x158002fa8: stur x14, [x21, #8]
+  0x158002fac: stur x9, [x21, #-0x38]
+  0x158002fb0: stur x10, [x21, #-0x30]
+  0x158002fb4: stur x15, [x21, #-0x28]
+  0x158002fb8: mov x11, #0xd0b0
+  0x158002fbc: movk x11, #0x1e7, lsl #16
+  0x158002fc0: movk x11, #0x6000, lsl #32
+  0x158002fc4: mov x0, x11
+  0x158002fc8: mov x1, #0
+  0x158002fcc: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158002fd0: stur x1, [x21]
+  0x158002fd4: stur x14, [x21, #8]
+  0x158002fd8: stur x9, [x21, #-0x38]
+  0x158002fdc: stur x10, [x21, #-0x30]
+  0x158002fe0: stur x15, [x21, #-0x28]
+  0x158002fe4: add x11, x21, #0x10
+  0x158002fe8: stur x11, [x19, #8]
+  0x158002fec: mov x11, #0x3148
+  0x158002ff0: movk x11, #0x24f2, lsl #16
+  0x158002ff4: movk x11, #1, lsl #32
+  0x158002ff8: stur x11, [x19]
+  0x158002ffc: ldr x21, [sp], #0x10
+  0x158003000: ldr x20, [sp], #0x10
+  0x158003004: ldr x19, [sp], #0x10
+  0x158003008: mov sp, x29
+  0x15800300c: ldp x29, x30, [sp], #0x10
+  0x158003010: mov x0, #0x24
+  0x158003014: ret
+
+  # branch stub hit
+  0x158003018: str x1, [sp, #-0x10]!
+  0x15800301c: str x9, [sp, #-0x10]!
+  0x158003020: str x10, [sp, #-0x10]!
+  0x158003024: str x14, [sp, #-0x10]!
+  0x158003028: str x15, [sp, #-0x10]!
+  0x15800302c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003030: stur x1, [x21]
+  0x158003034: stur x14, [x21, #8]
+  0x158003038: stur x9, [x21, #-0x38]
+  0x15800303c: stur x10, [x21, #-0x30]
+  0x158003040: stur x15, [x21, #-0x28]
+  0x158003044: mov x11, #0xd170
+  0x158003048: movk x11, #0x1e7, lsl #16
+  0x15800304c: movk x11, #0x6000, lsl #32
+  0x158003050: mov x0, x11
+  0x158003054: mov x1, #0
+  0x158003058: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))]
+  # Insn: 0018 opt_send_without_block (stack_size: 2)
+  # call to Point#y
+  0x158000594: mov x11, x14
+  # guard known class
+  0x158000598: ldr x12, #0x1580005a0
+  0x15800059c: b #0x1580005a8
+  0x1580005a0: ldr s0, #0x157fa4fd4
+  0x1580005a4: udf #1
+  0x1580005a8: ldur x11, [x11, #8]
+  0x1580005ac: cmp x11, x12
+  0x1580005b0: b.ne #0x158002f8c
+  0x1580005b4: nop
+  0x1580005b8: mov x11, x14
+  # guard shape
+  0x1580005bc: ldur w12, [x11, #4]
+  0x1580005c0: mov x13, #0x7a
+  0x1580005c4: movk x13, #0x10, lsl #16
+  0x1580005c8: cmp w12, w13
+  0x1580005cc: b.ne #0x158003018
+  0x1580005d0: nop
+  0x1580005d4: ldur x14, [x11, #0x18]
+
+  # branch stub hit
+  0x15800305c: str x1, [sp, #-0x10]!
+  0x158003060: str x9, [sp, #-0x10]!
+  0x158003064: str x10, [sp, #-0x10]!
+  0x158003068: str x14, [sp, #-0x10]!
+  0x15800306c: str x15, [sp, #-0x10]!
+  0x158003070: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003074: stur x1, [x21]
+  0x158003078: stur x14, [x21, #8]
+  0x15800307c: stur x9, [x21, #-0x38]
+  0x158003080: stur x10, [x21, #-0x30]
+  0x158003084: stur x15, [x21, #-0x28]
+  0x158003088: mov x11, #0xd260
+  0x15800308c: movk x11, #0x1e7, lsl #16
+  0x158003090: movk x11, #0x6000, lsl #32
+  0x158003094: mov x0, x11
+  0x158003098: mov x1, #0
+  0x15800309c: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))]
+  # Insn: 0020 opt_minus (stack_size: 2)
+  # defer_compilation
+  0x1580005d8: b #0x15800305c
+
+  # exit to interpreter on opt_minus
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x1580030a0: stur x1, [x21]
+  0x1580030a4: stur x14, [x21, #8]
+  0x1580030a8: stur x9, [x21, #-0x38]
+  0x1580030ac: stur x10, [x21, #-0x30]
+  0x1580030b0: stur x15, [x21, #-0x28]
+  0x1580030b4: add x11, x21, #0x10
+  0x1580030b8: stur x11, [x19, #8]
+  0x1580030bc: mov x11, #0x3158
+  0x1580030c0: movk x11, #0x24f2, lsl #16
+  0x1580030c4: movk x11, #1, lsl #32
+  0x1580030c8: stur x11, [x19]
+  0x1580030cc: ldr x21, [sp], #0x10
+  0x1580030d0: ldr x20, [sp], #0x10
+  0x1580030d4: ldr x19, [sp], #0x10
+  0x1580030d8: mov sp, x29
+  0x1580030dc: ldp x29, x30, [sp], #0x10
+  0x1580030e0: mov x0, #0x24
+  0x1580030e4: ret
+
+  # branch stub hit
+  0x1580030e8: str x1, [sp, #-0x10]!
+  0x1580030ec: str x9, [sp, #-0x10]!
+  0x1580030f0: str x10, [sp, #-0x10]!
+  0x1580030f4: str x14, [sp, #-0x10]!
+  0x1580030f8: str x15, [sp, #-0x10]!
+  0x1580030fc: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003100: stur x1, [x21]
+  0x158003104: stur x14, [x21, #8]
+  0x158003108: stur x9, [x21, #-0x38]
+  0x15800310c: stur x10, [x21, #-0x30]
+  0x158003110: stur x15, [x21, #-0x28]
+  0x158003114: mov x11, #0xd0e0
+  0x158003118: movk x11, #0x1e7, lsl #16
+  0x15800311c: movk x11, #0x6000, lsl #32
+  0x158003120: mov x0, x11
+  0x158003124: mov x1, #0
+  0x158003128: b #0x158002068
+
+  # branch stub hit
+  0x15800312c: str x1, [sp, #-0x10]!
+  0x158003130: str x9, [sp, #-0x10]!
+  0x158003134: str x10, [sp, #-0x10]!
+  0x158003138: str x14, [sp, #-0x10]!
+  0x15800313c: str x15, [sp, #-0x10]!
+  0x158003140: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003144: stur x1, [x21]
+  0x158003148: stur x14, [x21, #8]
+  0x15800314c: stur x9, [x21, #-0x38]
+  0x158003150: stur x10, [x21, #-0x30]
+  0x158003154: stur x15, [x21, #-0x28]
+  0x158003158: mov x11, #0xd230
+  0x15800315c: movk x11, #0x1e7, lsl #16
+  0x158003160: movk x11, #0x6000, lsl #32
+  0x158003164: mov x0, x11
+  0x158003168: mov x1, #0
+  0x15800316c: b #0x158002068
+
+  # branch stub hit
+  0x158003170: str x1, [sp, #-0x10]!
+  0x158003174: str x9, [sp, #-0x10]!
+  0x158003178: str x10, [sp, #-0x10]!
+  0x15800317c: str x14, [sp, #-0x10]!
+  0x158003180: str x15, [sp, #-0x10]!
+  0x158003184: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x158003188: stur x1, [x21]
+  0x15800318c: stur x9, [x21, #-0x38]
+  0x158003190: stur x10, [x21, #-0x30]
+  0x158003194: stur x15, [x21, #-0x28]
+  0x158003198: mov x11, #0xd320
+  0x15800319c: movk x11, #0x1e7, lsl #16
+  0x1580031a0: movk x11, #0x6000, lsl #32
+  0x1580031a4: mov x0, x11
+  0x1580031a8: mov x1, #0
+  0x1580031ac: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Stack(1)), Some(Local(2))]
+  # Insn: 0020 opt_minus (stack_size: 2)
+  # guard arg0 fixnum
+  0x1580005d8: tst x1, #1
+  0x1580005dc: b.eq #0x1580030e8
+  0x1580005e0: nop
+  # guard arg1 fixnum
+  0x1580005e4: tst x14, #1
+  0x1580005e8: b.eq #0x15800312c
+  0x1580005ec: nop
+  0x1580005f0: subs x11, x1, x14
+  0x1580005f4: b.vs #0x1580030a0
+  0x1580005f8: adds x11, x11, #1
+  0x1580005fc: mov x1, x11
+  # Insn: 0022 setlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000600: b #0x158003170
+
+  # exit to interpreter on setlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [None, None, None, None, None]
+  0x1580031b0: stur x1, [x21]
+  0x1580031b4: stur x9, [x21, #-0x38]
+  0x1580031b8: stur x10, [x21, #-0x30]
+  0x1580031bc: stur x15, [x21, #-0x28]
+  0x1580031c0: add x11, x21, #8
+  0x1580031c4: stur x11, [x19, #8]
+  0x1580031c8: mov x11, #0x3168
+  0x1580031cc: movk x11, #0x24f2, lsl #16
+  0x1580031d0: movk x11, #1, lsl #32
+  0x1580031d4: stur x11, [x19]
+  0x1580031d8: ldr x21, [sp], #0x10
+  0x1580031dc: ldr x20, [sp], #0x10
+  0x1580031e0: ldr x19, [sp], #0x10
+  0x1580031e4: mov sp, x29
+  0x1580031e8: ldp x29, x30, [sp], #0x10
+  0x1580031ec: mov x0, #0x24
+  0x1580031f0: ret
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:10 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))]
+  # Insn: 0022 setlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), None, Some(Local(2))] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  0x158000600: mov x14, x1
+
+  # exit to interpreter on opt_getconstant_path
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x1580031f4: stur x9, [x21, #-0x38]
+  0x1580031f8: stur x10, [x21, #-0x30]
+  0x1580031fc: stur x15, [x21, #-0x28]
+  0x158003200: stur x14, [x21, #-0x20]
+  0x158003204: mov x11, #0x3178
+  0x158003208: movk x11, #0x24f2, lsl #16
+  0x15800320c: movk x11, #1, lsl #32
+  0x158003210: stur x11, [x19]
+  0x158003214: ldr x21, [sp], #0x10
+  0x158003218: ldr x20, [sp], #0x10
+  0x15800321c: ldr x19, [sp], #0x10
+  0x158003220: mov sp, x29
+  0x158003224: ldp x29, x30, [sp], #0x10
+  0x158003228: mov x0, #0x24
+  0x15800322c: ret
+
+  # exit to interpreter on putself
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003230: stur x1, [x21]
+  0x158003234: add x11, x21, #8
+  0x158003238: stur x11, [x19, #8]
+  0x15800323c: mov x11, #0x3188
+  0x158003240: movk x11, #0x24f2, lsl #16
+  0x158003244: movk x11, #1, lsl #32
+  0x158003248: stur x11, [x19]
+  0x15800324c: ldr x21, [sp], #0x10
+  0x158003250: ldr x20, [sp], #0x10
+  0x158003254: ldr x19, [sp], #0x10
+  0x158003258: mov sp, x29
+  0x15800325c: ldp x29, x30, [sp], #0x10
+  0x158003260: mov x0, #0x24
+  0x158003264: ret
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0024 opt_getconstant_path (stack_size: 0)
+  # save PC to CFP
+  0x158000604: mov x11, #0x3188
+  0x158000608: movk x11, #0x24f2, lsl #16
+  0x15800060c: movk x11, #1, lsl #32
+  0x158000610: stur x11, [x19]
+  # clear local variable types
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158000614: stur x9, [x21, #-0x38]
+  0x158000618: stur x10, [x21, #-0x30]
+  0x15800061c: stur x15, [x21, #-0x28]
+  0x158000620: stur x14, [x21, #-0x20]
+  0x158000624: mov x2, #0x5c68
+  0x158000628: movk x2, #0x100, lsl #16
+  0x15800062c: movk x2, #0x6000, lsl #32
+  0x158000630: mov x1, x19
+  0x158000634: mov x0, x20
+  0x158000638: mov x16, #0xac94
+  0x15800063c: movk x16, #0x281, lsl #16
+  0x158000640: movk x16, #1, lsl #32
+  0x158000644: blr x16
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000648: mov x1, x0
+
+  # branch stub hit
+  0x158003268: str x1, [sp, #-0x10]!
+  0x15800326c: str x9, [sp, #-0x10]!
+  0x158003270: str x10, [sp, #-0x10]!
+  0x158003274: str x14, [sp, #-0x10]!
+  0x158003278: str x15, [sp, #-0x10]!
+  0x15800327c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x158003280: stur x1, [x21]
+  0x158003284: stur x9, [x21, #8]
+  0x158003288: mov x11, #0xd590
+  0x15800328c: movk x11, #0x1e7, lsl #16
+  0x158003290: movk x11, #0x6000, lsl #32
+  0x158003294: mov x0, x11
+  0x158003298: mov x1, #0
+  0x15800329c: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0026 putself (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  0x15800064c: ldur x9, [x19, #0x18]
+  # Insn: 0027 getlocal_WC_0 (stack_size: 2)
+  # defer_compilation
+  0x158000650: b #0x158003268
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0024 opt_getconstant_path (stack_size: 0)
+  # save PC to CFP
+  0x158000604: b #0x1580031f4
+
+  # branch stub hit
+  0x1580032a0: str x1, [sp, #-0x10]!
+  0x1580032a4: str x9, [sp, #-0x10]!
+  0x1580032a8: str x10, [sp, #-0x10]!
+  0x1580032ac: str x14, [sp, #-0x10]!
+  0x1580032b0: str x15, [sp, #-0x10]!
+  0x1580032b4: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x1580032b8: stur x9, [x21, #-0x38]
+  0x1580032bc: stur x10, [x21, #-0x30]
+  0x1580032c0: stur x15, [x21, #-0x28]
+  0x1580032c4: stur x14, [x21, #-0x20]
+  0x1580032c8: mov x11, #0xd3e0
+  0x1580032cc: movk x11, #0x1e7, lsl #16
+  0x1580032d0: movk x11, #0x6000, lsl #32
+  0x1580032d4: mov x0, x11
+  0x1580032d8: mov x1, #0
+  0x1580032dc: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0024 opt_getconstant_path (stack_size: 0)
+  # save PC to CFP
+  # regenerate_branch
+  0x158000604: b #0x1580032a0
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580032e0: stur x1, [x21]
+  0x1580032e4: stur x9, [x21, #8]
+  0x1580032e8: add x11, x21, #0x10
+  0x1580032ec: stur x11, [x19, #8]
+  0x1580032f0: mov x11, #0x3190
+  0x1580032f4: movk x11, #0x24f2, lsl #16
+  0x1580032f8: movk x11, #1, lsl #32
+  0x1580032fc: stur x11, [x19]
+  0x158003300: ldr x21, [sp], #0x10
+  0x158003304: ldr x20, [sp], #0x10
+  0x158003308: ldr x19, [sp], #0x10
+  0x15800330c: mov sp, x29
+  0x158003310: ldp x29, x30, [sp], #0x10
+  0x158003314: mov x0, #0x24
+  0x158003318: ret
+
+  # branch stub hit
+  0x15800331c: str x1, [sp, #-0x10]!
+  0x158003320: str x9, [sp, #-0x10]!
+  0x158003324: str x10, [sp, #-0x10]!
+  0x158003328: str x14, [sp, #-0x10]!
+  0x15800332c: str x15, [sp, #-0x10]!
+  0x158003330: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003334: stur x1, [x21]
+  0x158003338: stur x9, [x21, #8]
+  0x15800333c: stur x10, [x21, #0x10]
+  0x158003340: mov x11, #0xd530
+  0x158003344: movk x11, #0x1e7, lsl #16
+  0x158003348: movk x11, #0x6000, lsl #32
+  0x15800334c: mov x0, x11
+  0x158003350: mov x1, #0
+  0x158003354: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  # Insn: 0027 getlocal_WC_0 (stack_size: 2)
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  0x158000650: ldur x10, [x21, #-0x28]
+  # Insn: 0029 opt_send_without_block (stack_size: 3)
+  # defer_compilation
+  0x158000654: b #0x15800331c
+
+  # branch stub hit
+  0x158003358: str x1, [sp, #-0x10]!
+  0x15800335c: str x9, [sp, #-0x10]!
+  0x158003360: str x10, [sp, #-0x10]!
+  0x158003364: str x14, [sp, #-0x10]!
+  0x158003368: str x15, [sp, #-0x10]!
+  0x15800336c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003370: stur x1, [x21]
+  0x158003374: stur x9, [x21, #8]
+  0x158003378: stur x10, [x21, #0x10]
+  0x15800337c: mov x11, #0xd6e0
+  0x158003380: movk x11, #0x1e7, lsl #16
+  0x158003384: movk x11, #0x6000, lsl #32
+  0x158003388: mov x0, x11
+  0x15800338c: mov x1, #0
+  0x158003390: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003394: stur x1, [x21]
+  0x158003398: stur x9, [x21, #8]
+  0x15800339c: stur x10, [x21, #0x10]
+  0x1580033a0: add x11, x21, #0x18
+  0x1580033a4: stur x11, [x19, #8]
+  0x1580033a8: mov x11, #0x31a0
+  0x1580033ac: movk x11, #0x24f2, lsl #16
+  0x1580033b0: movk x11, #1, lsl #32
+  0x1580033b4: stur x11, [x19]
+  0x1580033b8: ldr x21, [sp], #0x10
+  0x1580033bc: ldr x20, [sp], #0x10
+  0x1580033c0: ldr x19, [sp], #0x10
+  0x1580033c4: mov sp, x29
+  0x1580033c8: ldp x29, x30, [sp], #0x10
+  0x1580033cc: mov x0, #0x24
+  0x1580033d0: ret
+
+  # branch stub hit
+  0x1580033d4: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, Some(Stack(2)), None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x1580033d8: mov x9, x0
+  0x1580033dc: str x1, [sp, #-0x10]!
+  0x1580033e0: str x9, [sp, #-0x10]!
+  0x1580033e4: str x10, [sp, #-0x10]!
+  0x1580033e8: str x14, [sp, #-0x10]!
+  0x1580033ec: str x15, [sp, #-0x10]!
+  0x1580033f0: str x0, [sp, #-0x10]!
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [None, Some(Stack(1)), None, None, None]
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580033f4: stur x9, [x21]
+  0x1580033f8: mov x11, #0xd710
+  0x1580033fc: movk x11, #0x1e7, lsl #16
+  0x158003400: movk x11, #0x6000, lsl #32
+  0x158003404: mov x0, x11
+  0x158003408: mov x1, #0
+  0x15800340c: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  # Insn: 0029 opt_send_without_block (stack_size: 3)
+  # call to Object#sq
+  # guard known object with singleton class
+  0x158000654: ldr x11, #0x15800065c
+  0x158000658: b #0x158000664
+  0x15800065c: .byte 0xa0, 0x00, 0xe7, 0x00
+  0x158000660: udf #1
+  0x158000664: cmp x9, x11
+  0x158000668: b.ne #0x158003358
+  0x15800066c: nop
+  # stack overflow check
+  0x158000670: add x11, x21, #0xa0
+  0x158000674: cmp x19, x11
+  0x158000678: b.ls #0x158003394
+  # store caller sp
+  0x15800067c: add x11, x21, #8
+  0x158000680: stur x11, [x19, #8]
+  # save PC to CFP
+  0x158000684: mov x11, #0x31b0
+  0x158000688: movk x11, #0x24f2, lsl #16
+  0x15800068c: movk x11, #1, lsl #32
+  0x158000690: stur x11, [x19]
+  0x158000694: add x11, x21, #0x30
+  # push cme, specval, frame type
+  0x158000698: ldr x12, #0x1580006a0
+  0x15800069c: b #0x1580006a8
+  0x1580006a0: ldr s16, #0x157fa7e90
+  0x1580006a4: udf #1
+  0x1580006a8: stur x12, [x11, #-0x18]
+  0x1580006ac: stur xzr, [x11, #-0x10]
+  0x1580006b0: mov x12, #3
+  0x1580006b4: movk x12, #0x1111, lsl #16
+  0x1580006b8: stur x12, [x11, #-8]
+  # push callee control frame
+  0x1580006bc: stur x11, [x19, #-0x30]
+  0x1580006c0: ldr x12, #0x1580006c8
+  0x1580006c4: b #0x1580006d0
+  0x1580006c8: .byte 0x60, 0x9e, 0xfb, 0x00
+  0x1580006cc: udf #1
+  0x1580006d0: stur x12, [x19, #-0x28]
+  0x1580006d4: stur x9, [x19, #-0x20]
+  0x1580006d8: stur xzr, [x19, #-0x10]
+  0x1580006dc: subs x12, x11, #8
+  0x1580006e0: stur x12, [x19, #-0x18]
+  # local maps: [None, None, Some(Local(0)), None, None]
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, Some(Stack(2)), None, None]
+  0x1580006e4: stur x1, [x21]
+  0x1580006e8: stur x9, [x21, #8]
+  0x1580006ec: mov x21, x11
+  # clear local variable types
+  # update cfp->jit_return
+  0x1580006f0: mov x11, #0x33d4
+  0x1580006f4: movk x11, #0x5800, lsl #16
+  0x1580006f8: movk x11, #1, lsl #32
+  0x1580006fc: stur x11, [x19, #-8]
+  # switch to new CFP
+  0x158000700: subs x11, x19, #0x38
+  0x158000704: mov x19, x11
+  0x158000708: stur x19, [x20, #0x10]
+
+  # branch stub hit
+  0x158003410: str x1, [sp, #-0x10]!
+  0x158003414: str x9, [sp, #-0x10]!
+  0x158003418: str x10, [sp, #-0x10]!
+  0x15800341c: str x14, [sp, #-0x10]!
+  0x158003420: str x15, [sp, #-0x10]!
+  0x158003424: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x158003428: stur x10, [x21, #-0x20]
+  0x15800342c: mov x11, #0xd830
+  0x158003430: movk x11, #0x1e7, lsl #16
+  0x158003434: movk x11, #0x6000, lsl #32
+  0x158003438: mov x0, x11
+  0x15800343c: mov x1, #0
+  0x158003440: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, Some(Local(0)), None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x15800070c: b #0x158003410
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, None, Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x158003444: stur x10, [x21, #-0x20]
+  0x158003448: mov x11, #0x5488
+  0x15800344c: movk x11, #0x57, lsl #16
+  0x158003450: movk x11, #0x6000, lsl #32
+  0x158003454: stur x11, [x19]
+  0x158003458: ldr x21, [sp], #0x10
+  0x15800345c: ldr x20, [sp], #0x10
+  0x158003460: ldr x19, [sp], #0x10
+  0x158003464: mov sp, x29
+  0x158003468: ldp x29, x30, [sp], #0x10
+  0x15800346c: mov x0, #0x24
+  0x158003470: ret
+
+  # branch stub hit
+  0x158003474: str x1, [sp, #-0x10]!
+  0x158003478: str x9, [sp, #-0x10]!
+  0x15800347c: str x10, [sp, #-0x10]!
+  0x158003480: str x14, [sp, #-0x10]!
+  0x158003484: str x15, [sp, #-0x10]!
+  0x158003488: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x15800348c: stur x1, [x21]
+  0x158003490: stur x10, [x21, #-0x20]
+  0x158003494: mov x11, #0xd8f0
+  0x158003498: movk x11, #0x1e7, lsl #16
+  0x15800349c: movk x11, #0x6000, lsl #32
+  0x1580034a0: mov x0, x11
+  0x1580034a4: mov x1, #0
+  0x1580034a8: b #0x158002068
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, Some(Local(0)), None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, Some(Local(0)), None, None] -> [Some(Stack(0)), None, Some(Local(0)), None, None]
+  0x15800070c: mov x1, x10
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000710: b #0x158003474
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x1580034ac: stur x1, [x21]
+  0x1580034b0: stur x10, [x21, #-0x20]
+  0x1580034b4: add x11, x21, #8
+  0x1580034b8: stur x11, [x19, #8]
+  0x1580034bc: mov x11, #0x5498
+  0x1580034c0: movk x11, #0x57, lsl #16
+  0x1580034c4: movk x11, #0x6000, lsl #32
+  0x1580034c8: stur x11, [x19]
+  0x1580034cc: ldr x21, [sp], #0x10
+  0x1580034d0: ldr x20, [sp], #0x10
+  0x1580034d4: ldr x19, [sp], #0x10
+  0x1580034d8: mov sp, x29
+  0x1580034dc: ldp x29, x30, [sp], #0x10
+  0x1580034e0: mov x0, #0x24
+  0x1580034e4: ret
+
+  # branch stub hit
+  0x1580034e8: str x1, [sp, #-0x10]!
+  0x1580034ec: str x9, [sp, #-0x10]!
+  0x1580034f0: str x10, [sp, #-0x10]!
+  0x1580034f4: str x14, [sp, #-0x10]!
+  0x1580034f8: str x15, [sp, #-0x10]!
+  0x1580034fc: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x158003500: stur x1, [x21]
+  0x158003504: stur x9, [x21, #8]
+  0x158003508: stur x10, [x21, #-0x20]
+  0x15800350c: mov x11, #0xd9b0
+  0x158003510: movk x11, #0x1e7, lsl #16
+  0x158003514: movk x11, #0x6000, lsl #32
+  0x158003518: mov x0, x11
+  0x15800351c: mov x1, #0
+  0x158003520: b #0x158002068
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [Some(Stack(0)), None, Some(Local(0)), None, None]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, Some(Local(0)), None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None]
+  0x158000710: mov x9, x10
+  # Insn: 0004 opt_mult (stack_size: 2)
+  # defer_compilation
+  0x158000714: b #0x1580034e8
+
+  # exit to interpreter on opt_mult
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x158003524: stur x1, [x21]
+  0x158003528: stur x9, [x21, #8]
+  0x15800352c: stur x10, [x21, #-0x20]
+  0x158003530: add x11, x21, #0x10
+  0x158003534: stur x11, [x19, #8]
+  0x158003538: mov x11, #0x54a8
+  0x15800353c: movk x11, #0x57, lsl #16
+  0x158003540: movk x11, #0x6000, lsl #32
+  0x158003544: stur x11, [x19]
+  0x158003548: ldr x21, [sp], #0x10
+  0x15800354c: ldr x20, [sp], #0x10
+  0x158003550: ldr x19, [sp], #0x10
+  0x158003554: mov sp, x29
+  0x158003558: ldp x29, x30, [sp], #0x10
+  0x15800355c: mov x0, #0x24
+  0x158003560: ret
+
+  # branch stub hit
+  0x158003564: str x1, [sp, #-0x10]!
+  0x158003568: str x9, [sp, #-0x10]!
+  0x15800356c: str x10, [sp, #-0x10]!
+  0x158003570: str x14, [sp, #-0x10]!
+  0x158003574: str x15, [sp, #-0x10]!
+  0x158003578: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x15800357c: stur x1, [x21]
+  0x158003580: stur x9, [x21, #8]
+  0x158003584: stur x10, [x21, #-0x20]
+  0x158003588: mov x11, #0xd800
+  0x15800358c: movk x11, #0x1e7, lsl #16
+  0x158003590: movk x11, #0x6000, lsl #32
+  0x158003594: mov x0, x11
+  0x158003598: mov x1, #0
+  0x15800359c: b #0x158002068
+
+  # branch stub hit
+  0x1580035a0: str x1, [sp, #-0x10]!
+  0x1580035a4: str x9, [sp, #-0x10]!
+  0x1580035a8: str x10, [sp, #-0x10]!
+  0x1580035ac: str x14, [sp, #-0x10]!
+  0x1580035b0: str x15, [sp, #-0x10]!
+  0x1580035b4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x1580035b8: stur x1, [x21]
+  0x1580035bc: stur x9, [x21, #8]
+  0x1580035c0: stur x10, [x21, #-0x20]
+  0x1580035c4: mov x11, #0xd860
+  0x1580035c8: movk x11, #0x1e7, lsl #16
+  0x1580035cc: movk x11, #0x6000, lsl #32
+  0x1580035d0: mov x0, x11
+  0x1580035d4: mov x1, #0
+  0x1580035d8: b #0x158002068
+
+  # branch stub hit
+  0x1580035dc: str x1, [sp, #-0x10]!
+  0x1580035e0: str x9, [sp, #-0x10]!
+  0x1580035e4: str x10, [sp, #-0x10]!
+  0x1580035e8: str x14, [sp, #-0x10]!
+  0x1580035ec: str x15, [sp, #-0x10]!
+  0x1580035f0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x1580035f4: stur x1, [x21]
+  0x1580035f8: stur x9, [x21, #8]
+  0x1580035fc: stur x10, [x21, #-0x20]
+  0x158003600: mov x11, #0xda40
+  0x158003604: movk x11, #0x1e7, lsl #16
+  0x158003608: movk x11, #0x6000, lsl #32
+  0x15800360c: mov x0, x11
+  0x158003610: mov x1, #0
+  0x158003614: b #0x158002068
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, Some(Local(0)), None, None] -> [None, None, None, None, None]
+  0x158003618: stur x1, [x21]
+  0x15800361c: stur x10, [x21, #-0x20]
+  0x158003620: add x11, x21, #8
+  0x158003624: stur x11, [x19, #8]
+  0x158003628: mov x11, #0x54b8
+  0x15800362c: movk x11, #0x57, lsl #16
+  0x158003630: movk x11, #0x6000, lsl #32
+  0x158003634: stur x11, [x19]
+  0x158003638: ldr x21, [sp], #0x10
+  0x15800363c: ldr x20, [sp], #0x10
+  0x158003640: ldr x19, [sp], #0x10
+  0x158003644: mov sp, x29
+  0x158003648: ldp x29, x30, [sp], #0x10
+  0x15800364c: mov x0, #0x24
+  0x158003650: ret
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), Some(Local(0)), None, None]
+  # Insn: 0004 opt_mult (stack_size: 2)
+  # guard arg0 fixnum
+  0x158000714: tst x1, #1
+  0x158000718: b.eq #0x158003564
+  0x15800071c: nop
+  # guard arg1 fixnum
+  0x158000720: tst x9, #1
+  0x158000724: b.eq #0x1580035a0
+  0x158000728: nop
+  0x15800072c: asr x11, x1, #1
+  0x158000730: subs x12, x9, #1
+  0x158000734: smulh x16, x11, x12
+  0x158000738: mul x11, x11, x12
+  0x15800073c: asr x17, x11, #0x3f
+  0x158000740: cmp x16, x17
+  0x158000744: b.ne #0x1580035dc
+  0x158000748: nop
+  0x15800074c: adds x11, x11, #1
+  0x158000750: mov x1, x11
+  # Insn: 0006 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x158000754: ldur w11, [x20, #0x20]
+  0x158000758: cbnz w11, #0x158003618
+  # pop stack frame
+  0x15800075c: adds x11, x19, #0x38
+  0x158000760: mov x19, x11
+  0x158000764: stur x19, [x20, #0x10]
+  0x158000768: mov x0, x1
+  0x15800076c: ldur x11, [x19, #-8]
+  0x158000770: br x11
+
+  # branch stub hit
+  0x158003654: str x1, [sp, #-0x10]!
+  0x158003658: str x9, [sp, #-0x10]!
+  0x15800365c: str x10, [sp, #-0x10]!
+  0x158003660: str x14, [sp, #-0x10]!
+  0x158003664: str x15, [sp, #-0x10]!
+  0x158003668: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x15800366c: stur x9, [x21]
+  0x158003670: stur x10, [x21, #8]
+  0x158003674: mov x11, #0xdb30
+  0x158003678: movk x11, #0x1e7, lsl #16
+  0x15800367c: movk x11, #0x6000, lsl #32
+  0x158003680: mov x0, x11
+  0x158003684: mov x1, #0
+  0x158003688: b #0x158002068
+
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, None, Some(Stack(2)), None, None]
+  0x158000774: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, Some(Stack(2)), None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x158000778: mov x9, x0
+  # Insn: 0031 putself (stack_size: 2)
+  # reg_mapping: [None, Some(Stack(1)), None, None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x15800077c: ldur x10, [x19, #0x18]
+  # Insn: 0032 getlocal_WC_0 (stack_size: 3)
+  # defer_compilation
+  0x158000780: b #0x158003654
+
+  # regenerate_branch
+  # update cfp->jit_return
+  0x1580006f0: mov x11, #0x774
+  0x1580006f4: movk x11, #0x5800, lsl #16
+  0x1580006f8: movk x11, #1, lsl #32
+  0x1580006fc: stur x11, [x19, #-8]
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x15800368c: stur x9, [x21]
+  0x158003690: stur x10, [x21, #8]
+  0x158003694: add x11, x21, #0x10
+  0x158003698: stur x11, [x19, #8]
+  0x15800369c: mov x11, #0x31b8
+  0x1580036a0: movk x11, #0x24f2, lsl #16
+  0x1580036a4: movk x11, #1, lsl #32
+  0x1580036a8: stur x11, [x19]
+  0x1580036ac: ldr x21, [sp], #0x10
+  0x1580036b0: ldr x20, [sp], #0x10
+  0x1580036b4: ldr x19, [sp], #0x10
+  0x1580036b8: mov sp, x29
+  0x1580036bc: ldp x29, x30, [sp], #0x10
+  0x1580036c0: mov x0, #0x24
+  0x1580036c4: ret
+
+  # branch stub hit
+  0x1580036c8: str x1, [sp, #-0x10]!
+  0x1580036cc: str x9, [sp, #-0x10]!
+  0x1580036d0: str x10, [sp, #-0x10]!
+  0x1580036d4: str x14, [sp, #-0x10]!
+  0x1580036d8: str x15, [sp, #-0x10]!
+  0x1580036dc: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None] -> [None, None, None, None, None]
+  0x1580036e0: stur x9, [x21]
+  0x1580036e4: stur x10, [x21, #8]
+  0x1580036e8: stur x14, [x21, #0x10]
+  0x1580036ec: mov x11, #0xdb00
+  0x1580036f0: movk x11, #0x1e7, lsl #16
+  0x1580036f4: movk x11, #0x6000, lsl #32
+  0x1580036f8: mov x0, x11
+  0x1580036fc: mov x1, #0
+  0x158003700: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  # Insn: 0032 getlocal_WC_0 (stack_size: 3)
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None]
+  0x158000780: ldur x14, [x21, #-0x28]
+  # Insn: 0034 opt_send_without_block (stack_size: 4)
+  # defer_compilation
+  0x158000784: b #0x1580036c8
+
+  # branch stub hit
+  0x158003704: str x1, [sp, #-0x10]!
+  0x158003708: str x9, [sp, #-0x10]!
+  0x15800370c: str x10, [sp, #-0x10]!
+  0x158003710: str x14, [sp, #-0x10]!
+  0x158003714: str x15, [sp, #-0x10]!
+  0x158003718: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None] -> [None, None, None, None, None]
+  0x15800371c: stur x9, [x21]
+  0x158003720: stur x10, [x21, #8]
+  0x158003724: stur x14, [x21, #0x10]
+  0x158003728: mov x11, #0xdc50
+  0x15800372c: movk x11, #0x1e7, lsl #16
+  0x158003730: movk x11, #0x6000, lsl #32
+  0x158003734: mov x0, x11
+  0x158003738: mov x1, #0
+  0x15800373c: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None] -> [None, None, None, None, None]
+  0x158003740: stur x9, [x21]
+  0x158003744: stur x10, [x21, #8]
+  0x158003748: stur x14, [x21, #0x10]
+  0x15800374c: add x11, x21, #0x18
+  0x158003750: stur x11, [x19, #8]
+  0x158003754: mov x11, #0x31c8
+  0x158003758: movk x11, #0x24f2, lsl #16
+  0x15800375c: movk x11, #1, lsl #32
+  0x158003760: stur x11, [x19]
+  0x158003764: ldr x21, [sp], #0x10
+  0x158003768: ldr x20, [sp], #0x10
+  0x15800376c: ldr x19, [sp], #0x10
+  0x158003770: mov sp, x29
+  0x158003774: ldp x29, x30, [sp], #0x10
+  0x158003778: mov x0, #0x24
+  0x15800377c: ret
+
+  # branch stub hit
+  0x158003780: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, None, Some(Stack(3)), None] -> [None, None, Some(Stack(2)), Some(Stack(3)), None]
+  0x158003784: mov x10, x0
+  0x158003788: str x1, [sp, #-0x10]!
+  0x15800378c: str x9, [sp, #-0x10]!
+  0x158003790: str x10, [sp, #-0x10]!
+  0x158003794: str x14, [sp, #-0x10]!
+  0x158003798: str x15, [sp, #-0x10]!
+  0x15800379c: str x0, [sp, #-0x10]!
+  # reg_mapping: [None, None, Some(Stack(2)), Some(Stack(3)), None] -> [None, None, Some(Stack(2)), None, None]
+  # spill_regs: [None, None, Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x1580037a0: stur x10, [x21]
+  0x1580037a4: mov x11, #0xdc80
+  0x1580037a8: movk x11, #0x1e7, lsl #16
+  0x1580037ac: movk x11, #0x6000, lsl #32
+  0x1580037b0: mov x0, x11
+  0x1580037b4: mov x1, #0
+  0x1580037b8: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None]
+  # Insn: 0034 opt_send_without_block (stack_size: 4)
+  # call to Object#sq
+  # guard known object with singleton class
+  0x158000784: ldr x11, #0x15800078c
+  0x158000788: b #0x158000794
+  0x15800078c: .byte 0xa0, 0x00, 0xe7, 0x00
+  0x158000790: udf #1
+  0x158000794: cmp x10, x11
+  0x158000798: b.ne #0x158003704
+  0x15800079c: nop
+  # stack overflow check
+  0x1580007a0: add x11, x21, #0xa0
+  0x1580007a4: cmp x19, x11
+  0x1580007a8: b.ls #0x158003740
+  # store caller sp
+  0x1580007ac: add x11, x21, #8
+  0x1580007b0: stur x11, [x19, #8]
+  # save PC to CFP
+  0x1580007b4: mov x11, #0x31d8
+  0x1580007b8: movk x11, #0x24f2, lsl #16
+  0x1580007bc: movk x11, #1, lsl #32
+  0x1580007c0: stur x11, [x19]
+  0x1580007c4: add x11, x21, #0x30
+  # push cme, specval, frame type
+  0x1580007c8: ldr x12, #0x1580007d0
+  0x1580007cc: b #0x1580007d8
+  0x1580007d0: ldr s16, #0x157fa7fc0
+  0x1580007d4: udf #1
+  0x1580007d8: stur x12, [x11, #-0x18]
+  0x1580007dc: stur xzr, [x11, #-0x10]
+  0x1580007e0: mov x12, #3
+  0x1580007e4: movk x12, #0x1111, lsl #16
+  0x1580007e8: stur x12, [x11, #-8]
+  # push callee control frame
+  0x1580007ec: stur x11, [x19, #-0x30]
+  0x1580007f0: ldr x12, #0x1580007f8
+  0x1580007f4: b #0x158000800
+  0x1580007f8: .byte 0x60, 0x9e, 0xfb, 0x00
+  0x1580007fc: udf #1
+  0x158000800: stur x12, [x19, #-0x28]
+  0x158000804: stur x10, [x19, #-0x20]
+  0x158000808: stur xzr, [x19, #-0x10]
+  0x15800080c: subs x12, x11, #8
+  0x158000810: stur x12, [x19, #-0x18]
+  # local maps: [None, None, None, Some(Local(0)), None]
+  # spill_regs: [None, Some(Stack(1)), Some(Stack(2)), Some(Stack(3)), None] -> [None, None, None, Some(Stack(3)), None]
+  0x158000814: stur x9, [x21]
+  0x158000818: stur x10, [x21, #8]
+  0x15800081c: mov x21, x11
+  # clear local variable types
+  # update cfp->jit_return
+  0x158000820: mov x11, #0x3780
+  0x158000824: movk x11, #0x5800, lsl #16
+  0x158000828: movk x11, #1, lsl #32
+  0x15800082c: stur x11, [x19, #-8]
+  # switch to new CFP
+  0x158000830: subs x11, x19, #0x38
+  0x158000834: mov x19, x11
+  0x158000838: stur x19, [x20, #0x10]
+
+  # branch stub hit
+  0x1580037bc: str x1, [sp, #-0x10]!
+  0x1580037c0: str x9, [sp, #-0x10]!
+  0x1580037c4: str x10, [sp, #-0x10]!
+  0x1580037c8: str x14, [sp, #-0x10]!
+  0x1580037cc: str x15, [sp, #-0x10]!
+  0x1580037d0: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580037d4: stur x14, [x21, #-0x20]
+  0x1580037d8: mov x11, #0xdd70
+  0x1580037dc: movk x11, #0x1e7, lsl #16
+  0x1580037e0: movk x11, #0x6000, lsl #32
+  0x1580037e4: mov x0, x11
+  0x1580037e8: mov x1, #0
+  0x1580037ec: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, None, Some(Local(0)), None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x15800083c: b #0x1580037bc
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, None, None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580037f0: stur x14, [x21, #-0x20]
+  0x1580037f4: mov x11, #0x5488
+  0x1580037f8: movk x11, #0x57, lsl #16
+  0x1580037fc: movk x11, #0x6000, lsl #32
+  0x158003800: stur x11, [x19]
+  0x158003804: ldr x21, [sp], #0x10
+  0x158003808: ldr x20, [sp], #0x10
+  0x15800380c: ldr x19, [sp], #0x10
+  0x158003810: mov sp, x29
+  0x158003814: ldp x29, x30, [sp], #0x10
+  0x158003818: mov x0, #0x24
+  0x15800381c: ret
+
+  # branch stub hit
+  0x158003820: str x1, [sp, #-0x10]!
+  0x158003824: str x9, [sp, #-0x10]!
+  0x158003828: str x10, [sp, #-0x10]!
+  0x15800382c: str x14, [sp, #-0x10]!
+  0x158003830: str x15, [sp, #-0x10]!
+  0x158003834: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x158003838: stur x1, [x21]
+  0x15800383c: stur x14, [x21, #-0x20]
+  0x158003840: mov x11, #0xde00
+  0x158003844: movk x11, #0x1e7, lsl #16
+  0x158003848: movk x11, #0x6000, lsl #32
+  0x15800384c: mov x0, x11
+  0x158003850: mov x1, #0
+  0x158003854: b #0x158002068
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, None, Some(Local(0)), None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, Some(Local(0)), None] -> [Some(Stack(0)), None, None, Some(Local(0)), None]
+  0x15800083c: mov x1, x14
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000840: b #0x158003820
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x158003858: stur x1, [x21]
+  0x15800385c: stur x14, [x21, #-0x20]
+  0x158003860: add x11, x21, #8
+  0x158003864: stur x11, [x19, #8]
+  0x158003868: mov x11, #0x5498
+  0x15800386c: movk x11, #0x57, lsl #16
+  0x158003870: movk x11, #0x6000, lsl #32
+  0x158003874: stur x11, [x19]
+  0x158003878: ldr x21, [sp], #0x10
+  0x15800387c: ldr x20, [sp], #0x10
+  0x158003880: ldr x19, [sp], #0x10
+  0x158003884: mov sp, x29
+  0x158003888: ldp x29, x30, [sp], #0x10
+  0x15800388c: mov x0, #0x24
+  0x158003890: ret
+
+  # branch stub hit
+  0x158003894: str x1, [sp, #-0x10]!
+  0x158003898: str x9, [sp, #-0x10]!
+  0x15800389c: str x10, [sp, #-0x10]!
+  0x1580038a0: str x14, [sp, #-0x10]!
+  0x1580038a4: str x15, [sp, #-0x10]!
+  0x1580038a8: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580038ac: stur x1, [x21]
+  0x1580038b0: stur x9, [x21, #8]
+  0x1580038b4: stur x14, [x21, #-0x20]
+  0x1580038b8: mov x11, #0xde90
+  0x1580038bc: movk x11, #0x1e7, lsl #16
+  0x1580038c0: movk x11, #0x6000, lsl #32
+  0x1580038c4: mov x0, x11
+  0x1580038c8: mov x1, #0
+  0x1580038cc: b #0x158002068
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [Some(Stack(0)), None, None, Some(Local(0)), None]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, Some(Local(0)), None] -> [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None]
+  0x158000840: mov x9, x14
+  # Insn: 0004 opt_mult (stack_size: 2)
+  # defer_compilation
+  0x158000844: b #0x158003894
+
+  # exit to interpreter on opt_mult
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580038d0: stur x1, [x21]
+  0x1580038d4: stur x9, [x21, #8]
+  0x1580038d8: stur x14, [x21, #-0x20]
+  0x1580038dc: add x11, x21, #0x10
+  0x1580038e0: stur x11, [x19, #8]
+  0x1580038e4: mov x11, #0x54a8
+  0x1580038e8: movk x11, #0x57, lsl #16
+  0x1580038ec: movk x11, #0x6000, lsl #32
+  0x1580038f0: stur x11, [x19]
+  0x1580038f4: ldr x21, [sp], #0x10
+  0x1580038f8: ldr x20, [sp], #0x10
+  0x1580038fc: ldr x19, [sp], #0x10
+  0x158003900: mov sp, x29
+  0x158003904: ldp x29, x30, [sp], #0x10
+  0x158003908: mov x0, #0x24
+  0x15800390c: ret
+
+  # branch stub hit
+  0x158003910: str x1, [sp, #-0x10]!
+  0x158003914: str x9, [sp, #-0x10]!
+  0x158003918: str x10, [sp, #-0x10]!
+  0x15800391c: str x14, [sp, #-0x10]!
+  0x158003920: str x15, [sp, #-0x10]!
+  0x158003924: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x158003928: stur x1, [x21]
+  0x15800392c: stur x9, [x21, #8]
+  0x158003930: stur x14, [x21, #-0x20]
+  0x158003934: mov x11, #0xd890
+  0x158003938: movk x11, #0x1e7, lsl #16
+  0x15800393c: movk x11, #0x6000, lsl #32
+  0x158003940: mov x0, x11
+  0x158003944: mov x1, #0
+  0x158003948: b #0x158002068
+
+  # branch stub hit
+  0x15800394c: str x1, [sp, #-0x10]!
+  0x158003950: str x9, [sp, #-0x10]!
+  0x158003954: str x10, [sp, #-0x10]!
+  0x158003958: str x14, [sp, #-0x10]!
+  0x15800395c: str x15, [sp, #-0x10]!
+  0x158003960: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x158003964: stur x1, [x21]
+  0x158003968: stur x9, [x21, #8]
+  0x15800396c: stur x14, [x21, #-0x20]
+  0x158003970: mov x11, #0xda10
+  0x158003974: movk x11, #0x1e7, lsl #16
+  0x158003978: movk x11, #0x6000, lsl #32
+  0x15800397c: mov x0, x11
+  0x158003980: mov x1, #0
+  0x158003984: b #0x158002068
+
+  # branch stub hit
+  0x158003988: str x1, [sp, #-0x10]!
+  0x15800398c: str x9, [sp, #-0x10]!
+  0x158003990: str x10, [sp, #-0x10]!
+  0x158003994: str x14, [sp, #-0x10]!
+  0x158003998: str x15, [sp, #-0x10]!
+  0x15800399c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580039a0: stur x1, [x21]
+  0x1580039a4: stur x9, [x21, #8]
+  0x1580039a8: stur x14, [x21, #-0x20]
+  0x1580039ac: mov x11, #0xdda0
+  0x1580039b0: movk x11, #0x1e7, lsl #16
+  0x1580039b4: movk x11, #0x6000, lsl #32
+  0x1580039b8: mov x0, x11
+  0x1580039bc: mov x1, #0
+  0x1580039c0: b #0x158002068
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, None, Some(Local(0)), None] -> [None, None, None, None, None]
+  0x1580039c4: stur x1, [x21]
+  0x1580039c8: stur x14, [x21, #-0x20]
+  0x1580039cc: add x11, x21, #8
+  0x1580039d0: stur x11, [x19, #8]
+  0x1580039d4: mov x11, #0x54b8
+  0x1580039d8: movk x11, #0x57, lsl #16
+  0x1580039dc: movk x11, #0x6000, lsl #32
+  0x1580039e0: stur x11, [x19]
+  0x1580039e4: ldr x21, [sp], #0x10
+  0x1580039e8: ldr x20, [sp], #0x10
+  0x1580039ec: ldr x19, [sp], #0x10
+  0x1580039f0: mov sp, x29
+  0x1580039f4: ldp x29, x30, [sp], #0x10
+  0x1580039f8: mov x0, #0x24
+  0x1580039fc: ret
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [Some(Stack(0)), Some(Stack(1)), None, Some(Local(0)), None]
+  # Insn: 0004 opt_mult (stack_size: 2)
+  # guard arg0 fixnum
+  0x158000844: tst x1, #1
+  0x158000848: b.eq #0x158003910
+  0x15800084c: nop
+  # guard arg1 fixnum
+  0x158000850: tst x9, #1
+  0x158000854: b.eq #0x15800394c
+  0x158000858: nop
+  0x15800085c: asr x11, x1, #1
+  0x158000860: subs x12, x9, #1
+  0x158000864: smulh x16, x11, x12
+  0x158000868: mul x11, x11, x12
+  0x15800086c: asr x17, x11, #0x3f
+  0x158000870: cmp x16, x17
+  0x158000874: b.ne #0x158003988
+  0x158000878: nop
+  0x15800087c: adds x11, x11, #1
+  0x158000880: mov x1, x11
+  # Insn: 0006 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x158000884: ldur w11, [x20, #0x20]
+  0x158000888: cbnz w11, #0x1580039c4
+  # pop stack frame
+  0x15800088c: adds x11, x19, #0x38
+  0x158000890: mov x19, x11
+  0x158000894: stur x19, [x20, #0x10]
+  0x158000898: mov x0, x1
+  0x15800089c: ldur x11, [x19, #-8]
+  0x1580008a0: br x11
+
+  # exit to interpreter on opt_plus
+  0x158003a00: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, None, Some(Stack(3)), None] -> [None, None, Some(Stack(2)), Some(Stack(3)), None]
+  0x158003a04: mov x10, x0
+  # reg_mapping: [None, None, Some(Stack(2)), Some(Stack(3)), None] -> [None, None, Some(Stack(2)), None, None]
+  # spill_regs: [None, None, Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003a08: stur x10, [x21]
+  0x158003a0c: add x11, x21, #8
+  0x158003a10: stur x11, [x19, #8]
+  0x158003a14: mov x11, #0x31d8
+  0x158003a18: movk x11, #0x24f2, lsl #16
+  0x158003a1c: movk x11, #1, lsl #32
+  0x158003a20: stur x11, [x19]
+  0x158003a24: ldr x21, [sp], #0x10
+  0x158003a28: ldr x20, [sp], #0x10
+  0x158003a2c: ldr x19, [sp], #0x10
+  0x158003a30: mov sp, x29
+  0x158003a34: ldp x29, x30, [sp], #0x10
+  0x158003a38: mov x0, #0x24
+  0x158003a3c: ret
+
+  # branch stub hit
+  0x158003a40: str x1, [sp, #-0x10]!
+  0x158003a44: str x9, [sp, #-0x10]!
+  0x158003a48: str x10, [sp, #-0x10]!
+  0x158003a4c: str x14, [sp, #-0x10]!
+  0x158003a50: str x15, [sp, #-0x10]!
+  0x158003a54: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003a58: stur x10, [x21]
+  0x158003a5c: mov x11, #0xdf80
+  0x158003a60: movk x11, #0x1e7, lsl #16
+  0x158003a64: movk x11, #0x6000, lsl #32
+  0x158003a68: mov x0, x11
+  0x158003a6c: mov x1, #0
+  0x158003a70: b #0x158002068
+
+  # branch stub hit
+  0x158003a74: str x1, [sp, #-0x10]!
+  0x158003a78: str x9, [sp, #-0x10]!
+  0x158003a7c: str x10, [sp, #-0x10]!
+  0x158003a80: str x14, [sp, #-0x10]!
+  0x158003a84: str x15, [sp, #-0x10]!
+  0x158003a88: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003a8c: stur x10, [x21]
+  0x158003a90: mov x11, #0xdfb0
+  0x158003a94: movk x11, #0x1e7, lsl #16
+  0x158003a98: movk x11, #0x6000, lsl #32
+  0x158003a9c: mov x0, x11
+  0x158003aa0: mov x1, #0
+  0x158003aa4: b #0x158002068
+
+  # branch stub hit
+  0x158003aa8: str x1, [sp, #-0x10]!
+  0x158003aac: str x9, [sp, #-0x10]!
+  0x158003ab0: str x10, [sp, #-0x10]!
+  0x158003ab4: str x14, [sp, #-0x10]!
+  0x158003ab8: str x15, [sp, #-0x10]!
+  0x158003abc: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x158003ac0: stur x9, [x21, #-8]
+  0x158003ac4: mov x11, #0xdfe0
+  0x158003ac8: movk x11, #0x1e7, lsl #16
+  0x158003acc: movk x11, #0x6000, lsl #32
+  0x158003ad0: mov x0, x11
+  0x158003ad4: mov x1, #0
+  0x158003ad8: b #0x158002068
+
+  # exit to interpreter on opt_plus
+  # spill_regs: [None, None, Some(Stack(2)), None, None] -> [None, None, None, None, None]
+  0x158003adc: stur x10, [x21]
+  0x158003ae0: add x11, x21, #8
+  0x158003ae4: stur x11, [x19, #8]
+  0x158003ae8: mov x11, #0x31d8
+  0x158003aec: movk x11, #0x24f2, lsl #16
+  0x158003af0: movk x11, #1, lsl #32
+  0x158003af4: stur x11, [x19]
+  0x158003af8: ldr x21, [sp], #0x10
+  0x158003afc: ldr x20, [sp], #0x10
+  0x158003b00: ldr x19, [sp], #0x10
+  0x158003b04: mov sp, x29
+  0x158003b08: ldp x29, x30, [sp], #0x10
+  0x158003b0c: mov x0, #0x24
+  0x158003b10: ret
+
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, None, None, Some(Stack(3)), None]
+  0x1580008a4: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, None, Some(Stack(3)), None] -> [None, None, Some(Stack(2)), Some(Stack(3)), None]
+  0x1580008a8: mov x10, x0
+  # Insn: 0036 opt_plus (stack_size: 3)
+  # guard arg0 fixnum
+  0x1580008ac: ldur x11, [x21, #-8]
+  0x1580008b0: tst x11, #1
+  0x1580008b4: b.eq #0x158003a40
+  0x1580008b8: nop
+  # guard arg1 fixnum
+  0x1580008bc: tst x10, #1
+  0x1580008c0: b.eq #0x158003a74
+  0x1580008c4: nop
+  0x1580008c8: ldur x11, [x21, #-8]
+  0x1580008cc: subs x11, x11, #1
+  0x1580008d0: adds x11, x11, x10
+  0x1580008d4: b.vs #0x158003adc
+  # reg_mapping: [None, None, Some(Stack(2)), None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x1580008d8: mov x9, x11
+  # Insn: 0038 opt_send_without_block (stack_size: 2)
+  # defer_compilation
+  0x1580008dc: b #0x158003aa8
+
+  # regenerate_branch
+  # update cfp->jit_return
+  0x158000820: mov x11, #0x8a4
+  0x158000824: movk x11, #0x5800, lsl #16
+  0x158000828: movk x11, #1, lsl #32
+  0x15800082c: stur x11, [x19, #-8]
+
+  # branch stub hit
+  0x158003b14: str x1, [sp, #-0x10]!
+  0x158003b18: str x9, [sp, #-0x10]!
+  0x158003b1c: str x10, [sp, #-0x10]!
+  0x158003b20: str x14, [sp, #-0x10]!
+  0x158003b24: str x15, [sp, #-0x10]!
+  0x158003b28: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x158003b2c: stur x9, [x21, #-8]
+  0x158003b30: mov x11, #0xe0d0
+  0x158003b34: movk x11, #0x1e7, lsl #16
+  0x158003b38: movk x11, #0x6000, lsl #32
+  0x158003b3c: mov x0, x11
+  0x158003b40: mov x1, #0
+  0x158003b44: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x158003b48: stur x9, [x21, #-8]
+  0x158003b4c: mov x11, #0x31e8
+  0x158003b50: movk x11, #0x24f2, lsl #16
+  0x158003b54: movk x11, #1, lsl #32
+  0x158003b58: stur x11, [x19]
+  0x158003b5c: ldr x21, [sp], #0x10
+  0x158003b60: ldr x20, [sp], #0x10
+  0x158003b64: ldr x19, [sp], #0x10
+  0x158003b68: mov sp, x29
+  0x158003b6c: ldp x29, x30, [sp], #0x10
+  0x158003b70: mov x0, #0x24
+  0x158003b74: ret
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, Some(Stack(1)), None, None, None]
+  # Insn: 0038 opt_send_without_block (stack_size: 2)
+  # call to Module#sqrt
+  # guard known object with singleton class
+  0x1580008dc: ldr x11, #0x1580008e4
+  0x1580008e0: b #0x1580008ec
+  0x1580008e4: .byte 0xe0, 0x1d, 0xec, 0x00
+  0x1580008e8: udf #1
+  0x1580008ec: ldur x12, [x21, #-0x10]
+  0x1580008f0: cmp x12, x11
+  0x1580008f4: b.ne #0x158003b14
+  0x1580008f8: nop
+  # RUBY_VM_CHECK_INTS(ec)
+  0x1580008fc: ldur w11, [x20, #0x20]
+  0x158000900: cbnz w11, #0x158003b48
+  # stack overflow check
+  0x158000904: add x11, x21, #0x90
+  0x158000908: cmp x19, x11
+  0x15800090c: b.ls #0x158003b48
+  # save PC to CFP
+  0x158000910: mov x11, #0x31f8
+  0x158000914: movk x11, #0x24f2, lsl #16
+  0x158000918: movk x11, #1, lsl #32
+  0x15800091c: stur x11, [x19]
+  0x158000920: add x11, x21, #0x18
+  # push cme, specval, frame type
+  0x158000924: ldr x12, #0x15800092c
+  0x158000928: b #0x158000934
+  0x15800092c: .byte 0x78, 0x20, 0xed, 0x00
+  0x158000930: udf #1
+  0x158000934: stur x12, [x11, #-0x18]
+  0x158000938: stur xzr, [x11, #-0x10]
+  0x15800093c: mov x12, #0x83
+  0x158000940: movk x12, #0x5555, lsl #16
+  0x158000944: stur x12, [x11, #-8]
+  # push callee control frame
+  0x158000948: mov x12, #0xffff
+  0x15800094c: movk x12, #0xffff, lsl #16
+  0x158000950: movk x12, #0xffff, lsl #32
+  0x158000954: movk x12, #0xffff, lsl #48
+  0x158000958: stur x12, [x19, #-0x38]
+  0x15800095c: stur x11, [x19, #-0x30]
+  0x158000960: stur xzr, [x19, #-0x28]
+  0x158000964: ldur x12, [x21, #-0x10]
+  0x158000968: stur x12, [x19, #-0x20]
+  0x15800096c: stur xzr, [x19, #-0x10]
+  0x158000970: subs x11, x11, #8
+  0x158000974: stur x11, [x19, #-0x18]
+  # set ec->cfp
+  0x158000978: sub x11, x19, #0x38
+  0x15800097c: stur x11, [x20, #0x10]
+  # save SP to CFP
+  0x158000980: sub x11, x21, #0x10
+  0x158000984: mov x21, x11
+  0x158000988: stur x21, [x19, #8]
+  # call C function
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x15800098c: stur x9, [x21, #8]
+  0x158000990: mov x1, x9
+  0x158000994: ldur x0, [x21]
+  0x158000998: mov x16, #0x89e0
+  0x15800099c: movk x16, #0x269, lsl #16
+  0x1580009a0: movk x16, #1, lsl #32
+  0x1580009a4: blr x16
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x1580009a8: mov x1, x0
+  0x1580009ac: stur x19, [x20, #0x10]
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003b78: stur x1, [x21]
+  0x158003b7c: add x11, x21, #8
+  0x158003b80: stur x11, [x19, #8]
+  0x158003b84: mov x11, #0x31f8
+  0x158003b88: movk x11, #0x24f2, lsl #16
+  0x158003b8c: movk x11, #1, lsl #32
+  0x158003b90: stur x11, [x19]
+  0x158003b94: ldr x21, [sp], #0x10
+  0x158003b98: ldr x20, [sp], #0x10
+  0x158003b9c: ldr x19, [sp], #0x10
+  0x158003ba0: mov sp, x29
+  0x158003ba4: ldp x29, x30, [sp], #0x10
+  0x158003ba8: mov x0, #0x24
+  0x158003bac: ret
+
+  # clear local variable types
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:12 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0040 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x1580009b0: ldur w11, [x20, #0x20]
+  0x1580009b4: cbnz w11, #0x158003b78
+  # pop stack frame
+  0x1580009b8: adds x11, x19, #0x38
+  0x1580009bc: mov x19, x11
+  0x1580009c0: stur x19, [x20, #0x10]
+  0x1580009c4: mov x0, x1
+  0x1580009c8: ldur x11, [x19, #-8]
+  0x1580009cc: br x11
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003bb0: stur x1, [x21]
+  0x158003bb4: add x11, x21, #8
+  0x158003bb8: stur x11, [x19, #8]
+  0x158003bbc: mov x11, #0xad40
+  0x158003bc0: movk x11, #0x331, lsl #16
+  0x158003bc4: movk x11, #0x6000, lsl #32
+  0x158003bc8: stur x11, [x19]
+  0x158003bcc: ldr x21, [sp], #0x10
+  0x158003bd0: ldr x20, [sp], #0x10
+  0x158003bd4: ldr x19, [sp], #0x10
+  0x158003bd8: mov sp, x29
+  0x158003bdc: ldp x29, x30, [sp], #0x10
+  0x158003be0: mov x0, #0x24
+  0x158003be4: ret
+
+  # Block: block in <main>@distance_sq.rb:16 
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x1580009d0: ldur x21, [x19, #8]
+  # reg_mapping: [None, Some(Stack(1)), Some(Stack(2)), None, None] -> [Some(Stack(0)), Some(Stack(1)), Some(Stack(2)), None, None]
+  0x1580009d4: mov x1, x0
+  # Insn: 0007 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x1580009d8: ldur w11, [x20, #0x20]
+  0x1580009dc: cbnz w11, #0x158003bb0
+  # pop stack frame
+  0x1580009e0: adds x11, x19, #0x38
+  0x1580009e4: mov x19, x11
+  0x1580009e8: stur x19, [x20, #0x10]
+  0x1580009ec: mov x0, x1
+  0x1580009f0: ldur x11, [x19, #-8]
+  0x1580009f4: br x11
+
+  # regenerate_branch
+  # update cfp->jit_return
+  0x158000440: mov x11, #0x9d0
+  0x158000444: movk x11, #0x5800, lsl #16
+  0x158000448: movk x11, #1, lsl #32
+  0x15800044c: stur x11, [x19, #-8]
+
+  # exit to interpreter on getlocal_WC_0
+  0x158003be8: sub x11, x21, #8
+  0x158003bec: stur x11, [x19, #8]
+  0x158003bf0: mov x11, #0xbca0
+  0x158003bf4: movk x11, #0x2712, lsl #16
+  0x158003bf8: movk x11, #1, lsl #32
+  0x158003bfc: stur x11, [x19]
+  0x158003c00: ldr x21, [sp], #0x10
+  0x158003c04: ldr x20, [sp], #0x10
+  0x158003c08: ldr x19, [sp], #0x10
+  0x158003c0c: mov sp, x29
+  0x158003c10: ldp x29, x30, [sp], #0x10
+  0x158003c14: mov x0, #0x24
+  0x158003c18: ret
+
+  # branch stub hit
+  0x158003c1c: str x1, [sp, #-0x10]!
+  0x158003c20: str x9, [sp, #-0x10]!
+  0x158003c24: str x10, [sp, #-0x10]!
+  0x158003c28: str x14, [sp, #-0x10]!
+  0x158003c2c: str x15, [sp, #-0x10]!
+  0x158003c30: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003c34: stur x1, [x21, #-8]
+  0x158003c38: mov x11, #0x1020
+  0x158003c3c: movk x11, #0x1e7, lsl #16
+  0x158003c40: movk x11, #0x6000, lsl #32
+  0x158003c44: mov x0, x11
+  0x158003c48: mov x1, #0
+  0x158003c4c: b #0x158002068
+
+  # Block: times@<internal:numeric>:263 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0025 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x1580009f8: ldur x1, [x21, #-0x28]
+  # Insn: 0027 opt_succ (stack_size: 1)
+  # defer_compilation
+  0x1580009fc: b #0x158003c1c
+
+  # regenerate_branch
+  0x158000340: b #0x1580009f8
+
+  # branch stub hit
+  0x158003c50: str x1, [sp, #-0x10]!
+  0x158003c54: str x9, [sp, #-0x10]!
+  0x158003c58: str x10, [sp, #-0x10]!
+  0x158003c5c: str x14, [sp, #-0x10]!
+  0x158003c60: str x15, [sp, #-0x10]!
+  0x158003c64: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003c68: stur x1, [x21, #-8]
+  0x158003c6c: mov x11, #0x1110
+  0x158003c70: movk x11, #0x1e7, lsl #16
+  0x158003c74: movk x11, #0x6000, lsl #32
+  0x158003c78: mov x0, x11
+  0x158003c7c: mov x1, #0
+  0x158003c80: b #0x158002068
+
+  # exit to interpreter on opt_succ
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003c84: stur x1, [x21, #-8]
+  0x158003c88: mov x11, #0xbcb0
+  0x158003c8c: movk x11, #0x2712, lsl #16
+  0x158003c90: movk x11, #1, lsl #32
+  0x158003c94: stur x11, [x19]
+  0x158003c98: ldr x21, [sp], #0x10
+  0x158003c9c: ldr x20, [sp], #0x10
+  0x158003ca0: ldr x19, [sp], #0x10
+  0x158003ca4: mov sp, x29
+  0x158003ca8: ldp x29, x30, [sp], #0x10
+  0x158003cac: mov x0, #0x24
+  0x158003cb0: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:263 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0027 opt_succ (stack_size: 1)
+  # call to Integer#succ
+  # guard object is fixnum
+  0x1580009fc: tst x1, #1
+  0x158000a00: b.eq #0x158003c50
+  0x158000a04: nop
+  # Integer#succ
+  0x158000a08: adds x11, x1, #2
+  0x158000a0c: b.vs #0x158003c84
+  0x158000a10: mov x1, x11
+
+  # branch stub hit
+  0x158003cb4: str x1, [sp, #-0x10]!
+  0x158003cb8: str x9, [sp, #-0x10]!
+  0x158003cbc: str x10, [sp, #-0x10]!
+  0x158003cc0: str x14, [sp, #-0x10]!
+  0x158003cc4: str x15, [sp, #-0x10]!
+  0x158003cc8: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003ccc: stur x1, [x21, #-8]
+  0x158003cd0: mov x11, #0x1200
+  0x158003cd4: movk x11, #0x1e7, lsl #16
+  0x158003cd8: movk x11, #0x6000, lsl #32
+  0x158003cdc: mov x0, x11
+  0x158003ce0: mov x1, #0
+  0x158003ce4: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: times@<internal:numeric>:263 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0029 setlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x158000a14: b #0x158003cb4
+
+  # exit to interpreter on setlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003ce8: stur x1, [x21, #-8]
+  0x158003cec: mov x11, #0xbcc0
+  0x158003cf0: movk x11, #0x2712, lsl #16
+  0x158003cf4: movk x11, #1, lsl #32
+  0x158003cf8: stur x11, [x19]
+  0x158003cfc: ldr x21, [sp], #0x10
+  0x158003d00: ldr x20, [sp], #0x10
+  0x158003d04: ldr x19, [sp], #0x10
+  0x158003d08: mov sp, x29
+  0x158003d0c: ldp x29, x30, [sp], #0x10
+  0x158003d10: mov x0, #0x24
+  0x158003d14: ret
+
+  # branch stub hit
+  0x158003d18: str x1, [sp, #-0x10]!
+  0x158003d1c: str x9, [sp, #-0x10]!
+  0x158003d20: str x10, [sp, #-0x10]!
+  0x158003d24: str x14, [sp, #-0x10]!
+  0x158003d28: str x15, [sp, #-0x10]!
+  0x158003d2c: str x0, [sp, #-0x10]!
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003d30: stur x15, [x21, #-0x28]
+  0x158003d34: mov x11, #0x1290
+  0x158003d38: movk x11, #0x1e7, lsl #16
+  0x158003d3c: movk x11, #0x6000, lsl #32
+  0x158003d40: mov x0, x11
+  0x158003d44: mov x1, #0
+  0x158003d48: b #0x158002068
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:263 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0029 setlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158000a14: mov x15, x1
+  # Insn: 0031 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x158000a18: b #0x158003d18
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003d4c: stur x15, [x21, #-0x28]
+  0x158003d50: sub x11, x21, #8
+  0x158003d54: stur x11, [x19, #8]
+  0x158003d58: mov x11, #0xbcd0
+  0x158003d5c: movk x11, #0x2712, lsl #16
+  0x158003d60: movk x11, #1, lsl #32
+  0x158003d64: stur x11, [x19]
+  0x158003d68: ldr x21, [sp], #0x10
+  0x158003d6c: ldr x20, [sp], #0x10
+  0x158003d70: ldr x19, [sp], #0x10
+  0x158003d74: mov sp, x29
+  0x158003d78: ldp x29, x30, [sp], #0x10
+  0x158003d7c: mov x0, #0x24
+  0x158003d80: ret
+
+  # branch stub hit
+  0x158003d84: str x1, [sp, #-0x10]!
+  0x158003d88: str x9, [sp, #-0x10]!
+  0x158003d8c: str x10, [sp, #-0x10]!
+  0x158003d90: str x14, [sp, #-0x10]!
+  0x158003d94: str x15, [sp, #-0x10]!
+  0x158003d98: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003d9c: stur x15, [x21, #-0x28]
+  0x158003da0: mov x11, #0x13b0
+  0x158003da4: movk x11, #0x1e7, lsl #16
+  0x158003da8: movk x11, #0x6000, lsl #32
+  0x158003dac: mov x0, x11
+  0x158003db0: mov x1, #0
+  0x158003db4: b #0x158002068
+
+  # branch stub hit
+  0x158003db8: str x1, [sp, #-0x10]!
+  0x158003dbc: str x9, [sp, #-0x10]!
+  0x158003dc0: str x10, [sp, #-0x10]!
+  0x158003dc4: str x14, [sp, #-0x10]!
+  0x158003dc8: str x15, [sp, #-0x10]!
+  0x158003dcc: str x0, [sp, #-0x10]!
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003dd0: stur x15, [x21, #-0x28]
+  0x158003dd4: mov x11, #0x13b0
+  0x158003dd8: movk x11, #0x1e7, lsl #16
+  0x158003ddc: movk x11, #0x6000, lsl #32
+  0x158003de0: mov x0, x11
+  0x158003de4: mov x1, #1
+  0x158003de8: b #0x158002068
+
+  # exit to interpreter on branchif
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003dec: stur x1, [x21, #-8]
+  0x158003df0: stur x15, [x21, #-0x28]
+  0x158003df4: mov x11, #0xbcf8
+  0x158003df8: movk x11, #0x2712, lsl #16
+  0x158003dfc: movk x11, #1, lsl #32
+  0x158003e00: stur x11, [x19]
+  0x158003e04: ldr x21, [sp], #0x10
+  0x158003e08: ldr x20, [sp], #0x10
+  0x158003e0c: ldr x19, [sp], #0x10
+  0x158003e10: mov sp, x29
+  0x158003e14: ldp x29, x30, [sp], #0x10
+  0x158003e18: mov x0, #0x24
+  0x158003e1c: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:261 
+  # reg_mapping: [None, None, None, None, Some(Local(0))]
+  # Insn: 0031 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158000a18: mov x1, x15
+  # Insn: 0033 putself (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [Some(Stack(0)), Some(Stack(1)), None, None, Some(Local(0))]
+  0x158000a1c: ldur x9, [x19, #0x18]
+  # Insn: 0034 opt_lt (stack_size: 2)
+  0x158000a20: cmp x1, x9
+  0x158000a24: mov x11, #0x14
+  0x158000a28: mov x12, #0
+  0x158000a2c: csel x11, x11, x12, lt
+  0x158000a30: mov x1, x11
+  # Insn: 0036 branchif (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x158000a34: ldur w11, [x20, #0x20]
+  0x158000a38: cbnz w11, #0x158003dec
+  0x158000a3c: tst x1, #-5
+  0x158000a40: b.ne #0x158003d84
+  0x158000a44: nop
+  0x158000a48: b #0x158003db8
+
+  # regenerate_branch
+  0x158000a40: b.eq #0x158003db8
+  0x158000a44: nop
+
+  # exit to interpreter on getlocal_WC_0
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, Some(Local(0))]
+  # spill_regs: [None, None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003e20: stur x15, [x21, #-0x28]
+  0x158003e24: sub x11, x21, #8
+  0x158003e28: stur x11, [x19, #8]
+  0x158003e2c: mov x11, #0xbc78
+  0x158003e30: movk x11, #0x2712, lsl #16
+  0x158003e34: movk x11, #1, lsl #32
+  0x158003e38: stur x11, [x19]
+  0x158003e3c: ldr x21, [sp], #0x10
+  0x158003e40: ldr x20, [sp], #0x10
+  0x158003e44: ldr x19, [sp], #0x10
+  0x158003e48: mov sp, x29
+  0x158003e4c: ldp x29, x30, [sp], #0x10
+  0x158003e50: mov x0, #0x24
+  0x158003e54: ret
+
+  # branch stub hit
+  0x158003e58: str x1, [sp, #-0x10]!
+  0x158003e5c: str x9, [sp, #-0x10]!
+  0x158003e60: str x10, [sp, #-0x10]!
+  0x158003e64: str x14, [sp, #-0x10]!
+  0x158003e68: str x15, [sp, #-0x10]!
+  0x158003e6c: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003e70: stur x1, [x21, #-8]
+  0x158003e74: stur x15, [x21, #-0x28]
+  0x158003e78: mov x11, #0x14d0
+  0x158003e7c: movk x11, #0x1e7, lsl #16
+  0x158003e80: movk x11, #0x6000, lsl #32
+  0x158003e84: mov x0, x11
+  0x158003e88: mov x1, #0
+  0x158003e8c: b #0x158002068
+
+  # Block: times@<internal:numeric>:262 
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))]
+  # Insn: 0020 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158000a48: mov x1, x15
+  # Insn: 0022 invokeblock (stack_size: 1)
+  # defer_compilation
+  0x158000a4c: b #0x158003e58
+
+  # regenerate_branch
+  0x158000a40: b.eq #0x158003db8
+  0x158000a44: nop
+
+  # branch stub hit
+  0x158003e90: str x1, [sp, #-0x10]!
+  0x158003e94: str x9, [sp, #-0x10]!
+  0x158003e98: str x10, [sp, #-0x10]!
+  0x158003e9c: str x14, [sp, #-0x10]!
+  0x158003ea0: str x15, [sp, #-0x10]!
+  0x158003ea4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158003ea8: stur x1, [x21, #-8]
+  0x158003eac: stur x15, [x21, #-0x28]
+  0x158003eb0: mov x11, #0x10e0
+  0x158003eb4: movk x11, #0x1e7, lsl #16
+  0x158003eb8: movk x11, #0x6000, lsl #32
+  0x158003ebc: mov x0, x11
+  0x158003ec0: mov x1, #0
+  0x158003ec4: b #0x158002068
+
+  # exit to interpreter on pop
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158003ec8: stur x1, [x21, #-8]
+  0x158003ecc: mov x11, #0xbc98
+  0x158003ed0: movk x11, #0x2712, lsl #16
+  0x158003ed4: movk x11, #1, lsl #32
+  0x158003ed8: stur x11, [x19]
+  0x158003edc: ldr x21, [sp], #0x10
+  0x158003ee0: ldr x20, [sp], #0x10
+  0x158003ee4: ldr x19, [sp], #0x10
+  0x158003ee8: mov sp, x29
+  0x158003eec: ldp x29, x30, [sp], #0x10
+  0x158003ef0: mov x0, #0x24
+  0x158003ef4: ret
+
+  # regenerate_branch
+  # Block: times@<internal:numeric>:262 
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))]
+  # Insn: 0022 invokeblock (stack_size: 1)
+  # get local EP
+  # get_lep(level: 0)
+  0x158000a4c: ldur x11, [x19, #0x20]
+  0x158000a50: ldur x11, [x11, #-8]
+  # guard block_handler type
+  0x158000a54: and x11, x11, #3
+  0x158000a58: cmp x11, #1
+  0x158000a5c: b.ne #0x158003e90
+  0x158000a60: nop
+  # save PC to CFP
+  0x158000a64: mov x11, #0xbc98
+  0x158000a68: movk x11, #0x2712, lsl #16
+  0x158000a6c: movk x11, #1, lsl #32
+  0x158000a70: stur x11, [x19]
+  # clear local variable types
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x158000a74: stur x1, [x21, #-8]
+  0x158000a78: stur x15, [x21, #-0x28]
+  0x158000a7c: mov x2, #0x5d48
+  0x158000a80: movk x2, #0x54, lsl #16
+  0x158000a84: movk x2, #0x6000, lsl #32
+  0x158000a88: mov x1, x19
+  0x158000a8c: mov x0, x20
+  0x158000a90: mov x16, #0x9c2c
+  0x158000a94: movk x16, #0x281, lsl #16
+  0x158000a98: movk x16, #1, lsl #32
+  0x158000a9c: blr x16
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x158000aa0: mov x1, x0
+  0x158000aa4: stur x21, [x19, #8]
+  # gen_direct_jmp: existing block
+  0x158000aa8: b #0x158000340
+
+  # exit to interpreter on opt_getconstant_path
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # spill_regs: [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003ef8: stur x9, [x21, #-0x38]
+  0x158003efc: stur x10, [x21, #-0x30]
+  0x158003f00: stur x15, [x21, #-0x28]
+  0x158003f04: stur x14, [x21, #-0x20]
+  0x158003f08: mov x11, #0x3178
+  0x158003f0c: movk x11, #0x24f2, lsl #16
+  0x158003f10: movk x11, #1, lsl #32
+  0x158003f14: stur x11, [x19]
+  0x158003f18: ldr x21, [sp], #0x10
+  0x158003f1c: ldr x20, [sp], #0x10
+  0x158003f20: ldr x19, [sp], #0x10
+  0x158003f24: mov sp, x29
+  0x158003f28: ldp x29, x30, [sp], #0x10
+  0x158003f2c: mov x0, #0x24
+  0x158003f30: ret
+
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0024 opt_getconstant_path (stack_size: 0)
+  # reg_mapping: [None, Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  0x158000aac: ldr x11, #0x158000ab4
+  0x158000ab0: b #0x158000abc
+  0x158000ab4: .byte 0xe0, 0x1d, 0xec, 0x00
+  0x158000ab8: udf #1
+  0x158000abc: mov x1, x11
+
+  # branch stub hit
+  0x158003f34: str x1, [sp, #-0x10]!
+  0x158003f38: str x9, [sp, #-0x10]!
+  0x158003f3c: str x10, [sp, #-0x10]!
+  0x158003f40: str x14, [sp, #-0x10]!
+  0x158003f44: str x15, [sp, #-0x10]!
+  0x158003f48: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003f4c: stur x1, [x21]
+  0x158003f50: stur x9, [x21, #-0x38]
+  0x158003f54: stur x10, [x21, #-0x30]
+  0x158003f58: stur x15, [x21, #-0x28]
+  0x158003f5c: stur x14, [x21, #-0x20]
+  0x158003f60: mov x11, #0x1740
+  0x158003f64: movk x11, #0x1e7, lsl #16
+  0x158003f68: movk x11, #0x6000, lsl #32
+  0x158003f6c: mov x0, x11
+  0x158003f70: mov x1, #0
+  0x158003f74: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0026 putself (stack_size: 1)
+  0x158000ac0: ldur x11, [x19, #0x18]
+  0x158000ac4: stur x11, [x21, #8]
+  # Insn: 0027 getlocal_WC_0 (stack_size: 2)
+  # defer_compilation
+  0x158000ac8: b #0x158003f34
+
+  # regenerate_branch
+  0x158000604: b #0x158000aac
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003f78: stur x1, [x21]
+  0x158003f7c: stur x9, [x21, #-0x38]
+  0x158003f80: stur x10, [x21, #-0x30]
+  0x158003f84: stur x15, [x21, #-0x28]
+  0x158003f88: stur x14, [x21, #-0x20]
+  0x158003f8c: add x11, x21, #0x10
+  0x158003f90: stur x11, [x19, #8]
+  0x158003f94: mov x11, #0x3190
+  0x158003f98: movk x11, #0x24f2, lsl #16
+  0x158003f9c: movk x11, #1, lsl #32
+  0x158003fa0: stur x11, [x19]
+  0x158003fa4: ldr x21, [sp], #0x10
+  0x158003fa8: ldr x20, [sp], #0x10
+  0x158003fac: ldr x19, [sp], #0x10
+  0x158003fb0: mov sp, x29
+  0x158003fb4: ldp x29, x30, [sp], #0x10
+  0x158003fb8: mov x0, #0x24
+  0x158003fbc: ret
+
+  # branch stub hit
+  0x158003fc0: str x1, [sp, #-0x10]!
+  0x158003fc4: str x9, [sp, #-0x10]!
+  0x158003fc8: str x10, [sp, #-0x10]!
+  0x158003fcc: str x14, [sp, #-0x10]!
+  0x158003fd0: str x15, [sp, #-0x10]!
+  0x158003fd4: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158003fd8: stur x1, [x21]
+  0x158003fdc: stur x9, [x21, #-0x38]
+  0x158003fe0: stur x10, [x21, #-0x30]
+  0x158003fe4: stur x15, [x21, #-0x28]
+  0x158003fe8: stur x14, [x21, #-0x20]
+  0x158003fec: mov x11, #0x1710
+  0x158003ff0: movk x11, #0x1e7, lsl #16
+  0x158003ff4: movk x11, #0x6000, lsl #32
+  0x158003ff8: mov x0, x11
+
+  0x158006004: mov x1, #0
+  0x158006008: b #0x158002068
+
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0027 getlocal_WC_0 (stack_size: 2)
+  0x158004004: stur x15, [x21, #0x10]
+  # Insn: 0029 opt_send_without_block (stack_size: 3)
+  # defer_compilation
+  0x158004008: b #0x158003fc0
+
+  # branch stub hit
+  0x15800600c: str x1, [sp, #-0x10]!
+  0x158006010: str x9, [sp, #-0x10]!
+  0x158006014: str x10, [sp, #-0x10]!
+  0x158006018: str x14, [sp, #-0x10]!
+  0x15800601c: str x15, [sp, #-0x10]!
+  0x158006020: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158006024: stur x1, [x21]
+  0x158006028: stur x9, [x21, #-0x38]
+  0x15800602c: stur x10, [x21, #-0x30]
+  0x158006030: stur x15, [x21, #-0x28]
+  0x158006034: stur x14, [x21, #-0x20]
+  0x158006038: mov x11, #0x1860
+  0x15800603c: movk x11, #0x1e7, lsl #16
+  0x158006040: movk x11, #0x6000, lsl #32
+  0x158006044: mov x0, x11
+  0x158006048: mov x1, #0
+  0x15800604c: b #0x158002068
+
+  # exit to interpreter on opt_send_without_block
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x158006050: stur x1, [x21]
+  0x158006054: stur x9, [x21, #-0x38]
+  0x158006058: stur x10, [x21, #-0x30]
+  0x15800605c: stur x15, [x21, #-0x28]
+  0x158006060: stur x14, [x21, #-0x20]
+  0x158006064: add x11, x21, #0x18
+  0x158006068: stur x11, [x19, #8]
+  0x15800606c: mov x11, #0x31a0
+  0x158006070: movk x11, #0x24f2, lsl #16
+  0x158006074: movk x11, #1, lsl #32
+  0x158006078: stur x11, [x19]
+  0x15800607c: ldr x21, [sp], #0x10
+  0x158006080: ldr x20, [sp], #0x10
+  0x158006084: ldr x19, [sp], #0x10
+  0x158006088: mov sp, x29
+  0x15800608c: ldp x29, x30, [sp], #0x10
+  0x158006090: mov x0, #0x24
+  0x158006094: ret
+
+  # branch stub hit
+  0x158006098: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, None, None, None] -> [None, Some(Stack(1)), None, None, None]
+  0x15800609c: mov x9, x0
+  0x1580060a0: str x1, [sp, #-0x10]!
+  0x1580060a4: str x9, [sp, #-0x10]!
+  0x1580060a8: str x10, [sp, #-0x10]!
+  0x1580060ac: str x14, [sp, #-0x10]!
+  0x1580060b0: str x15, [sp, #-0x10]!
+  0x1580060b4: str x0, [sp, #-0x10]!
+  # spill_regs: [None, Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580060b8: stur x9, [x21]
+  0x1580060bc: mov x11, #0x4210
+  0x1580060c0: movk x11, #0x1e7, lsl #16
+  0x1580060c4: movk x11, #0x6000, lsl #32
+  0x1580060c8: mov x0, x11
+  0x1580060cc: mov x1, #0
+  0x1580060d0: b #0x158002068
+
+  # regenerate_branch
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))]
+  # Insn: 0029 opt_send_without_block (stack_size: 3)
+  # call to Object#sq
+  # guard known object with singleton class
+  0x158004008: ldr x11, #0x158004010
+  0x15800400c: b #0x158004018
+  0x158004010: .byte 0xa0, 0x00, 0xe7, 0x00
+  0x158004014: udf #1
+  0x158004018: ldur x12, [x21, #8]
+  0x15800401c: cmp x12, x11
+  0x158004020: b.ne #0x15800600c
+  0x158004024: nop
+  # stack overflow check
+  0x158004028: add x11, x21, #0xa0
+  0x15800402c: cmp x19, x11
+  0x158004030: b.ls #0x158006050
+  # store caller sp
+  0x158004034: add x11, x21, #8
+  0x158004038: stur x11, [x19, #8]
+  # save PC to CFP
+  0x15800403c: mov x11, #0x31b0
+  0x158004040: movk x11, #0x24f2, lsl #16
+  0x158004044: movk x11, #1, lsl #32
+  0x158004048: stur x11, [x19]
+  0x15800404c: add x11, x21, #0x30
+  # push cme, specval, frame type
+  0x158004050: ldr x12, #0x158004058
+  0x158004054: b #0x158004060
+  0x158004058: ldr s16, #0x157fab848
+  0x15800405c: udf #1
+  0x158004060: stur x12, [x11, #-0x18]
+  0x158004064: stur xzr, [x11, #-0x10]
+  0x158004068: mov x12, #3
+  0x15800406c: movk x12, #0x1111, lsl #16
+  0x158004070: stur x12, [x11, #-8]
+  # push callee control frame
+  0x158004074: stur x11, [x19, #-0x30]
+  0x158004078: ldr x12, #0x158004080
+  0x15800407c: b #0x158004088
+  0x158004080: .byte 0x60, 0x9e, 0xfb, 0x00
+  0x158004084: udf #1
+  0x158004088: stur x12, [x19, #-0x28]
+  0x15800408c: ldur x12, [x21, #8]
+  0x158004090: stur x12, [x19, #-0x20]
+  0x158004094: stur xzr, [x19, #-0x10]
+  0x158004098: subs x12, x11, #8
+  0x15800409c: stur x12, [x19, #-0x18]
+  # local maps: [None, None, None, None, None]
+  # spill_regs: [Some(Stack(0)), Some(Local(0)), Some(Local(1)), Some(Local(3)), Some(Local(2))] -> [None, None, None, None, None]
+  0x1580040a0: stur x1, [x21]
+  0x1580040a4: stur x9, [x21, #-0x38]
+  0x1580040a8: stur x10, [x21, #-0x30]
+  0x1580040ac: stur x15, [x21, #-0x28]
+  0x1580040b0: stur x14, [x21, #-0x20]
+  0x1580040b4: mov x21, x11
+  # clear local variable types
+  # update cfp->jit_return
+  0x1580040b8: mov x11, #0x6098
+  0x1580040bc: movk x11, #0x5800, lsl #16
+  0x1580040c0: movk x11, #1, lsl #32
+  0x1580040c4: stur x11, [x19, #-8]
+  # switch to new CFP
+  0x1580040c8: subs x11, x19, #0x38
+  0x1580040cc: mov x19, x11
+  0x1580040d0: stur x19, [x20, #0x10]
+
+  # branch stub hit
+  0x1580060d4: str x1, [sp, #-0x10]!
+  0x1580060d8: str x9, [sp, #-0x10]!
+  0x1580060dc: str x10, [sp, #-0x10]!
+  0x1580060e0: str x14, [sp, #-0x10]!
+  0x1580060e4: str x15, [sp, #-0x10]!
+  0x1580060e8: str x0, [sp, #-0x10]!
+  0x1580060ec: mov x11, #0x4360
+  0x1580060f0: movk x11, #0x1e7, lsl #16
+  0x1580060f4: movk x11, #0x6000, lsl #32
+  0x1580060f8: mov x0, x11
+  0x1580060fc: mov x1, #0
+  0x158006100: b #0x158002068
+
+  # gen_direct_jmp: fallthrough
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # defer_compilation
+  0x1580040d4: b #0x1580060d4
+
+  # exit to interpreter on getlocal_WC_0
+  0x158006104: mov x11, #0x5488
+  0x158006108: movk x11, #0x57, lsl #16
+  0x15800610c: movk x11, #0x6000, lsl #32
+  0x158006110: stur x11, [x19]
+  0x158006114: ldr x21, [sp], #0x10
+  0x158006118: ldr x20, [sp], #0x10
+  0x15800611c: ldr x19, [sp], #0x10
+  0x158006120: mov sp, x29
+  0x158006124: ldp x29, x30, [sp], #0x10
+  0x158006128: mov x0, #0x24
+  0x15800612c: ret
+
+  # branch stub hit
+  0x158006130: str x1, [sp, #-0x10]!
+  0x158006134: str x9, [sp, #-0x10]!
+  0x158006138: str x10, [sp, #-0x10]!
+  0x15800613c: str x14, [sp, #-0x10]!
+  0x158006140: str x15, [sp, #-0x10]!
+  0x158006144: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158006148: stur x1, [x21]
+  0x15800614c: mov x11, #0x43f0
+  0x158006150: movk x11, #0x1e7, lsl #16
+  0x158006154: movk x11, #0x6000, lsl #32
+  0x158006158: mov x0, x11
+  0x15800615c: mov x1, #0
+  0x158006160: b #0x158002068
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [None, None, None, None, None]
+  # Insn: 0000 getlocal_WC_0 (stack_size: 0)
+  # reg_mapping: [None, None, None, None, None] -> [Some(Stack(0)), None, None, None, None]
+  0x1580040d4: ldur x1, [x21, #-0x20]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # defer_compilation
+  0x1580040d8: b #0x158006130
+
+  # exit to interpreter on getlocal_WC_0
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x158006164: stur x1, [x21]
+  0x158006168: add x11, x21, #8
+  0x15800616c: stur x11, [x19, #8]
+  0x158006170: mov x11, #0x5498
+  0x158006174: movk x11, #0x57, lsl #16
+  0x158006178: movk x11, #0x6000, lsl #32
+  0x15800617c: stur x11, [x19]
+  0x158006180: ldr x21, [sp], #0x10
+  0x158006184: ldr x20, [sp], #0x10
+  0x158006188: ldr x19, [sp], #0x10
+  0x15800618c: mov sp, x29
+  0x158006190: ldp x29, x30, [sp], #0x10
+  0x158006194: mov x0, #0x24
+  0x158006198: ret
+
+  # branch stub hit
+  0x15800619c: str x1, [sp, #-0x10]!
+  0x1580061a0: str x9, [sp, #-0x10]!
+  0x1580061a4: str x10, [sp, #-0x10]!
+  0x1580061a8: str x14, [sp, #-0x10]!
+  0x1580061ac: str x15, [sp, #-0x10]!
+  0x1580061b0: str x0, [sp, #-0x10]!
+  # spill_regs: [Some(Stack(0)), Some(Stack(1)), None, None, None] -> [None, None, None, None, None]
+  0x1580061b4: stur x1, [x21]
+  0x1580061b8: stur x9, [x21, #8]
+  0x1580061bc: mov x11, #0x44e0
+  0x1580061c0: movk x11, #0x1e7, lsl #16
+  0x1580061c4: movk x11, #0x6000, lsl #32
+  0x1580061c8: mov x0, x11
+  0x1580061cc: mov x1, #0
+  0x1580061d0: b #0x158002068
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, None, None, None] -> [None, None, None, None, None]
+  0x1580061d4: stur x1, [x21]
+  0x1580061d8: add x11, x21, #8
+  0x1580061dc: stur x11, [x19, #8]
+  0x1580061e0: mov x11, #0x54b8
+  0x1580061e4: movk x11, #0x57, lsl #16
+  0x1580061e8: movk x11, #0x6000, lsl #32
+  0x1580061ec: stur x11, [x19]
+  0x1580061f0: ldr x21, [sp], #0x10
+  0x1580061f4: ldr x20, [sp], #0x10
+  0x1580061f8: ldr x19, [sp], #0x10
+  0x1580061fc: mov sp, x29
+  0x158006200: ldp x29, x30, [sp], #0x10
+  0x158006204: mov x0, #0x24
+  0x158006208: ret
+
+  # regenerate_branch
+  # Block: sq@distance_sq.rb:6 
+  # reg_mapping: [Some(Stack(0)), None, None, None, None]
+  # Insn: 0002 getlocal_WC_0 (stack_size: 1)
+  # reg_mapping: [Some(Stack(0)), None, None, None, None] -> [Some(Stack(0)), Some(Stack(1)), None, None, None]
+  0x1580040d8: ldur x9, [x21, #-0x20]
+  # Insn: 0004 opt_mult (stack_size: 2)
+  0x1580040dc: asr x11, x1, #1
+  0x1580040e0: subs x12, x9, #1
+  0x1580040e4: smulh x16, x11, x12
+  0x1580040e8: mul x11, x11, x12
+  0x1580040ec: asr x17, x11, #0x3f
+  0x1580040f0: cmp x16, x17
+  0x1580040f4: b.ne #0x15800619c
+  0x1580040f8: nop
+  0x1580040fc: adds x11, x11, #1
+  0x158004100: mov x1, x11
+  # Insn: 0006 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x158004104: ldur w11, [x20, #0x20]
+  0x158004108: cbnz w11, #0x1580061d4
+  # pop stack frame
+  0x15800410c: adds x11, x19, #0x38
+  0x158004110: mov x19, x11
+  0x158004114: stur x19, [x20, #0x10]
+  0x158004118: mov x0, x1
+  0x15800411c: ldur x11, [x19, #-8]
+  0x158004120: br x11
+
+  # Block: distance@distance_sq.rb:11 
+  # reg_mapping: [None, None, None, None, None]
+  0x158004124: ldur x21, [x19, #8]
+  # reg_mapping: [None, None, None, None, None] -> [None, Some(Stack(1)), None, None, None]
+  0x158004128: mov x9, x0
+  # Insn: 0031 putself (stack_size: 2)
+  # reg_mapping: [None, Some(Stack(1)), None, None, None] -> [None, Some(Stack(1)), Some(Stack(2)), None, None]
+  0x15800412c: ldur x10, [x19, #0x18]
+  # Insn: 0032 getlocal_WC_0 (stack_size: 3)
+  # defer_compilation
+  0x158004130: b #0x158000780
+
+  # regenerate_branch
+  # update cfp->jit_return
+  0x1580040b8: mov x11, #0x4124
+  0x1580040bc: movk x11, #0x5800, lsl #16
+  0x1580040c0: movk x11, #1, lsl #32
+  0x1580040c4: stur x11, [x19, #-8]
+
+  # exit to interpreter on leave
+  # spill_regs: [Some(Stack(0)), None, None, None, Some(Local(0))] -> [None, None, None, None, None]
+  0x15800620c: stur x1, [x21, #-8]
+  0x158006210: stur x15, [x21, #-0x28]
+  0x158006214: mov x11, #0xbd20
+  0x158006218: movk x11, #0x2712, lsl #16
+  0x15800621c: movk x11, #1, lsl #32
+  0x158006220: stur x11, [x19]
+  0x158006224: ldr x21, [sp], #0x10
+  0x158006228: ldr x20, [sp], #0x10
+  0x15800622c: ldr x19, [sp], #0x10
+  0x158006230: mov sp, x29
+  0x158006234: ldp x29, x30, [sp], #0x10
+  0x158006238: mov x0, #0x24
+  0x15800623c: ret
+
+  # Block: times@<internal:numeric>:261 
+  # reg_mapping: [Some(Stack(0)), None, None, None, Some(Local(0))]
+  # Insn: 0038 putnil (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158004134: mov x1, #4
+  # Insn: 0039 pop (stack_size: 1)
+  # Insn: 0040 putself (stack_size: 0)
+  # reg_mapping: [None, None, None, None, Some(Local(0))] -> [Some(Stack(0)), None, None, None, Some(Local(0))]
+  0x158004138: ldur x1, [x19, #0x18]
+  # Insn: 0041 leave (stack_size: 1)
+  # RUBY_VM_CHECK_INTS(ec)
+  0x15800413c: ldur w11, [x20, #0x20]
+  0x158004140: cbnz w11, #0x15800620c
+  # pop stack frame
+  0x158004144: adds x11, x19, #0x38
+  0x158004148: mov x19, x11
+  0x15800414c: stur x19, [x20, #0x10]
+  0x158004150: mov x0, x1
+  0x158004154: ldur x11, [x19, #-8]
+  0x158004158: br x11
+
+  # regenerate_branch
+  0x158000a40: b.eq #0x158004134
+  0x158000a44: nop
+

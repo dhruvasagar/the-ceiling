@@ -1,0 +1,150 @@
+# $ ruby --yjit --yjit-stats hwia.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+***YJIT: Printing YJIT statistics on exit***
+method call fallback reasons: 
+    iseq_missing_optional_kw:        248 (98.8%)
+         iseq_block_arg_type:          1 ( 0.4%)
+                 megamorphic:          1 ( 0.4%)
+             singleton_class:          1 ( 0.4%)
+invokeblock fallback reasons: 
+              symbol:         73 (54.9%)
+    iseq_not_inlined:         60 (45.1%)
+invokesuper fallback reasons: 
+    singleton_class:         57 (100.0%)
+method call exit reasons: 
+    (all relevant counters are zero)
+invokeblock exit reasons: 
+    (all relevant counters are zero)
+invokesuper exit reasons: 
+    (all relevant counters are zero)
+getblockparamproxy exit reasons: 
+    unsupported_type:         11 (100.0%)
+getinstancevariable exit reasons:
+    (all relevant counters are zero)
+setinstancevariable exit reasons:
+    (all relevant counters are zero)
+leave exit reasons:
+    interp_return:    103,149 (100.0%)
+     se_interrupt:          1 ( 0.0%)
+left shift (opt_ltlt) exit reasons: 
+    (all relevant counters are zero)
+right shift (>>) exit reasons: 
+    (all relevant counters are zero)
+invalidation reasons: 
+    constant_ic_fill:          6 (100.0%)
+num_send:                    711,120
+num_send_known_class:            743 ( 0.1%)
+num_send_polymorphic:              5 ( 0.0%)
+num_send_megamorphic:              1 ( 0.0%)
+num_send_dynamic:                440 ( 0.1%)
+num_send_cfunc:              404,961 (56.9%)
+num_send_cfunc_inline:       201,260 (49.7%)
+num_send_iseq:               504,152 (70.9%)
+num_send_iseq_leaf:          100,124 (19.9%)
+num_send_iseq_inline:              0 ( 0.0%)
+num_getivar_megamorphic:           0
+num_setivar_megamorphic:           0
+num_opt_case_megamorphic:          0
+num_throw:                         6
+num_throw_break:                   0 ( 0.0%)
+num_throw_retry:                   0 ( 0.0%)
+num_throw_return:                  6 (100.0%)
+num_lazy_frame_check:              1
+num_lazy_frame_push:               0 ( 0.0%)
+lazy_frame_count:                  0
+lazy_frame_failure:                0
+iseq_stack_too_large:              0
+iseq_too_long:                     0
+temp_reg_opnd:                 5,480
+temp_mem_opnd:                 4,023
+temp_spill:                    3,511
+bindings_allocations:             56
+bindings_set:                      0
+live_iseq_count:               1,990
+iseq_alloc_count:              2,534
+compiled_iseq_entry:              55
+cold_iseq_entry:                   0 ( 0.0%)
+compiled_iseq_count:              75
+compiled_blockid_count:          860
+compiled_block_count:          1,151
+inline_block_count:                0 ( 0.0%)
+deleted_defer_block_count:       150 (13.0%)
+versions_per_block:            1.338
+max_inline_versions:               0
+compiled_branch_count:         1,768
+yjit_active_ms:                  179
+compile_time_ms:                  25 (14.0%)
+block_next_count:              1,066
+defer_count:                     503
+defer_empty_count:               155
+branch_insn_count:               100
+branch_known_count:               14 (14.0%)
+freed_iseq_count:                  0
+invalidation_count:                6
+inline_code_size:            151,236
+outlined_code_size:           73,612
+code_region_size:            327,680
+code_region_overhead:        102,832 (31.4%)
+freed_code_size:                   0
+yjit_alloc_size:             552,137
+context_data_bytes:            5,872
+context_cache_bytes:         131,072
+num_contexts_encoded:          2,924
+bytes_per_context:              2.01
+context_cache_hit_rate:        1,995 (68.2%)
+live_page_count:                  20
+freed_page_count:                  0
+code_gc_count:                     0
+num_gc_obj_refs:                 562
+object_shape_count:              198
+side_exit_count:                  12
+total_exit_count:            103,161
+total_insns_count:         5,753,417
+vm_insns_count:            1,262,560
+yjit_insns_count:          4,490,869
+ratio_in_yjit:                 78.1%
+avg_len_in_yjit:                43.5
+Top-2 most frequent exit ops (100.0% of exits):
+  11 (91.7%): getblockparamproxy
+   1 ( 8.3%): leave
+Top-20 most frequent C calls (50.2% of C calls):
+  199,970 (49.4%): Hash#[]
+      532 ( 0.1%): String#<=>
+      532 ( 0.1%): Numeric#nonzero?
+      357 ( 0.1%): Regexp#match?
+      329 ( 0.1%): String#===
+      216 ( 0.1%): Array#fetch
+      150 ( 0.0%): String#-@
+      150 ( 0.0%): Kernel#instance_variable_defined?
+      116 ( 0.0%): String#delete_prefix!
+      110 ( 0.0%): String#to_i
+       74 ( 0.0%): String#chomp!
+       74 ( 0.0%): String#split
+       72 ( 0.0%): Array#any?
+       69 ( 0.0%): String#gsub!
+       59 ( 0.0%): Array#map!
+       58 ( 0.0%): String#start_with?
+       58 ( 0.0%): String#[]
+       58 ( 0.0%): Class#join
+       58 ( 0.0%): Class#open
+       55 ( 0.0%): Array#delete
+Top-20 most frequent ISEQ calls (80.0% of ISEQ calls):
+  199,971 (39.7%): convert_key@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/gems/4.1.0+5/gems/activesupport-8.1.4.1/lib/active_support/hash_with_indifferent_access.rb:411
+  199,942 (39.7%): []@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/gems/4.1.0+5/gems/activesupport-8.1.4.1/lib/active_support/hash_with_indifferent_access.rb:184
+    1,398 ( 0.3%): data@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:113
+    1,122 ( 0.2%): name@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:172
+      130 ( 0.0%): new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:64
+       94 ( 0.0%): version@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:184
+       79 ( 0.0%): correct?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:193
+       72 ( 0.0%): platforms@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:746
+       72 ( 0.0%): match_gem?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:47
+       72 ( 0.0%): match_platforms?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:22
+       71 ( 0.0%): new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:216
+       69 ( 0.0%): internal_init@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/basic_specification.rb:233
+       58 ( 0.0%): open_file@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:866
+       58 ( 0.0%): match_spec?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:32
+       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/basic_specification.rb:33
+       58 ( 0.0%): platform@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:179
+       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:40
+       58 ( 0.0%): initialize@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:79
+       58 ( 0.0%): match?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/content_address.rb:33
+       43 ( 0.0%): default_gemspec_stub@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:69

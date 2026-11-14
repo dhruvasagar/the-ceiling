@@ -1,0 +1,165 @@
+#+TITLE: The Ceiling: Why Ruby 4.0 Needed a Second Compiler
+#+AUTHOR: Dhruva Sagar
+#+DATE: RubyConf 2026
+#+OPTIONS: toc:nil num:nil timestamp:nil
+#+STARTUP: overview
+#+PROPERTY: header-args :eval never-export :exports code
+#+PROPERTY: header-args:sh :dir (progn (defvar ceiling--tangling nil) (unless ceiling--tangling (let ((ceiling--tangling t)) (save-excursion (org-babel-tangle)))) "../src") :results output verbatim :prologue "export PATH=\"$HOME/.asdf/shims:$PATH\""
+#+PROPERTY: header-args:ruby :dir (progn (defvar ceiling--tangling nil) (unless ceiling--tangling (let ((ceiling--tangling t)) (save-excursion (org-babel-tangle)))) "../src") :noweb yes :results output :ruby "$HOME/.asdf/shims/ruby"
+
+# How this file works
+# - Each top-level heading is a slide; :DURATION: is its time budget.
+#   Speaker notes are in #+begin_notes (reveal speaker view: press "s").
+# - Ruby on the slides lives in NAMED blocks. The Demo section assembles
+#   them with noweb and tangles them into ../src/, so the code on a slide
+#   IS the code that ran. Never edit ../src/ by hand.
+# - Any sh/ruby block re-tangles before it runs (the :dir expression), and
+#   runs in ../src/ under the Ruby pinned in ../.tool-versions, via asdf's
+#   shims (Emacs's own PATH doesn't matter). Nothing runs on export.
+# - Every listing on a slide is cut from ../captures/ (made by
+#   ../bin/capture) and is checked line by line by ../bin/check. The
+#   comment "# capture: FILE" above a listing names its source.
+
+* How Ruby runs your code
+
+#+name: point-class
+#+begin_src ruby
+class Point
+  attr_reader :x, :y
+  def initialize(x, y) = (@x, @y = x, y)
+end
+#+end_src
+
+#+name: distance-v1
+#+begin_src ruby
+def distance(a, b)
+  dx = a.x - b.x
+  dy = a.y - b.y
+  Math.sqrt(dx * dx + dy * dy)
+end
+#+end_src
+
+* One more call
+
+#+name: distance-v2
+#+begin_src ruby
+def sq(n) = n * n
+
+def distance(a, b)
+  dx = a.x - b.x
+  dy = a.y - b.y
+  Math.sqrt(sq(dx) + sq(dy))
+end
+#+end_src
+
+* Demo                                                             :noexport:
+
+** Files
+
+The program behind the first half of the talk.
+
+#+begin_src ruby :tangle ../src/distance.rb :mkdirp yes
+<<point-class>>
+
+<<distance-v1>>
+
+<<warmup>>
+#+end_src
+
+The same program after the one-line refactor ("One more call").
+
+#+begin_src ruby :tangle ../src/distance_sq.rb :mkdirp yes
+<<point-class>>
+
+<<distance-v2>>
+
+<<warmup>>
+#+end_src
+
+Enough calls that both JITs compile =distance=. The capture commands set
+low thresholds, so this only has to clear them.
+
+#+name: warmup
+#+begin_src ruby :eval never
+a = Point.new(3, 4)
+b = Point.new(0, 0)
+1_000.times { distance(a, b) }
+#+end_src
+
+"How each one compiles": call =distance= 40 times, saying which call we are
+on, so each JIT's compile log lands next to the call that triggered it.
+Default thresholds, nothing forced.
+
+#+begin_src ruby :tangle ../src/distance_log.rb :mkdirp yes
+<<point-class>>
+
+<<distance-v1>>
+
+$stdout.sync = true
+a = Point.new(3, 4)
+b = Point.new(0, 0)
+1.upto(40) do |i|
+  puts "call #{i}"
+  distance(a, b)
+end
+#+end_src
+
+=params=-shaped traffic: string keys stored, asked for with both a Symbol
+and a String, so =convert_key= sees two types.
+
+#+begin_src ruby :tangle ../src/hwia.rb :mkdirp yes
+require "active_support"
+require "active_support/hash_with_indifferent_access"
+
+params = ActiveSupport::HashWithIndifferentAccess.new("id" => 1, "name" => "x")
+100_000.times do
+  params[:id]
+  params["name"]
+end
+#+end_src
+
+Print the real source of the two methods on the HWIA slide, from the
+installed gem.
+
+#+begin_src ruby :tangle ../src/hwia_source.rb :mkdirp yes
+require "active_support"
+require "active_support/hash_with_indifferent_access"
+
+hwia = ActiveSupport::HashWithIndifferentAccess
+puts "activesupport #{ActiveSupport.version}"
+%i[[] convert_key].each do |name|
+  file, line = hwia.instance_method(name).source_location
+  src = File.readlines(file)[(line - 1)..]
+  puts "", "# #{File.basename(file)}:#{line}", src.take(src.index { _1 =~ /^\s*end\b/ } + 1)
+end
+#+end_src
+
+** Captures
+
+Each capture is one =bin/capture= target; it writes ../captures/NAME.txt
+(paths and memory addresses scrubbed) and prints it. Re-run them all from a
+shell with =bin/capture=, then =bin/check=.
+
+#+name: cap-env
+#+begin_src sh
+../bin/capture env
+#+end_src
+
+#+name: cap-how
+#+begin_src sh
+../bin/capture how-yjit how-zjit >/dev/null
+echo "YJIT compile events for distance: $(grep -c 'distance@' ../captures/how-yjit.txt)"
+echo "ZJIT compile events for distance: $(grep -c 'distance@' ../captures/how-zjit.txt)"
+#+end_src
+
+#+name: cap-yjit-sq
+#+begin_src sh
+../bin/capture yjit-sq >/dev/null
+grep -nE '# (call to Object#sq|Block: sq|guard arg|push callee|pop stack|clear local)' ../captures/yjit-sq.txt | head -20
+#+end_src
+
+#+name: cap-zjit-sq
+#+begin_src sh
+../bin/capture zjit-sq >/dev/null
+awk '/^fn distance@/{p=1} p&&/^$/{exit} p' ../captures/zjit-sq.txt
+#+end_src

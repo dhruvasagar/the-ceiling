@@ -1,0 +1,57 @@
+#!/bin/sh
+# Run the compiler captures the slides are cut from.
+#   bin/capture            all targets
+#   bin/capture NAME...    just these (see TARGETS below)
+# Each writes captures/NAME.txt: first line is the exact command and Ruby
+# version; personal paths and memory addresses are scrubbed. Programs run
+# from src/ (tangled from talk/the-ceiling.org).
+set -u
+cd "$(dirname "$0")/.." || exit 2
+ROOT=$(pwd)
+export PATH="$HOME/.asdf/shims:$PATH"
+
+TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats"
+
+command_for() {
+  case $1 in
+    env)             echo "ruby -v && ruby -ractive_support -e 'puts \"activesupport #{ActiveSupport.version}\"'" ;;
+    yarv-distance)   echo "ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'" ;;
+    yjit-distance)   echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance.rb" ;;
+    zjit-distance)   echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance.rb" ;;
+    yjit-sq)         echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm distance_sq.rb" ;;
+    zjit-sq)         echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir distance_sq.rb" ;;
+    how-yjit)        echo "ruby --yjit --yjit-log=/dev/stdout distance_log.rb" ;;
+    how-zjit)        echo "ruby --zjit --zjit-log-compiled-iseqs=/dev/stdout distance_log.rb" ;;
+    hwia-source)     echo "ruby hwia_source.rb" ;;
+    hwia-yjit-stats) echo "ruby --yjit --yjit-stats hwia.rb" ;;
+    hwia-zjit-stats) echo "ruby --zjit --zjit-stats hwia.rb" ;;
+    *) return 1 ;;
+  esac
+}
+
+# Replace machine-specific paths and addresses; keep everything else verbatim.
+scrub() {
+  sed -E \
+    -e "s#$ROOT#.#g" \
+    -e "s#$HOME#~#g" \
+    -e 's/@0x[0-9a-f]+//g' \
+    -e 's/, cme:0x[0-9a-f]+//g' \
+    -e 's/ \(0x[0-9a-f]+\)//g' \
+    -e 's/\(0x6[0-9a-f]+, /(/g'
+}
+
+[ -f src/distance.rb ] || { echo "src/ is empty: tangle talk/the-ceiling.org first (bin/check tangle_current does it)" >&2; exit 1; }
+mkdir -p captures
+version=$(ruby -v)
+status=0
+for name in ${*:-$TARGETS}; do
+  cmd=$(command_for "$name") || { echo "unknown target: $name (one of: $TARGETS)" >&2; status=1; continue; }
+  out="captures/$name.txt"
+  { echo "# \$ $cmd   ($version)"; (cd src && sh -c "$cmd") 2>&1; } | scrub > "$out.tmp"
+  if [ "$(wc -l < "$out.tmp")" -le 1 ]; then
+    echo "capture $name produced no output; see $out.tmp" >&2; status=1; continue
+  fi
+  mv "$out.tmp" "$out"
+  echo "wrote $out ($(wc -l < "$out" | tr -d ' ') lines)"
+done
+exit $status

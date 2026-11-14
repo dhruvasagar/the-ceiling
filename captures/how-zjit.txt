@@ -1,0 +1,43 @@
+# $ ruby --zjit --zjit-log-compiled-iseqs=/dev/stdout distance_log.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+call 1
+call 2
+call 3
+call 4
+call 5
+call 6
+call 7
+call 8
+call 9
+call 10
+call 11
+call 12
+call 13
+call 14
+call 15
+call 16
+call 17
+call 18
+call 19
+call 20
+call 21
+call 22
+call 23
+call 24
+call 25
+call 26
+call 27
+call 28
+call 29
+block in <main>@distance_log.rb:16
+call 30
+distance@distance_log.rb:7
+call 31
+call 32
+call 33
+call 34
+call 35
+call 36
+call 37
+call 38
+call 39
+call 40

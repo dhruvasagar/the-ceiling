@@ -1,0 +1,75 @@
+# $ ruby --yjit --yjit-log=/dev/stdout distance_log.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+YJIT log: /dev/stdout
+call 1
+call 2
+call 3
+call 4
+call 5
+call 6
+call 7
+call 8
+call 9
+call 10
+call 11
+call 12
+call 13
+call 14
+call 15
+call 16
+call 17
+call 18
+call 19
+call 20
+call 21
+call 22
+call 23
+call 24
+call 25
+call 26
+call 27
+call 28
+call 29
+1794666736.525532: block in <main>@distance_log.rb:16 (index: 0)
+1794666736.525598: block in <main>@distance_log.rb:16 (index: 3)
+1794666736.525630: block in <main>@distance_log.rb:16 (index: 6)
+1794666736.525677: block in <main>@distance_log.rb:16 (index: 8)
+1794666736.525709: block in <main>@distance_log.rb:16 (index: 11)
+1794666736.525739: block in <main>@distance_log.rb:16 (index: 13)
+call 30
+1794666736.525762: block in <main>@distance_log.rb:17 (index: 19)
+1794666736.525806: distance@distance_log.rb:7 (index: 0)
+1794666736.525824: distance@distance_log.rb:7 (index: 0)
+1794666736.525847: distance@distance_log.rb:7 (index: 2)
+1794666736.525883: distance@distance_log.rb:7 (index: 4)
+1794666736.525897: distance@distance_log.rb:7 (index: 4)
+1794666736.525918: distance@distance_log.rb:7 (index: 6)
+1794666736.525952: distance@distance_log.rb:7 (index: 8)
+1794666736.525966: distance@distance_log.rb:7 (index: 8)
+1794666736.526002: distance@distance_log.rb:7 (index: 10)
+1794666736.526022: distance@distance_log.rb:8 (index: 12)
+1794666736.526042: distance@distance_log.rb:8 (index: 14)
+1794666736.526066: distance@distance_log.rb:8 (index: 16)
+1794666736.526079: distance@distance_log.rb:8 (index: 16)
+1794666736.526100: distance@distance_log.rb:8 (index: 18)
+1794666736.526125: distance@distance_log.rb:8 (index: 20)
+1794666736.526139: distance@distance_log.rb:8 (index: 20)
+1794666736.526170: distance@distance_log.rb:8 (index: 22)
+1794666736.526183: distance@distance_log.rb:9 (index: 24)
+1794666736.526196: distance@distance_log.rb:9 (index: 26)
+1794666736.526210: distance@distance_log.rb:9 (index: 26)
+1794666736.526233: distance@distance_log.rb:9 (index: 28)
+1794666736.526265: distance@distance_log.rb:9 (index: 32)
+1794666736.526287: distance@distance_log.rb:9 (index: 34)
+1794666736.526322: distance@distance_log.rb:9 (index: 40)
+1794666736.526352: distance@distance_log.rb:10 (index: 42)
+1794666736.526370: block in <main>@distance_log.rb:18 (index: 21)
+call 31
+call 32
+call 33
+call 34
+call 35
+call 36
+call 37
+call 38
+call 39
+call 40

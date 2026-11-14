@@ -18,6 +18,51 @@ check_no_personal_paths() {
   verdict no_personal_paths "${hits:+absolute personal paths in: $hits}"
 }
 
+check_env() {
+  why=""
+  v=$(ruby -v 2>&1)
+  case $v in *4.1.0preview1*) ;; *) why="ruby is '$v'; want 4.1.0-preview1 (asdf install ruby 4.1.0-preview1). " ;; esac
+  ruby --yjit --yjit-dump-disasm -e 1 >/dev/null 2>&1 \
+    || why="${why}YJIT disasm unavailable: build Ruby with RUBY_CONFIGURE_OPTS='--enable-yjit=dev --enable-zjit=dev'. "
+  ruby -ractive_support -e 1 >/dev/null 2>&1 \
+    || why="${why}activesupport missing: gem install activesupport. "
+  verdict env "$why"
+}
+
+check_tangle_current() {
+  why=""
+  emacs --batch -Q --eval '(progn (require (quote ob-tangle)) (org-babel-tangle-file "talk/the-ceiling.org"))' \
+    >/dev/null 2>&1 || why="tangle failed (emacs --batch). "
+  git diff --quiet -- src/ 2>/dev/null || why="${why}src/ differs from talk/the-ceiling.org after tangling; commit the tangled files. "
+  [ -f src/distance.rb ] || why="${why}src/distance.rb missing. "
+  verdict tangle_current "$why"
+}
+
+# marker FILE PATTERN: FILE exists, is non-empty, and matches the ERE PATTERN
+marker() {
+  if [ ! -s "captures/$1" ]; then echo "captures/$1 missing or empty. "
+  elif ! grep -qE -- "$2" "captures/$1"; then echo "captures/$1 lacks /$2/. "
+  fi
+}
+
+check_captures() {
+  why="$(marker yarv-distance.txt 'opt_minus')"
+  why="$why$(marker yjit-distance.txt 'clear local variable types')"
+  why="$why$(marker zjit-distance.txt 'FixnumMult (v[0-9]+), (v[0-9]+)')"
+  why="$why$(marker yjit-sq.txt 'call to Object#sq')"
+  why="$why$(marker yjit-sq.txt 'guard arg0 fixnum')"
+  why="$why$(marker zjit-sq.txt 'PushInlineFrame :sq')"
+  why="$why$(marker hwia-source.txt 'Symbol === key')"
+  why="$why$(marker hwia-zjit-stats.txt 'Hash#\[\]')"
+  why="$why$(marker hwia-yjit-stats.txt 'invokesuper exit reasons')"
+  why="$why$(marker how-yjit.txt 'distance@distance_log.rb:[0-9]+ \(index: [0-9]+\)')"
+  why="$why$(marker how-zjit.txt 'distance@distance_log.rb')"
+  # same-SSA-value multiply: ZJIT reuses the already-proved dx
+  grep -qE 'FixnumMult (v[0-9]+), \1' captures/zjit-distance.txt 2>/dev/null \
+    || why="${why}zjit-distance.txt has no 'FixnumMult vN, vN'. "
+  verdict captures "$why"
+}
+
 # --- run --------------------------------------------------------------------
 all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
 [ $# -gt 0 ] && all="$*"

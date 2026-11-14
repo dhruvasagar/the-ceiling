@@ -1,0 +1,12 @@
+#!/bin/sh
+# stdin -> stdout. Removes what changes from run to run (memory addresses)
+# and whitespace differences, so a trimmed slide listing can be compared
+# with the capture it was cut from.
+sed -E \
+  -e 's/@0x[0-9a-f]+//g' \
+  -e 's/, cme:0x[0-9a-f]+//g' \
+  -e 's/ \(0x[0-9a-f]+\)//g' \
+  -e 's/\(0x6[0-9a-f]+, /(/g' \
+  -e 's/^[[:space:]]+//' \
+  -e 's/[[:space:]]+$//' \
+  -e 's/[[:space:]]+/ /g'

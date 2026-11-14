@@ -1,0 +1,12 @@
+# $ ruby hwia_source.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+activesupport 8.1.4.1
+
+# hash_with_indifferent_access.rb:184
+    def [](key)
+      super(convert_key(key))
+    end
+
+# hash_with_indifferent_access.rb:411
+      def convert_key(key)
+        Symbol === key ? key.name : key
+      end

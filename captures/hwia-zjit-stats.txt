@@ -1,0 +1,146 @@
+# $ ruby --zjit --zjit-stats hwia.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+***ZJIT: Printing ZJIT statistics on exit***
+Top-20 not inlined C methods (99.7% of total 203,347):
+                            Hash#[]: 199,971 (98.3%)
+                   Numeric#nonzero?:     526 ( 0.3%)
+                         String#<=>:     526 ( 0.3%)
+                      Regexp#match?:     357 ( 0.2%)
+                        Array#fetch:     216 ( 0.1%)
+                          String#-@:     149 ( 0.1%)
+  Kernel#instance_variable_defined?:     146 ( 0.1%)
+              String#delete_prefix!:     116 ( 0.1%)
+                        String#to_i:     110 ( 0.1%)
+                       String#split:      74 ( 0.0%)
+                      String#chomp!:      74 ( 0.0%)
+                         Array#any?:      72 ( 0.0%)
+                       String#gsub!:      69 ( 0.0%)
+                         Array#map!:      59 ( 0.0%)
+                          String#[]:      58 ( 0.0%)
+                          File.join:      58 ( 0.0%)
+                 String#start_with?:      58 ( 0.0%)
+                       Array#delete:      55 ( 0.0%)
+                        Array#shift:      45 ( 0.0%)
+        Kernel#gem_original_require:      38 ( 0.0%)
+Top-20 calls to C functions from JIT code (99.3% of total 310,501):
+                            Hash#[]: 199,971 (64.4%)
+                              _bi13: 100,010 (32.2%)
+                rb_ec_str_resurrect:   3,682 ( 1.2%)
+           rb_yarv_str_eql_internal:     547 ( 0.2%)
+                             _bi290:     532 ( 0.2%)
+                         String#<=>:     526 ( 0.2%)
+                   Numeric#nonzero?:     526 ( 0.2%)
+                      Regexp#match?:     357 ( 0.1%)
+             rb_vm_yield_with_cfunc:     346 ( 0.1%)
+                        rb_gvar_get:     312 ( 0.1%)
+                       rb_hash_aref:     270 ( 0.1%)
+                        io_readline:     254 ( 0.1%)
+                        Array#fetch:     216 ( 0.1%)
+                  rb_obj_is_kind_of:     185 ( 0.1%)
+                          String#-@:     149 ( 0.0%)
+  Kernel#instance_variable_defined?:     146 ( 0.0%)
+             rb_vm_getclassvariable:     119 ( 0.0%)
+              String#delete_prefix!:     116 ( 0.0%)
+                        String#to_i:     110 ( 0.0%)
+       rb_vm_opt_send_without_block:      75 ( 0.0%)
+Top-20 most called JIT functions (98.9% of total 106,520):
+                                                                                              block in <main>@hwia.rb:6: 99,971 (93.9%)
+              data@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:114:  1,486 ( 1.4%)
+              name@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:173:  1,224 ( 1.1%)
+      block in _resort!@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/specification.rb:854:    532 ( 0.5%)
+                                                                                           zero?@<internal:numeric>:290:    532 ( 0.5%)
+                                                                                             readline@<internal:io>:133:    254 ( 0.2%)
+    block in compute_sort_key@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:451:    216 ( 0.2%)
+                          new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:65:    159 ( 0.1%)
+                      version@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:185:    115 ( 0.1%)
+                          new@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:217:    115 ( 0.1%)
+  block in partition_segments@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:469:    111 ( 0.1%)
+                     correct?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:194:    108 ( 0.1%)
+                                                                                              each@<internal:array>:222:    102 ( 0.1%)
+                            platforms@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:747:     78 ( 0.1%)
+             match_platforms?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:23:     72 ( 0.1%)
+    block in match_platforms?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/platform.rb:25:     72 ( 0.1%)
+      block in load_path_insert_index@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems.rb:616:     71 ( 0.1%)
+           canonical_segments@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/version.rb:423:     60 ( 0.1%)
+            valid?@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/stub_specification.rb:219:     58 ( 0.1%)
+   block in stubs@~/.asdf/installs/ruby/4.1.0-preview1/lib/ruby/4.1.0+5/rubygems/specification_record.rb:82:     58 ( 0.1%)
+Top-4 send fallback reasons (100.0% of total 204):
+  send_not_optimized_need_permission: 75 (36.8%)
+        one_or_more_complex_arg_pass: 69 (33.8%)
+         invokeblock_not_specialized: 59 (28.9%)
+              send_block_arg_not_nil:  1 ( 0.5%)
+Top-3 invokeblock handler (100.0% of total 453):
+  monomorphic_ifunc: 405 (89.4%)
+   monomorphic_iseq:  35 ( 7.7%)
+        polymorphic:  13 ( 2.9%)
+Top-2 HIR-level inlining rejection reasons (100.0% of total 39):
+        too_large: 23 (59.0%)
+  budget_exceeded: 16 (41.0%)
+Top-7 side exit reasons (100.0% of total 53):
+            guard_shape_failure: 31 (58.5%)
+             guard_type_failure: 10 (18.9%)
+      invoke_block_iseq_changed:  5 ( 9.4%)
+  invoke_block_handler_not_iseq:  3 ( 5.7%)
+                no_profile_send:  2 ( 3.8%)
+                      interrupt:  1 ( 1.9%)
+             no_profile_getivar:  1 ( 1.9%)
+                             send_count: 912,186
+                     dynamic_send_count:     204 ( 0.0%)
+                   optimized_send_count: 911,982 (100.0%)
+              iseq_optimized_send_count:   3,540 ( 0.4%)
+      inline_cfunc_optimized_send_count: 204,398 (22.4%)
+       inline_iseq_optimized_send_count: 500,657 (54.9%)
+                    inline_method_count:      29 ( 0.0%)
+               empty_inline_frame_count:       0 ( 0.0%)
+non_variadic_cfunc_optimized_send_count: 201,882 (22.1%)
+    variadic_cfunc_optimized_send_count:   1,465 ( 0.2%)
+                 caller_splat_optimized:       0 ( 0.0%)
+dynamic_setivar_count:                                                 0
+dynamic_getivar_count:                                                 0
+dynamic_definedivar_count:                                             0
+compiled_iseq_count:                                                  73
+compiled_side_exit_count:                                          1,085
+failed_iseq_count:                                                     0
+compile_time:                                                       38ms
+compile_side_exit_time:                                              1ms
+compile_side_exit_time_ratio:                                       2.8%
+compile_hir_time:                                                   20ms
+compile_hir_build_time:                                              2ms
+compile_hir_strength_reduce_time:                                    1ms
+compile_hir_inline_methods_time:                                     0ms
+compile_hir_remove_trivial_block_params_time:                        0ms
+compile_hir_optimize_load_store_time:                                0ms
+compile_hir_canonicalize_time:                                       0ms
+compile_hir_fold_constants_time:                                     0ms
+compile_hir_clean_cfg_time:                                          0ms
+compile_hir_remove_redundant_patch_points_time:                      0ms
+compile_hir_remove_duplicate_check_interrupts_time:                  0ms
+compile_hir_eliminate_dead_code_time:                                0ms
+compile_lir_time:                                                   17ms
+profile_time:                                                        0ms
+gc_time:                                                             0ms
+invalidation_time:                                                   0ms
+vm_write_jit_frame_count:                                        809,967
+vm_write_sp_count:                                               809,967
+vm_write_locals_count:                                           609,209
+vm_write_stack_count:                                            203,923
+vm_write_to_parent_iseq_local_count:                                 255
+guard_type_count:                                                209,156
+guard_type_exit_ratio:                                              0.0%
+guard_shape_count:                                                 4,504
+guard_shape_exit_ratio:                                             0.7%
+load_field_count:                                                617,191
+store_field_count:                                                 2,412
+throw_count:                                                           6
+side_exit_size_bytes:                                            154,100
+side_exit_size_ratio:                                              42.8%
+jit_frame_heap_bytes:                                             13,672
+jit_frame_region_bytes:                                                0
+code_region_bytes:                                               360,448
+zjit_alloc_bytes:                                                269,386
+total_mem_bytes:                                                 629,834
+total_native_stack_bytes:                                         13,760
+side_exit_count:                                                      53
+total_insn_count:                                              4,418,867
+vm_insn_count:                                                 1,055,289
+zjit_insn_count:                                               3,363,578
+ratio_in_zjit:                                                     76.1%
