@@ -189,6 +189,56 @@ check_export() {
   verdict export "$why"
 }
 
+REFS=references/README.md
+ANALYSIS=analysis/yjit-vs-zjit.md
+
+# citation numbers [n] used in a file
+cites() { grep -oE '\[[0-9]+\]' "$1" 2>/dev/null | sort -u; }
+
+check_references() {
+  why=""
+  if [ ! -s "$REFS" ]; then
+    why="$REFS missing. "
+  else
+    for n in $(cites "$ANALYSIS"); do
+      grep -qF -- "$n " "$REFS" || why="${why}$ANALYSIS cites $n, not in $REFS. "
+    done
+    if curl -sfI --max-time 5 https://www.ruby-lang.org/ >/dev/null 2>&1; then
+      # shellcheck disable=SC2013  # one URL per match, no spaces
+      for u in $(grep -oE 'https://[^ )>]+' "$REFS" | sort -u); do
+        case $u in
+          # publishers block scripted fetches (HTTP 403); ask Crossref instead
+          https://doi.org/*) u="https://api.crossref.org/works/${u#https://doi.org/}" ;;
+        esac
+        curl -sfIL --max-time 15 -A 'the-ceiling-link-check' "$u" >/dev/null 2>&1 \
+          || curl -sfL --max-time 15 -A 'the-ceiling-link-check' -o /dev/null "$u" 2>/dev/null \
+          || why="${why}dead link: $u. "
+      done
+    else
+      echo "warn references: offline, links not checked"
+    fi
+  fi
+  verdict references "$why"
+}
+
+check_analysis() {
+  why=""
+  if [ ! -s "$ANALYSIS" ]; then
+    verdict analysis "$ANALYSIS missing. "; return
+  fi
+  for h in "How CRuby runs code" "How YJIT works" "How ZJIT works" "Side by side" \
+           "When and how each one compiles" "Experiments" "Where no JIT helps" \
+           "Status and direction" "Threats to validity"; do
+    grep -qE "^#+ .*$h" "$ANALYSIS" || why="${why}no section '$h'. "
+  done
+  # shellcheck disable=SC2013  # one path per match, no spaces
+  for f in $(grep -oE '\.\./captures/[a-z0-9-]+\.txt' "$ANALYSIS" | sort -u); do
+    [ -f "analysis/$f" ] || why="${why}broken capture link $f. "
+  done
+  grep -qiE 'buoy|swim' "$ANALYSIS" && why="${why}swim metaphor in the formal analysis. "
+  verdict analysis "$why"
+}
+
 # --- run --------------------------------------------------------------------
 all=$(grep -oE '^check_[a-z_]+\(\)' "$0" | tr -d '()')
 [ $# -gt 0 ] && all="$*"
