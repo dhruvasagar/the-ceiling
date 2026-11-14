@@ -14,8 +14,8 @@ JIT internals: *Ruby already had YJIT and it works — why build ZJIT?* The
 answer the room should leave with, in one sentence:
 
 > "YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
-> whole method at once, so it can see through small method calls and stop
-> paying for them. That's the room Ruby needed to keep getting faster."
+> whole method at once, so it can see through small method calls and pay
+> less for them. That's the ceiling the ZJIT team set out to raise."
 
 (Builder's call, made at design time: the earlier "forgets at every method
 call" wording overstated what the captures show — see §9. If the E2

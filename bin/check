@@ -145,7 +145,7 @@ check_diagrams() {
   verdict diagrams "$why"
 }
 
-TAKEAWAY="YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a whole method at once, so it can see through small method calls and stop paying for them. That's the room Ruby needed to keep getting faster."
+TAKEAWAY="YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a whole method at once, so it can see through small method calls and pay less for them. That's the ceiling the ZJIT team set out to raise."
 
 # What the audience sees on slides: exported headings' body text, minus
 # speaker notes, listings, source blocks, verbatim quotes (their words are
@@ -162,7 +162,7 @@ slide_text() {
 }
 
 check_stale_wording() {
-  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call|straight away|first wave|YJIT guesses|guesses as it goes|which is what params is|is what params is|on the beach|time on the beach|prove the rest|proved a number once' \
+  hits=$(grep -noiE 'bike|triath|a draw|\[VERIFY|parity in 4\.1|forgets what it learned at every method call|compiles on (the )?first call|straight away|first wave|YJIT guesses|guesses as it goes|which is what params is|is what params is|on the beach|time on the beach|prove the rest|proved a number once|the call disappears|The call is gone|No compiler sees inside C|adapting beats planning|simply adds another piece|Same checks, same work|stop paying for them' \
            "$TALK" talk/img/*.svg "$ANALYSIS" 2>/dev/null | tr '\n' ' ')
   verdict stale_wording "${hits:+stale wording: $hits}"
 }

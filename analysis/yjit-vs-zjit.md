@@ -127,7 +127,7 @@ will frequently side-exit into the interpreter" [2].
 | Knowledge travels | forward, block to block | across the whole method graph |
 | Polymorphic sites | one block version per type seen; keeps an inline fixnum path (E5) | type switch in one compiled body; every case a call (E5) |
 | When behaviour changes after compiling | adds another version | plan is stale: side-exits or recompiles [2] |
-| Calls to small Ruby methods | a real call into separately compiled code (E3, default settings) | inlined into the caller (E3) |
+| Calls to small Ruby methods | a real call into separately compiled code (E3); attribute readers and some tiny built-ins folded in | inlined into the caller, with a lighter inline frame (E3) |
 | Default call threshold (preview1) | 30 (E0) | 30 [7] (E0) |
 | Memory on Shopify SFR | 125 MiB [3] | 101 MiB [3] |
 | Status | mature; evaluated in production at Shopify [11] | 4.0: slower than YJIT [4]; 4.1 previews: faster on many benchmarks [5] |
@@ -195,10 +195,18 @@ caller: its `opt_mult` guards both operands (`guard arg0 fixnum`,
 call (`call to Object#sq`, `push callee control frame`) and jumps into that
 existing code (`gen_direct_jmp: existing block`); `sq` then pops its frame
 and returns. ZJIT inlines `sq` at both call sites: `PushInlineFrame :sq …`,
-`FixnumMult v95, v95`, `PopInlineFrame`, with no call and no guard on `n`,
-because `n` *is* `v95`.
+`FixnumMult v95, v95`, `PopInlineFrame`. There is no jump into separate
+code and no guard on `n`, because `n` *is* `v95`. The inline frame is not
+free: ZJIT's low-level IR (`--zjit-dump-lir`) shows a stack-overflow
+check, saving SP, spilling locals and pushing a control frame, and the
+statistics report `empty_inline_frame_count: 0`. It is a lighter frame
+than a call, not the absence of one. Knowledge also flows back out: after
+YJIT's call returns, its `opt_plus` guards both operands
+(`guard arg0 fixnum`, `guard arg1 fixnum`), while ZJIT's
+`FixnumAdd v169, v173` has no guard, because it saw that `sq` returns a
+fixnum.
 
-The difference that holds in every run is **a real call versus no call**.
+The difference that holds in every run is **a real call versus an inlined body**: no jump, no separate compiled code, and type knowledge on both sides of the call.
 Whether YJIT re-checks `n` depends on what it compiled first. With
 `--yjit-call-threshold=1`
 ([`yjit-sq-eager.txt`](../captures/yjit-sq-eager.txt)) YJIT compiles
@@ -243,7 +251,10 @@ In `[]`, YJIT emits a real call to `convert_key`
 `push callee control frame`, `gen_direct_jmp: existing block`), the same
 pattern as `sq` in E3. ZJIT inlines it (`PushInlineFrame :convert_key`),
 turns `Symbol === key` into an `IsA` type test and a branch, and compiles
-the `super` call as a direct `CCallWithFrame` to `Hash#[]`. The work that
+the `super` call as a `CCallWithFrame` to `Hash#[]`; YJIT's
+`invokesuper` also calls the C function directly. Where the caller passes
+a literal key, ZJIT inlines `[]` and `convert_key` into the caller and
+folds `Symbol === :id` away. The work that
 remains is the C hash lookup.
 
 **E5. Polymorphism: `double(x) = x + x`.**
@@ -263,9 +274,11 @@ like.
   `CCallWithFrame` to that class's `#+` (including `Integer#+`, no longer
   an inline add), and a final generic `Send` marked `polymorphic fallback`.
 - YJIT, choppy: one block version per type: an inline fixnum add, plus
-  calls to `Float#+`, `String#+`, `Array#+` and `Rational#+`. Here YJIT's
-  reacting design keeps a fast path that ZJIT's plan gives up: in ZJIT
-  even the Integer case is a call to `Integer#+`.
+  calls to `Float#+`, `String#+`, `Array#+` and `Rational#+`. YJIT keeps a
+  fast path that ZJIT gives up today: in ZJIT even the Integer case, whose
+  type it has already refined, is a call to `Integer#+`. ZJIT still inlines
+  `double` itself, where YJIT calls it. This looks like a missing
+  specialization in this build, not a limit of planning.
 
 Both statistics captures report `side_exit_count: 0`. Neither compiler
 "bails out" here; both stop specialising and fall back to general calls.

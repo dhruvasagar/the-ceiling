@@ -100,6 +100,30 @@ https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
 - "It lazily compiles code using a Basic Block Versioning (BBV)
   architecture." (analysis §2)
 
+## Source code and documentation (read 2026-11-14)
+
+[12] Ruby core team. *YJIT* documentation and source, ruby/ruby master.
+- `doc/jit/yjit.md` line 200: `--yjit-call-threshold` "defaults to 30, and
+  it's then increased to 120 when the number of ISEQs in the process
+  reaches 40,000." (talk: *25 compiles, or one*, depth note)
+  https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
+- `yjit/src/options.rs`: `max_versions: 4` (default number of versions
+  of a block). (talk: *In the ZJIT team's words*, notes)
+  https://github.com/ruby/ruby/blob/master/yjit/src/options.rs
+- `vm_insnhelper.c`, `vm_opt_minus` (line 7094): checks both operands are
+  fixnums (`FIXNUM_2_P`) and that `-` isn't redefined before its fast path,
+  on every execution. (talk: *The bytecode*)
+  https://github.com/ruby/ruby/blob/master/vm_insnhelper.c
+- `yjit/src/backend/ir.rs`: YJIT's low-level IR inside its code generator.
+  (talk: *Why it's a ceiling*, Q&A note)
+  https://github.com/ruby/ruby/blob/master/yjit/src/backend/ir.rs
+
+[13] Rails core team. `actionpack/lib/action_controller/metal/strong_parameters.rb`,
+Rails v8.1.1, line 294: `@parameters = parameters.with_indifferent_access`.
+Rails `params` is built on `HashWithIndifferentAccess`. (talk: *Race day:
+params*)
+https://github.com/rails/rails/blob/v8.1.1/actionpack/lib/action_controller/metal/strong_parameters.rb
+
 ## Research behind YJIT
 
 [9] Maxime Chevalier-Boisvert and Marc Feeley. *Simple and Effective Type

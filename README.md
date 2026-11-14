@@ -10,8 +10,8 @@ that only one of them can see through, and the team's own words on why
 they did it.
 
 > YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
-> whole method at once, so it can see through small method calls and stop
-> paying for them. That's the room Ruby needed to keep getting faster.
+> whole method at once, so it can see through small method calls and pay
+> less for them. That's the ceiling the ZJIT team set out to raise.
 
 **Status: draft for RubyConf.** Every capture was made on **Ruby 4.1.0-preview1**.
 Ruby 4.1.0 ships 2026-12-25; the captures will be re-run then.
@@ -32,6 +32,7 @@ Ruby 4.1.0 ships 2026-12-25; the captures will be re-run then.
 | `docs/`                    | The design and build plan for this repo.                                        |
 | `analysis/yjit-vs-zjit.md` | The formal comparison: how each JIT works, every experiment, status and limits. |
 | `references/README.md`     | Annotated sources, with the exact quotes used and where.                        |
+| `analysis/claims.md`       | Every YJIT/ZJIT comparison in the talk and the capture line or source behind it. |
 
 
 ## Reproduce it

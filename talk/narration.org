@@ -16,32 +16,32 @@ STORY beat (30 s).
 
 | # | Starts | Slide | Budget | Estimate | Spare | Notes |
 |---+--------+-------+--------+----------+-------+-------|
-| 1 | 0:00 | Every time you lift your head | 1:15 | 1:22 | -0:07 | STORY OVER  |
-| 2 | 1:15 | Ruby swims with its head up | 0:30 | 0:14 | 0:16 |  |
-| 3 | 1:45 | Our five lines | 0:30 | 0:32 | -0:02 |  |
-| 4 | 2:15 | The bytecode | 1:00 | 1:06 | -0:06 | live OVER  |
-| 5 | 3:15 | Learning to sight | 1:00 | 0:53 | 0:07 | STORY  |
-| 6 | 4:15 | YJIT: compile as you go | 1:00 | 0:41 | 0:19 |  |
-| 7 | 5:15 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
-| 8 | 5:45 | ZJIT: the IR on one slide | 1:00 | 0:52 | 0:08 |  |
-| 9 | 6:45 | 25 compiles, or one | 0:30 | 0:33 | -0:03 |  |
-| 10 | 7:15 | On five lines, a tie | 0:45 | 0:37 | 0:08 |  |
-| 11 | 8:00 | The plateau | 1:00 | 0:51 | 0:09 | STORY  |
-| 12 | 9:00 | One more call | 0:30 | 0:17 | 0:13 |  |
-| 13 | 9:30 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
-| 14 | 10:00 | At the turn buoy | 1:30 | 0:59 | 0:31 | room  |
-| 15 | 11:30 | Why it's a ceiling | 1:15 | 0:52 | 0:23 | room  |
-| 16 | 12:45 | The 2-beat kick | 0:45 | 0:39 | 0:06 | STORY  |
-| 17 | 13:30 | In the ZJIT team's words | 0:45 | 0:48 | -0:03 |  |
-| 18 | 14:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
-| 19 | 14:45 | params, through both | 0:45 | 0:40 | 0:05 |  |
-| 20 | 15:30 | The feed stop | 0:30 | 0:19 | 0:11 |  |
-| 21 | 16:00 | Calm water, choppy water | 1:00 | 1:00 | 0:00 |  |
-| 22 | 17:00 | Read your own code | 0:30 | 0:29 | 0:01 |  |
-| 23 | 17:30 | What it means for Ruby | 0:45 | 0:31 | 0:14 |  |
-| 24 | 18:15 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
+| 1 | 0:00 | Every time you lift your head | 1:15 | 1:24 | -0:09 | STORY OVER  |
+| 2 | 1:15 | Ruby swims with its head up | 0:15 | 0:14 | 0:01 |  |
+| 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
+| 4 | 2:00 | The bytecode | 1:00 | 1:10 | -0:10 | live OVER  |
+| 5 | 3:00 | Learning to sight | 1:00 | 0:53 | 0:07 | STORY  |
+| 6 | 4:00 | YJIT: compile as you go | 1:00 | 0:42 | 0:18 |  |
+| 7 | 5:00 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
+| 8 | 5:30 | ZJIT: the IR on one slide | 1:00 | 0:53 | 0:07 |  |
+| 9 | 6:30 | 25 compiles, or one | 1:00 | 0:58 | 0:02 |  |
+| 10 | 7:30 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
+| 11 | 8:15 | The plateau | 1:00 | 0:54 | 0:06 | STORY  |
+| 12 | 9:15 | One more call | 0:30 | 0:17 | 0:13 |  |
+| 13 | 9:45 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
+| 14 | 10:15 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
+| 15 | 11:45 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
+| 16 | 13:00 | The 2-beat kick | 0:45 | 0:39 | 0:06 | STORY  |
+| 17 | 13:45 | In the ZJIT team's words | 0:45 | 0:53 | -0:08 | OVER  |
+| 18 | 14:30 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 19 | 15:00 | params, through both | 0:45 | 0:44 | 0:01 |  |
+| 20 | 15:45 | The feed stop | 0:30 | 0:20 | 0:10 |  |
+| 21 | 16:15 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
+| 22 | 17:15 | Read your own code | 0:30 | 0:29 | 0:01 |  |
+| 23 | 17:45 | What it means for Ruby | 0:45 | 0:42 | 0:03 |  |
+| 24 | 18:30 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:00* | *16:04* | *2:56* | |
+|   |        | *Total* | *19:15* | *17:44* | *1:31* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -64,8 +64,8 @@ That turns out to be how compilers make Ruby fast too: not by doing each
 step harder, but by wasting less.
 
 Ruby 4.0 came out last Christmas with two just-in-time compilers. YJIT has
-made real Rails apps faster for years. ZJIT is new, from the same team,
-and 4.1 ships in a few weeks. Most of us will upgrade without ever looking
+made real Rails apps faster for years. ZJIT is new: Ruby's release notes call it "the next
+generation of YJIT". And 4.1 ships in a few weeks. Most of us will upgrade without ever looking
 at what changed.
 
 So why build a second one? We'll follow one five-line method through
@@ -78,7 +78,7 @@ written in.]
 
 /Next: Ruby swims with its head up/
 
-** 2. Ruby swims with its head up  (1:15, 0:30)
+** 2. Ruby swims with its head up  (1:15, 0:15)
 
 /On screen:/
 - diagram img/head-up.svg: The beginner swimmer lifts their head every stroke
@@ -92,11 +92,24 @@ Ruby's interpreter runs your code a lot like that. Let me show you.
 
 /Next: Our five lines/
 
-** 3. Our five lines  (1:45, 0:30)
+** 3. Our five lines  (1:30, 0:30)
 
 /On screen:/
-- code
-- code
+- code:
+#+begin_example
+class Point
+  attr_reader :x, :y
+  def initialize(x, y) = (@x, @y = x, y)
+end
+#+end_example
+- code:
+#+begin_example
+def distance(a, b)
+  dx = a.x - b.x
+  dy = a.y - b.y
+  Math.sqrt(dx * dx + dy * dy)
+end
+#+end_example
 
 /Say:/
 
@@ -107,11 +120,25 @@ interpreter runs that.
 
 /Next: The bytecode/
 
-** 4. The bytecode  (2:15, 1:00)
+** 4. The bytecode  (2:00, 1:00)
 
 /On screen:/
-- code
-- listing from captures/yarv-distance.txt
+- code:
+#+begin_example
+ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
+#+end_example
+- listing (captures/yarv-distance.txt):
+#+begin_example
+0000 getlocal_WC_0          a@0
+0002 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>
+0004 getlocal_WC_0          b@1
+0006 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>
+0008 opt_minus              <calldata!mid:-, argc:1, ARGS_SIMPLE>
+0010 setlocal_WC_0          dx@2
+ ...
+0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>
+0042 leave
+#+end_example
 - Ruby 4.1.0-preview1
 
 /Say:/
@@ -122,12 +149,12 @@ Top to bottom: get a, call x on it. Get b, call x on it. Minus. Store it
 in dx.
 
 That "minus" doesn't know it's subtracting numbers. It could be anything
-with a minus method. So every time it runs, the interpreter lifts its head
-and checks. You can run this line on your own code tonight.
+with a minus method. There's a fast path for plain numbers, but it has to
+check first, every single time: the interpreter lifting its head. You can run this line on your own code tonight.
 
 /Next: Learning to sight/
 
-** 5. Learning to sight  (3:15, 1:00)
+** 5. Learning to sight  (3:00, 1:00)
 
 /On screen:/
 - diagram img/sighting.svg: A trained swimmer looks once, then keeps their head down
@@ -146,13 +173,23 @@ Ruby has two of them, and they look in different ways.
 
 /Next: YJIT: compile as you go/
 
-** 6. YJIT: compile as you go  (4:15, 1:00)
+** 6. YJIT: compile as you go  (4:00, 1:00)
 
 /On screen:/
-- - Once a method is warm, compile a small piece, run it
-- - Look at the values that really turned up
-- - Compile the next piece for exactly those
-- listing from captures/yjit-distance.txt
+- Once a method is warm, compile a small piece, run it
+- Look at the values that really turned up
+- Compile the next piece for exactly those
+- listing (captures/yjit-distance.txt):
+#+begin_example
+# Insn: 0002 opt_send_without_block (stack_size: 1)
+# call to Point#x
+# guard not immediate
+# guard known class
+# guard shape
+# Block: distance@distance.rb:7
+# Insn: 0004 getlocal_WC_0 (stack_size: 1)
+# defer_compilation
+#+end_example
 - Ruby 4.1.0-preview1 · ~ruby --yjit --yjit-dump-disasm~
 
 /Say:/
@@ -164,20 +201,21 @@ At a.x it checks: a real object, a Point, laid out as before. Then it
 reads @x directly.
 
 "defer_compilation" means: stop here, let the code run, and compile the
-next piece when we get there, for whatever value is really there. Very
-little wasted work, and it's why YJIT paid off so fast.
+next piece when we get there, for whatever value is really there. So it
+only compiles code that actually runs, for the values that actually turn
+up.
 
 [Depth: lazy basic block versioning. "Shape" is an object's
 instance-variable layout.]
 
 /Next: ZJIT: watch, then plan/
 
-** 7. ZJIT: watch, then plan  (5:15, 0:30)
+** 7. ZJIT: watch, then plan  (5:00, 0:30)
 
 /On screen:/
-- - While the interpreter runs the method, record which types turn up: a *profile*
-- - Then turn the *whole method* into a plan: the *IR*
-- - Improve the plan, then compile it, once
+- While the interpreter runs the method, record which types turn up: a *profile*
+- Then turn the *whole method* into a plan: the *IR* (intermediate representation)
+- Improve the plan, then compile it, once
 
 /Say:/
 
@@ -189,10 +227,26 @@ representation, improves the plan, and compiles it in one go.
 
 /Next: ZJIT: the IR on one slide/
 
-** 8. ZJIT: the IR on one slide  (5:45, 1:00)
+** 8. ZJIT: the IR on one slide  (5:30, 1:00)
 
 /On screen:/
-- listing from captures/zjit-distance.txt
+- listing (captures/zjit-distance.txt):
+#+begin_example
+fn distance@distance.rb:7:
+bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a) recompile
+  v83:BasicObject = LoadField v79, :@x
+  ...
+  v93:Fixnum = GuardType v83, Fixnum recompile
+  v94:Fixnum = GuardType v90, Fixnum
+  v95:Fixnum = FixnumSub v93, v94
+  ...
+  v118:Fixnum = FixnumMult v95, v95
+  ...
+  v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126
+  Return v130
+#+end_example
 - The whole method as one plan. ~GuardType~ and ~GuardBitEquals~ are sights. ~v95~ is ~dx~.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 
@@ -208,50 +262,78 @@ Every value gets a name, set exactly once. v16 is a. GuardType: is it a
 Point? GuardBitEquals: laid out as expected? The same checks YJIT made.
 
 FixnumSub makes dx, named v95. Then dx times dx: FixnumMult v95, v95. And
-CCallWithFrame calls into C for Math.sqrt. No compiler sees inside C.
+CCallWithFrame calls into C for Math.sqrt. Neither compiler sees inside
+that C code.
 
 [Depth: "set once" is SSA. Trimmed: PatchPoints, which discard this code
 if someone redefines Point#x.]
 
 /Next: 25 compiles, or one/
 
-** 9. 25 compiles, or one  (6:45, 0:30)
+** 9. 25 compiles, or one  (6:30, 1:00)
 
 /On screen:/
-- listing from captures/how-yjit.txt, how-zjit.txt
-- Default settings. Both start at call 30. YJIT: *25* pieces. ZJIT: *1* plan.
+- listing (captures/how-yjit.txt, how-zjit.txt):
+#+begin_example
+YJIT                                          ZJIT
+call 30                                       call 30
+distance@distance_log.rb:7 (index: 0)         distance@distance_log.rb:7
+distance@distance_log.rb:7 (index: 2)
+ ...
+distance@distance_log.rb:10 (index: 42)
+#+end_example
+- Default settings. Both compile during call 30. YJIT: *25* pieces, one by one as that call runs. ZJIT: *1* plan. Calls 31 to 40: no compiles at all.
 
 /Say:/
 
-You can count it. Both wait until call 30. Then YJIT compiles twenty-five
-pieces of this method; ZJIT compiles one plan.
+You can count it. Both wait until call 30.
+
+During that one call, YJIT compiles twenty-five times: compile a piece,
+run it, reach a value it hasn't seen, like b, look at it, compile the
+next piece. After call 30 it's all machine code; calls 31 to 40 compile
+nothing. ZJIT compiles once.
+
+Why? So YJIT never compiles code that doesn't run, or for types that
+never turn up.
+
+[Depth: some positions appear twice in the log because a piece is
+compiled in two steps, up to a defer_compilation, then the rest. In a big
+app YJIT raises its threshold (120 calls once there are 40,000 compiled
+methods), so "both at 30" is for small programs.]
 
 Neither number wins on its own. What matters is the shape: twenty-five
-pieces already turned into machine code, or one plan that can still be
-changed. Hold onto that.
+pieces turned into machine code one at a time, or one plan, improved
+before any machine code is written. Hold onto that.
 
 /Next: On five lines, a tie/
 
-** 10. On five lines, a tie  (7:15, 0:45)
+** 10. On five lines, a tie  (7:30, 0:45)
 
 /On screen:/
-- listing from captures/yjit-distance.txt, zjit-distance.txt
-- At ~dx * dx~ neither checks again: both already know ~dx~ is a number.
+- listing (captures/yjit-distance.txt, zjit-distance.txt):
+#+begin_example
+YJIT                                         ZJIT
+# Insn: 0028 getlocal_WC_0 (stack_size: 2)   v95:Fixnum = FixnumSub v93, v94
+# Insn: 0030 opt_mult (stack_size: 3)        ...
+# Insn: 0032 getlocal_WC_0 (stack_size: 2)   v118:Fixnum = FixnumMult v95, v95
+#+end_example
+- At ~dx * dx~ neither checks again: both already know ~dx~ is a number. Nearly a tie.
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
 
-So who wins on our five lines? Honestly: nobody.
+So who wins on our five lines? Honestly: nearly nobody.
 
 At dx times dx, YJIT doesn't check again. It carried "dx is a number"
-forward from the minus. ZJIT doesn't either. Same checks, same work.
+forward from the minus. ZJIT doesn't either. ZJIT is slightly ahead: it
+doesn't re-check a and b before reading y. But it's small.
 
-On straight-line code like this, YJIT already got the wins. To see why
+On straight-line code like this one, YJIT already gets the wins. To see why
 ZJIT exists, we need something every Ruby codebase is full of.
 
 /Next: The plateau/
 
-** 11. The plateau  (8:00, 1:00)
+** 11. The plateau  (8:15, 1:00)
 
 /On screen:/
 - diagram img/plateau.svg: Swim times drop fast while learning to sight, then stop moving
@@ -262,18 +344,28 @@ ZJIT exists, we need something every Ruby codebase is full of.
 it stopped. When I looked at where the time went, the straight legs were
 fine. I was losing it at the turns." Keep only what's true for you.]
 
-YJIT hit the same kind of wall. The easy wins are taken. What's left is at
-the turns, and in Ruby the turns are method calls. We write small methods
-calling small methods. That's how we're taught.
+The ZJIT team built ZJIT, in their words, to "raise the performance
+ceiling". Here's one place you can see what they mean: the turns. In Ruby, a turn
+is a method call, and we write small methods calling small methods.
+That's how we're taught.
 
 Let's add one turn to our five lines.
 
 /Next: One more call/
 
-** 12. One more call  (9:00, 0:30)
+** 12. One more call  (9:15, 0:30)
 
 /On screen:/
-- code
+- code:
+#+begin_example
+def sq(n) = n * n
+
+def distance(a, b)
+  dx = a.x - b.x
+  dy = a.y - b.y
+  Math.sqrt(sq(dx) + sq(dy))
+end
+#+end_example
 
 /Say:/
 
@@ -282,7 +374,7 @@ called sq.
 
 /Next: One more call is one more buoy/
 
-** 13. One more call is one more buoy  (9:30, 0:30)
+** 13. One more call is one more buoy  (9:45, 0:30)
 
 /On screen:/
 - diagram img/turn-buoy.svg: One more call is one more turn buoy
@@ -297,34 +389,53 @@ distance. That's called inlining.
 
 /Next: At the turn buoy/
 
-** 14. At the turn buoy  (10:00, 1:30)
+** 14. At the turn buoy  (10:15, 1:30)
 
 /On screen:/
-- listing from captures/yjit-sq.txt, zjit-sq.txt
-- YJIT: a real call into a general ~sq~. ZJIT: the call disappears; ~sq~ becomes one multiply of ~v95~, which is ~dx~.
+- listing (captures/yjit-sq.txt, zjit-sq.txt):
+#+begin_example
+YJIT                                     ZJIT
+# call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
+# push callee control frame              ...
+# gen_direct_jmp: existing block         PushInlineFrame :sq, v116, num_args=1
+ ...                                     v169:Fixnum = FixnumMult v95, v95
+# Block: sq@distance_sq.rb:6             PopInlineFrame
+# Insn: 0004 opt_mult (stack_size: 2)
+# guard arg0 fixnum
+# guard arg1 fixnum
+# pop stack frame
+ ...                                     ...
+# Insn: 0036 opt_plus (stack_size: 3)    v125:Fixnum = FixnumAdd v169, v173
+# guard arg0 fixnum
+#+end_example
+- YJIT: a real call into a general ~sq~, and a check again when it returns. ZJIT: ~sq~ spliced in. No jump, no check on ~n~, and it knows the result is a number.
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
 
 Here's the turn, in each compiler's own words.
 
-YJIT, left. sq is called twice per distance, so it got hot first and YJIT
-compiled it on its own, for any caller. So distance makes a real call.
+YJIT, left. It compiles sq as its own code, so distance has to call it.
 
 A call isn't free. Save where you are, set up a new frame for sq, jump
 there, run it, tear the frame down, jump back. All of that to multiply two
-numbers. And since that sq serves everyone, it checks n as well.
+numbers. Since that sq serves every caller, it checks n. And when it
+returns, YJIT doesn't know what came back, so at the plus it checks again.
 
-ZJIT, right. The call is gone. PushInlineFrame is just a note that sq is
-"on the stack". What's left is FixnumMult v95, v95: dx times dx.
+ZJIT, right. sq is spliced in: no jump, no check on n. It still sets up a
+light frame, in case it ever has to hand back to the interpreter. And
+because it saw inside sq, it knows the result is a number: the plus has no
+check at all.
 
 [Fair to YJIT, if asked: force it to compile early and it carries "n is a
 number" into sq, so no check there. Its team says its design "allows for
-easy interprocedural type-based specialization". The call stays.]
+easy interprocedural type-based specialization". The call stays. Also if
+asked: ZJIT's inline frame is real (stack check, save SP, push frame); it
+is cheaper than a call, not free.]
 
 /Next: Why it's a ceiling/
 
-** 15. Why it's a ceiling  (11:30, 1:15)
+** 15. Why it's a ceiling  (11:45, 1:15)
 
 /On screen:/
 - diagram img/ceiling.svg: YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
@@ -335,15 +446,22 @@ So why can't YJIT just do what ZJIT did? Because of its shape.
 
 YJIT turns each piece into machine code as soon as it reaches it. There's
 never a picture of the whole method, so there's nothing to rearrange
-afterwards. A call to another method stays a real call.
+afterwards. It can fold in the tiniest things, like the attribute reader we saw.
+But in every capture in this talk, a method doing real work, sq,
+convert_key, double, stays a real call. And after the call returns, YJIT
+checks the result again.
 
 ZJIT builds the whole method as a plan first. And a plan can be rewritten
-before it runs: splice a small method in, drop a check that's already been
-done.
+before it runs: splice a small method in, then drop the checks on both
+sides of it, because the plan can see what goes in and what comes out.
 
-That's the ceiling. The ZJIT team put it exactly this way: instead of one
-piece at a time, one entire method at a time, which gives the optimizer
-more code to work with.
+That's the ceiling. In the ZJIT team's words: instead of one piece at a
+time, one entire method at a time, which gives the optimizer more code to
+work with.
+
+[If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code
+generator (yjit/src/backend/ir.rs). What it doesn't build is a plan of a
+whole method.]
 
 [Sources: Bernstein, Rails at Scale, 2025-05-14: "Instead of compiling one
 basic block at a time, it compiles one entire method at a time"; "gives
@@ -351,7 +469,7 @@ more code at once to the optimizer".]
 
 /Next: The 2-beat kick/
 
-** 16. The 2-beat kick  (12:45, 0:45)
+** 16. The 2-beat kick  (13:00, 0:45)
 
 /On screen:/
 - diagram img/two-beat-kick.svg: The 2-beat kick is timed to the whole stroke
@@ -366,7 +484,7 @@ callee together.
 
 /Next: In the ZJIT team's words/
 
-** 17. In the ZJIT team's words  (13:30, 0:45)
+** 17. In the ZJIT team's words  (13:45, 0:45)
 
 /On screen:/
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
@@ -378,8 +496,13 @@ value named once, which is what SSA means. And a traditional compiler
 shape, so more people can help build it.
 
 It isn't free. ZJIT plans from what it saw while warming up. If your
-traffic changes after that, the plan is wrong and it has to fall back or
-recompile. YJIT simply adds another piece.
+traffic changes after that, the plan is wrong: it falls back, then
+recompiles from a new profile. YJIT adds another version on the spot, up
+to a limit (four by default).
+
+[Sources for the limit: YJIT's max_versions option, default 4,
+yjit/src/options.rs. "recompile" is marked on ZJIT's guards in every HIR
+capture.]
 
 [Sources: launch post 2025-12-24 ("if your method call patterns change
 significantly after your code has been compiled, we will frequently
@@ -389,10 +512,19 @@ contribute to").]
 
 /Next: Race day: params/
 
-** 18. Race day: params  (14:15, 0:30)
+** 18. Race day: params  (14:30, 0:30)
 
 /On screen:/
-- listing from captures/hwia-source.txt
+- listing (captures/hwia-source.txt):
+#+begin_example
+def [](key)
+  super(convert_key(key))
+end
+
+def convert_key(key)
+  Symbol === key ? key.name : key
+end
+#+end_example
 - ~HashWithIndifferentAccess~: what Rails ~params~ is built on.
 - activesupport 8.1.4.1
 
@@ -405,13 +537,26 @@ method calling a small method.
 
 /Next: params, through both/
 
-** 19. params, through both  (14:45, 0:45)
+** 19. params, through both  (15:00, 0:45)
 
 /On screen:/
 - YJIT at ~[]~:
-- listing from captures/hwia-yjit-disasm.txt
+- listing (captures/hwia-yjit-disasm.txt):
+#+begin_example
+# call to ActiveSupport::HashWithIndifferentAccess#convert_key
+# push callee control frame
+# gen_direct_jmp: existing block
+#+end_example
 - ZJIT at ~[]~:
-- listing from captures/hwia-zjit-hir.txt
+- listing (captures/hwia-zjit-hir.txt):
+#+begin_example
+PushInlineFrame :convert_key, v27, num_args=1
+v78:BoolExact = IsA v10, v43
+CondBranch v50, bb8(), bb7()
+ ...
+PopInlineFrame
+v35:BasicObject = CCallWithFrame v27, :Hash#[], v71
+#+end_example
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
@@ -421,12 +566,15 @@ The same turn, in real code.
 YJIT makes a real call into convert_key, just like sq.
 
 ZJIT splices convert_key in. "Symbol triple-equals key" becomes a plain
-type test and a branch. Then super is a direct call to Hash#[]. Which is
-written in C.
+type test and a branch. Then both compilers call Hash#[], which is written
+in C.
+
+[Depth: where the caller passes a literal like :id, ZJIT inlines [] and
+convert_key into it and folds "Symbol === :id" away entirely.]
 
 /Next: The feed stop/
 
-** 20. The feed stop  (15:30, 0:30)
+** 20. The feed stop  (15:45, 0:30)
 
 /On screen:/
 - diagram img/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
@@ -434,19 +582,33 @@ written in C.
 /Say:/
 
 And that's the feed stop. Hashing the key and finding it happens in C, and
-no Ruby compiler makes C faster. Same for waiting on the database, and for
+no Ruby compiler speeds up the C itself. Same for waiting on the database, and for
 garbage collection. A better stroke doesn't shorten the stop at the boat.
 
 /Next: Calm water, choppy water/
 
-** 21. Calm water, choppy water  (16:00, 1:00)
+** 21. Calm water, choppy water  (16:15, 1:00)
 
 /On screen:/
-- code
+- code:
+#+begin_example
+def double(x) = x + x   # called with Integers only, or with five types
+#+end_example
 - Calm, ZJIT: spliced in, one check, one add.
-- listing from captures/zjit-calm.txt
+- listing (captures/zjit-calm.txt):
+#+begin_example
+v44:Fixnum = GuardType v10, Fixnum recompile
+v46:Fixnum = FixnumAdd v44, v44
+#+end_example
 - Choppy: five types.
-- listing from captures/yjit-choppy.txt, zjit-choppy.txt
+- listing (captures/yjit-choppy.txt, zjit-choppy.txt):
+#+begin_example
+YJIT                        ZJIT
+# guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
+# call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
+# call to String#+          ...
+# call to Array#+           Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
+#+end_example
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
@@ -456,23 +618,28 @@ Now the honest part: where ZJIT gives up.
 Calm water, only whole numbers: ZJIT splices double in, one check, one add.
 
 Choppy: five types. ZJIT plans for all of them, and every case becomes a
-call into C, even whole numbers. YJIT, reacting as it goes, keeps a fast
-add for whole numbers and adds a piece per type. In chop, adapting beats
-planning.
+call into C, even whole numbers. YJIT keeps a fast add for whole numbers
+and a version per type. In chop, today, YJIT has the faster path. ZJIT
+still saves the call to double itself. That's this build, today.
 
 [Depth: neither bailed out to the interpreter, 0 side exits each
 (captures zjit-choppy-stats, yjit-choppy-stats).]
 
 /Next: Read your own code/
 
-** 22. Read your own code  (17:00, 0:30)
+** 22. Read your own code  (17:15, 0:30)
 
 /On screen:/
-- code
+- code:
+#+begin_example
+ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'
+ruby --zjit --zjit-dump-hir   your_file.rb
+ruby --zjit --zjit-stats      your_file.rb
+#+end_example
 - Look for:
 - 1. A call that didn't disappear: a turn you could make easier
 - 2. Checks you didn't expect: a value that isn't one type
-- 3. Calls into C: time no Ruby compiler can touch
+- 3. Calls into C: time mostly out of the compiler's reach
 
 /Say:/
 
@@ -484,31 +651,32 @@ is out of the compiler's reach.
 
 /Next: What it means for Ruby/
 
-** 23. What it means for Ruby  (17:30, 0:45)
+** 23. What it means for Ruby  (17:45, 0:45)
 
 /On screen:/
 - YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
-- whole method at once, so it can see through small method calls and stop
-- paying for them. That's the room Ruby needed to keep getting faster.
+- whole method at once, so it can see through small method calls and pay
+- less for them. That's the ceiling the ZJIT team set out to raise.
 
 /Say:/
 
 [Read the slide.]
 
-For you: keep writing small, clear methods. The compiler is learning to
-stop charging you for them.
+For you: small, clear methods are exactly what inlining is for. The 4.1
+notes list "method inlining" for small Ruby methods.
 
 The 4.0 release notes call ZJIT "the next generation of YJIT", and set the
 goal "faster than YJIT and production-ready in Ruby 4.1". In October the
 team wrote that it's "probably as fast as or faster than YJIT" on
-Shopify's storefront. 4.1 ships in a few weeks. Try it with --zjit.
+Shopify's storefront, in a couple of small regions, and the 4.1 notes say
+it can still be slower on larger apps. 4.1 ships in a few weeks. Try it with --zjit.
 
 [Sources: Ruby 4.0.0 release notes, 2025-12-25; Rails at Scale,
 2026-10-09, measured in "a couple small regions".]
 
 /Next: Head down/
 
-** 24. Head down  (18:15, 0:45)
+** 24. Head down  (18:30, 0:45)
 
 /On screen:/
 - /"Every time you lift your head, you slow down."/

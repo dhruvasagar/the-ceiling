@@ -47,16 +47,16 @@ inq { quote = quote " " $0; qtxt = qtxt $0 " "; next }
 /^#\+begin_(example|src)/ {
   inb = 1; blocks++
   kind = ($0 ~ /begin_src/) ? "code" : "listing"
-  screen = screen "- " kind (cap != "" ? " from captures/" cap : "") "\n"; cap = ""
+  screen = screen "- " kind (cap != "" ? " (captures/" cap ")" : "") ":\n#+begin_example\n"; cap = ""
   next
 }
-/^#\+end_(example|src)/ { inb = 0; next }
-inb { next }
+/^#\+end_(example|src)/ { inb = 0; screen = screen "#+end_example\n"; next }
+inb { screen = screen $0 "\n"; next }
 /^# capture: / { cap = $0; sub(/^# capture: /, "", cap); next }
 /^#\+attr_html: :alt / { alt = $0; sub(/^#\+attr_html: :alt /, "", alt); next }
 /^\[\[file:img\// { f = $0; gsub(/^\[\[file:|\]\]$/, "", f); screen = screen "- diagram " f (alt != "" ? ": " alt : "") "\n"; alt = ""; next }
 /^#/ || /^:/ || /^[ \t]*$/ { next }
-{ line = $0; gsub(/=/, "~", line); screen = screen "- " line "\n" }
+{ line = $0; sub(/^- /, "", line); gsub(/=/, "~", line); screen = screen "- " line "\n" }
 END {
   finish()
   print "#+TITLE: The Ceiling — narration"
