@@ -134,16 +134,24 @@ DIAGRAMS="head-up sighting plateau ceiling turn-buoy two-beat-kick feed-stop"
 
 check_diagrams() {
   why=""
+  tmp=$(mktemp -d)
   for d in $DIAGRAMS; do
     f=talk/img/$d.svg
+    o=talk/img/out/$d.svg
     if [ ! -f "$f" ]; then why="$why$f missing. "
     elif ! xmllint --noout "$f" 2>/dev/null; then why="$why$f is not valid XML. "
     elif ! grep -q 'viewBox="0 0 1600 900"' "$f"; then why="$why$f is not 16:9 (viewBox 0 0 1600 900). "
+    elif [ ! -f "$o" ]; then why="$why$o missing (run bin/render-diagrams). "
+    elif grep -q '<text' "$o"; then why="$why$o still has font-dependent text. "
+    else
+      rsvg-convert -f svg "$f" -o "$tmp/$d.svg" 2>/dev/null
+      cmp -s "$tmp/$d.svg" "$o" || why="$why$o is stale (run bin/render-diagrams). "
     fi
   done
+  rm -rf "$tmp"
   # every image the talk references exists
   # shellcheck disable=SC2013  # one path per match, no spaces possible
-  for ref in $(grep -oE 'img/[a-z0-9-]+\.svg' talk/the-ceiling.org | sort -u); do
+  for ref in $(grep -oE 'img/(out/)?[a-z0-9-]+\.svg' "$TALK" | sort -u); do
     [ -f "talk/$ref" ] || why="${why}talk references missing $ref. "
   done
   verdict diagrams "$why"

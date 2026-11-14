@@ -3,6 +3,7 @@
 # Uses a clean Emacs (-Q, your init is not loaded) and installs
 # org-re-reveal from MELPA into .emacs-deps/ (git-ignored) on first run.
 cd "$(dirname "$0")/.." || exit 2
+bin/render-diagrams || exit 1
 exec emacs --batch -Q --eval '
 (progn
   (require (quote package))

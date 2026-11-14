@@ -1,0 +1,11 @@
+#!/bin/sh
+# Render talk/img/*.svg (editable sources) into talk/img/out/*.svg with all
+# text converted to outlines, so every browser draws the same shapes and no
+# font is involved. The slides use the outlined copies. Needs rsvg-convert
+# (librsvg: brew install librsvg).
+cd "$(dirname "$0")/.." || exit 2
+command -v rsvg-convert >/dev/null 2>&1 || { echo "rsvg-convert not found: brew install librsvg" >&2; exit 1; }
+mkdir -p talk/img/out
+for src in talk/img/*.svg; do
+  rsvg-convert -f svg "$src" -o "talk/img/out/$(basename "$src")" || exit 1
+done

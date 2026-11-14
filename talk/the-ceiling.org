@@ -85,7 +85,7 @@ written in.]
 :END:
 
 #+attr_html: :alt The beginner swimmer lifts their head every stroke
-[[file:img/head-up.svg]]
+[[file:img/out/head-up.svg]]
 
 #+begin_notes
 A beginner lifts their head every stroke: where am I, is this still right?
@@ -167,7 +167,7 @@ check first, every single time: the interpreter lifting its head. You can run th
 :END:
 
 #+attr_html: :alt A trained swimmer looks once, then keeps their head down
-[[file:img/sighting.svg]]
+[[file:img/out/sighting.svg]]
 
 #+begin_notes
 [STORY, one or two lines: learning to sight. You still have to look, or
@@ -322,7 +322,7 @@ ZJIT exists, we need something every Ruby codebase is full of.
 :END:
 
 #+attr_html: :alt Swim times drop fast while learning to sight, then stop moving
-[[file:img/plateau.svg]]
+[[file:img/out/plateau.svg]]
 
 #+begin_notes
 [STORY: the plateau. Suggested: "Sighting made me faster every week. Then
@@ -365,7 +365,7 @@ called sq.
 :END:
 
 #+attr_html: :alt One more call is one more turn buoy
-[[file:img/turn-buoy.svg]]
+[[file:img/out/turn-buoy.svg]]
 
 #+begin_notes
 YJIT reaches the turn and has to make the call: sq is separate machine
@@ -432,7 +432,7 @@ is cheaper than a call, not free.]
 :END:
 
 #+attr_html: :alt YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
-[[file:img/ceiling.svg]]
+[[file:img/out/ceiling.svg]]
 
 #+begin_notes
 So why can't YJIT just do what ZJIT did? Because of its shape.
@@ -468,7 +468,7 @@ more code at once to the optimizer".]
 :END:
 
 #+attr_html: :alt The 2-beat kick is timed to the whole stroke
-[[file:img/two-beat-kick.svg]]
+[[file:img/out/two-beat-kick.svg]]
 
 #+begin_notes
 [STORY, short: the 2-beat kick. "Fewer kicks, timed to the whole stroke.
@@ -589,7 +589,7 @@ convert_key into it and folds "Symbol === :id" away entirely.]
 :END:
 
 #+attr_html: :alt A feed stop: a better stroke doesn't make it shorter
-[[file:img/feed-stop.svg]]
+[[file:img/out/feed-stop.svg]]
 
 #+begin_notes
 And that's the feed stop. Hashing the key and finding it happens in C, and
