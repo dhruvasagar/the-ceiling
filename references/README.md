@@ -13,16 +13,16 @@ exact words used and where they're used.
 - "The main difference is that the team is making the intentional choice
   to build a more traditional “textbook” compiler so it is easy for the
   community to contribute to." (talk: *Why ZJIT was built*, notes;
-  analysis §7)
+  analysis §8)
 - "Instead of using lazy basic block versioning (LBBV) to profile types, it
   reads historical type information from the profiled interpreter" and
   "Instead of compiling one basic block at a time, it compiles one entire
   method at a time" (analysis §3)
 - "while YJIT’s architecture allows for easy interprocedural type-based
   specialization, ZJIT’s architecture gives more code at once to the
-  optimizer." (talk: *At the turn buoy*, notes; analysis §5, E3)
+  optimizer." (talk: *At the turn buoy*, notes; analysis §6 E3)
 - "we will improve ZJIT until it is on par (features and performance) with
-  YJIT." (analysis §7)
+  YJIT." (analysis §8)
 
 [2] Max Bernstein. *ZJIT is now available in Ruby 4.0.* Rails at Scale,
 2025-12-24. https://railsatscale.com/2025-12-24-launch-zjit/
@@ -30,28 +30,28 @@ exact words used and where they're used.
 - "we want to both raise the performance ceiling (bigger compilation unit
   size and SSA IR) and encourage more outside contribution (by becoming a
   more traditional method compiler)." (talk: *Why ZJIT was built*, on the
-  slide; analysis §7)
+  slide; analysis §8)
 - "It’s faster than the interpreter, but not yet as fast as YJIT. Yet."
-  (talk: *Why ZJIT was built*, notes; analysis §7)
+  (talk: *Why ZJIT was built*, notes; analysis §8)
 - "We only have a limited inliner that inlines constants, self, and
   parameters. In the fullness of time, we will add a general-purpose method
-  inlining facility." (talk: *Why ZJIT was built*, notes; analysis §7)
+  inlining facility." (talk: *Why ZJIT was built*, notes; analysis §8)
 - "if your method call patterns change significantly after your code has
   been compiled, we will frequently side-exit into the interpreter."
-  (analysis §3, E5)
+  (analysis §3, §6 E5)
 
 [3] Max Bernstein. *ZJIT is now as fast as YJIT.* Rails at Scale,
 2026-10-09. https://railsatscale.com/2026-10-09-zjit-is-now-as-fast-as-yjit/
 
 - "ZJIT is probably as fast as or faster than YJIT." Measured on Shopify's
   storefront renderer in "a couple small regions". (talk: *What it means
-  for Ruby*, notes; analysis §7)
+  for Ruby*, notes; analysis §8)
 - "For a lot of benchmarks, we are neck and neck with YJIT. And there are
-  definitely some where we are worse." (analysis §7)
+  definitely some where we are worse." (analysis §8)
 - "YJIT takes 125MiB and ZJIT takes 101MiB." (analysis §4)
 - "we do not yet support inlining the blocks themselves" and "Right now we
   delegate a lot of begin/rescue and break/next-in-block to the
-  interpreter." (analysis §6, §7)
+  interpreter." (analysis §7, §8)
 
 ## Ruby itself
 
@@ -63,8 +63,8 @@ https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/
 - "As of Ruby 4.0.0, ZJIT is faster than the interpreter, but not yet as
   fast as YJIT."
 - "Our goal is to make ZJIT faster than YJIT and production-ready in Ruby
-  4.1." (talk: *Two JITs. Why?*, notes; analysis §7)
-- "advise against deploying it in production for now." (analysis §7)
+  4.1." (talk: *Two JITs. Why?*, notes; analysis §8)
+- "advise against deploying it in production for now." (analysis §8)
 
 [5] Ruby core team. *NEWS for Ruby 4.1.0* (ruby/ruby master, read
 2026-11-14). https://github.com/ruby/ruby/blob/master/NEWS.md
@@ -72,10 +72,10 @@ https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/
 - "ZJIT is now faster than YJIT on many benchmarks, but we expect that ZJIT
   can be still slower than YJIT on larger benchmarks or applications as of
   Ruby 4.1.0 preview releases." (talk: *What it means for Ruby*, notes;
-  analysis §7)
+  analysis §8)
 - "Method inlining: small Ruby methods, including methods that yield to a
   block, are inlined into their callers" (talk: *Why ZJIT was built*,
-  notes; analysis §3, §7)
+  notes; analysis §3, §8)
 
 [6] Ruby core team. *Ruby 4.1.0-preview1 Released.* ruby-lang.org,
 2026-10-12. https://www.ruby-lang.org/en/news/2026/10/12/ruby-4-1-0-preview1-released/
@@ -93,7 +93,7 @@ https://github.com/ruby/ruby/blob/master/doc/jit/zjit.md
   single-assignment (SSA) form". Side exit: "Exit from JIT code back to
   interpreter". (analysis §3)
 - `--zjit-call-threshold` "(default: 30)", `--zjit-num-profiles` "(default:
-  5)". (analysis §5, E0)
+  5)". (analysis §5)
 
 [8] Ruby core team. *YJIT* documentation, `doc/jit/yjit.md`.
 https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
