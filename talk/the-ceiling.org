@@ -25,7 +25,7 @@
 #+REVEAL_THEME: white
 #+REVEAL_TRANS: none
 #+REVEAL_INIT_OPTIONS: width: 1600, height: 900, margin: 0.04, slideNumber: true, hash: true
-#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:70vh;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:92vh}</style>
+#+REVEAL_HEAD_PREAMBLE: <style>.reveal pre{font-size:0.5em;box-shadow:none;width:100%%}.reveal pre code{max-height:none;line-height:1.35}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style>
 #+REVEAL_TITLE_SLIDE: <h1>%t</h1><p>%a · %d</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 
 * Timing plan                                                      :noexport:
@@ -409,10 +409,10 @@ They nearly do. But there's a wave.
 
 # capture: yjit-distance.txt, zjit-distance.txt
 #+begin_example
-YJIT                                                ZJIT
-# Insn: 0024 opt_getconstant_path (stack_size: 0)   PatchPoint StableConstantNames(Math)
-# clear local variable types                        v118:Fixnum = FixnumMult v95, v95
-# Insn: 0030 opt_mult (stack_size: 3)
+YJIT                                  ZJIT
+# Insn: 0024 opt_getconstant_path     PatchPoint StableConstantNames(Math)
+# clear local variable types          v118:Fixnum = FixnumMult v95, v95
+# Insn: 0030 opt_mult
 # guard arg0 fixnum
 #+end_example
 
