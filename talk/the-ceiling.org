@@ -611,7 +611,7 @@ see the analysis in the repo.]
 
 * Where it gives up
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -626,10 +626,65 @@ every call. send with a computed name. method_missing. eval. When nothing
 stays the same, there's nothing to plan around. Both compilers stop
 guessing and swim with their head up: general, slower code.
 
-[Preliminary, to be replaced by the repo's experiment: a tiny method fed
-five different types barely bailed out at all. ZJIT side-exited 11 times
-in 500,000 calls, YJIT zero. They didn't crash out; they quietly switched
-to the slow, general path.]
+[The next slide shows it.]
+#+end_notes
+
+* Calm water, choppy water
+:PROPERTIES:
+:DURATION: 0:30
+:END:
+
+#+begin_src ruby :eval never
+def double(x) = x + x
+#+end_src
+
+#+attr_html: :class cap
+Calm water: only Integers in the warm-up lap. ZJIT inlines it: one sight, one add.
+
+# capture: zjit-calm.txt
+#+begin_example
+PushInlineFrame :double, v23, num_args=1
+v44:Fixnum = GuardType v10, Fixnum recompile
+v46:Fixnum = FixnumAdd v44, v44
+PopInlineFrame
+#+end_example
+
+#+attr_html: :class cap
+Choppy water: five types. Five checks, five calls into C, then a general fallback.
+
+# capture: zjit-choppy.txt
+#+begin_example
+CondBranchHasType v10, Flonum, bb6(), bb7()
+v52:BasicObject = CCallWithFrame v20, :Float#+, v10
+CondBranchHasType v10, Fixnum, bb8(), bb9()
+v55:BasicObject = CCallWithFrame v25, :Integer#+, v10
+ ...
+v43:BasicObject = Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
+#+end_example
+
+#+attr_html: :class ver
+Ruby 4.1.0-preview1 · =ruby --zjit --zjit-dump-hir=
+
+#+begin_notes
+Here's what "gives up" actually looks like. It's not dramatic.
+
+Same one-line method, two warm-up laps. In calm water, only whole numbers
+turn up, and ZJIT does what you've seen all talk: splices it in, one
+check, one add.
+
+In chop, five different types turn up. ZJIT doesn't crash out. It plans
+for the chop: is it a decimal? call into C. A whole number? call into C.
+And so on, then a general fallback for anything else. Notice even the
+whole-number case is now a call into C, not a single add. The fast path
+is gone.
+
+YJIT does something similar its own way: it compiles a separate version
+for each type it meets, five of them here.
+
+[Depth: YJIT's choppy capture shows "call to Float#+", "call to String#+",
+"call to Array#+", "call to Rational#+" versions alongside the fixnum one.
+Earlier run: ZJIT side-exited only 11 times in 500,000 calls, so "gives
+up" here means "stops specialising", not "bails out to the interpreter".]
 #+end_notes
 
 * The feed stop
@@ -751,6 +806,26 @@ b = Point.new(0, 0)
   puts "call #{i}"
   distance(a, b)
 end
+#+end_src
+
+"Where it gives up": the same tiny method, warmed up in calm water
+(only Integers) or in chop (five different types from the first call).
+
+#+name: double
+#+begin_src ruby :eval never
+def double(x) = x + x
+#+end_src
+
+#+begin_src ruby :tangle ../src/calm.rb :mkdirp yes
+<<double>>
+
+1_000.times { [1, 2, 3, 4, 5].each { double(_1) } }
+#+end_src
+
+#+begin_src ruby :tangle ../src/choppy.rb :mkdirp yes
+<<double>>
+
+1_000.times { [1, 2.5, "ab", [1], 3r].each { double(_1) } }
 #+end_src
 
 =params=-shaped traffic: string keys stored, asked for with both a Symbol

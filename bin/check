@@ -57,6 +57,11 @@ check_captures() {
   why="$why$(marker hwia-yjit-stats.txt 'invokesuper exit reasons')"
   why="$why$(marker how-yjit.txt 'distance@distance_log.rb:[0-9]+ \(index: [0-9]+\)')"
   why="$why$(marker how-zjit.txt 'distance@distance_log.rb')"
+  why="$why$(marker zjit-calm.txt 'FixnumAdd (v[0-9]+), (v[0-9]+)')"
+  why="$why$(marker zjit-calm.txt 'PushInlineFrame :double')"
+  why="$why$(marker zjit-choppy.txt 'polymorphic fallback')"
+  why="$why$(marker zjit-choppy.txt 'CCallWithFrame v[0-9]+, :Integer#\+')"
+  why="$why$(marker yjit-choppy.txt 'call to String#\+')"
   # same-SSA-value multiply: ZJIT reuses the already-proved dx
   grep -qE 'FixnumMult (v[0-9]+), \1' captures/zjit-distance.txt 2>/dev/null \
     || why="${why}zjit-distance.txt has no 'FixnumMult vN, vN'. "

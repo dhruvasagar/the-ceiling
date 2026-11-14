@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.." || exit 2
 ROOT=$(pwd)
 export PATH="$HOME/.asdf/shims:$PATH"
 
-TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats"
+TARGETS="env yarv-distance yjit-distance zjit-distance yjit-sq zjit-sq how-yjit how-zjit hwia-source hwia-yjit-stats hwia-zjit-stats zjit-calm zjit-choppy yjit-choppy"
 
 command_for() {
   case $1 in
@@ -25,6 +25,9 @@ command_for() {
     hwia-source)     echo "ruby hwia_source.rb" ;;
     hwia-yjit-stats) echo "ruby --yjit --yjit-stats hwia.rb" ;;
     hwia-zjit-stats) echo "ruby --zjit --zjit-stats hwia.rb" ;;
+    zjit-calm)       echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir calm.rb" ;;
+    zjit-choppy)     echo "ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir choppy.rb" ;;
+    yjit-choppy)     echo "ruby --yjit --yjit-call-threshold=1 --yjit-dump-disasm choppy.rb" ;;
     *) return 1 ;;
   esac
 }

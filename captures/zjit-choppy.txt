@@ -1,0 +1,222 @@
+# $ ruby --zjit --zjit-call-threshold=2 --zjit-dump-hir choppy.rb   (ruby 4.1.0preview1 (2026-10-11 master 2d08b5f42f) +PRISM [arm64-darwin23])
+Optimized HIR:
+fn block (2 levels) in <main>@choppy.rb:3:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :_1@-0x20
+  Jump bb3(v1, v3)
+bb2():
+  EntryPoint JIT(0)
+  v6:BasicObject = LoadArg :self@0
+  v7:BasicObject = LoadArg :_1@1
+  Jump bb3(v6, v7)
+bb3(v9:BasicObject, v10:BasicObject):
+  PatchPoint MethodRedefined(Object, double)
+  v23:ObjectSubclass[class_exact*:Object@VALUE(0x102200f00)] = GuardType v9, ObjectSubclass[class_exact*:Object@VALUE(0x102200f00)] recompile
+  PushInlineFrame :double, v23, num_args=1
+  PatchPoint MethodRedefined(Integer, +)
+  v44:Fixnum = GuardType v10, Fixnum recompile
+  v46:Fixnum = FixnumAdd v44, v44
+  PopInlineFrame
+  CheckInterrupts
+  Return v46
+
+Optimized HIR:
+fn block in <main>@choppy.rb:3:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  Jump bb3(v1)
+bb2():
+  EntryPoint JIT(0)
+  v4:BasicObject = LoadArg :self@0
+  Jump bb3(v4)
+bb3(v6:BasicObject):
+  v10:Fixnum[1] = Const Value(1)
+  v12:Flonum[VALUE(0x20000000000002)] = Const Value(VALUE(0x20000000000002))
+  v14:StringExact[VALUE(0x11e0dbbe0)] = Const Value(VALUE(0x11e0dbbe0))
+  v15:StringExact = StringCopy v14
+  v17:ArrayExact[VALUE(0x11e0dbc08)] = Const Value(VALUE(0x11e0dbc08))
+  v18:ArrayExact = ArrayDup v17
+  v20:NumericSubclass[VALUE(0x102359e60)] = Const Value(VALUE(0x102359e60))
+  v22:ArrayExact = NewArray v10, v12, v15, v18, v20
+  PatchPoint NoSingletonClass(Array)
+  PatchPoint MethodRedefined(Array, each)
+  v33:BasicObject = SendDirect v22, 0x102359e80, :each
+  CheckInterrupts
+  Return v33
+
+Optimized HIR:
+fn each@<internal:array>:222:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  Jump bb3(v1)
+bb2():
+  EntryPoint JIT(0)
+  v5:BasicObject = LoadArg :self@0
+  Jump bb3(v5)
+bb3(v8:BasicObject):
+  v99:NilClass = Const Value(nil)
+  v13:NilClass = Const Value(nil)
+  v15:TrueClass|NilClass = Defined yield, v13
+  v17:CBool = Test v15
+  CondBranch v17, bb9(), bb4()
+bb9():
+  v35:Fixnum[0] = Const Value(0)
+  Jump bb8(v35)
+bb8(v49:Fixnum):
+  v52:Array = RefineType v8, Array
+  v53:CInt64 = ArrayLength v52
+  v54:Fixnum = BoxFixnum v53
+  v55:BoolExact = FixnumGe v49, v54
+  v57:CBool = Test v55
+  CondBranch v57, bb11(), bb7()
+bb11():
+  CheckInterrupts
+  Return v8
+bb7():
+  v75:Array = RefineType v8, Array
+  v76:CInt64 = UnboxFixnum v49
+  v77:BasicObject = ArrayAref v75, v76
+  v79:CPtr = GetEP 0
+  v80:CInt64 = LoadField v79, :VM_ENV_DATA_INDEX_SPECVAL@-0x8
+  v81:CInt64[3] = Const CInt64(3)
+  v82:CInt64 = IntAnd v80, v81
+  v83:CInt64[1] = GuardBitEquals v82, CInt64(1) recompile
+  v84:CInt64[-4] = Const CInt64(-4)
+  v85:CInt64 = IntAnd v80, v84
+  v86:Iseq = LoadField v85, :code_iseq
+  v87:Iseq[VALUE(0x102359e80)] = GuardBitEquals v86, Value(VALUE(0x102359e80)) recompile
+  v88:BasicObject = InvokeBlockIseqDirect, v85, v77
+  v92:Fixnum[1] = Const Value(1)
+  v93:Fixnum = FixnumAdd v49, v92
+  PatchPoint NoEPEscape(each)
+  Jump bb8(v93)
+bb4():
+  v28:BasicObject = InvokeBuiltin <inline_expr>, v8
+  CheckInterrupts
+  Return v28
+
+Optimized HIR:
+fn double@choppy.rb:1:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :x@-0x20
+  Jump bb3(v1, v3)
+bb2():
+  EntryPoint JIT(0)
+  v6:BasicObject = LoadArg :self@0
+  v7:BasicObject = LoadArg :x@1
+  Jump bb3(v6, v7)
+bb3(v9:BasicObject, v10:BasicObject):
+  CondBranchHasType v10, Flonum, bb6(), bb7()
+bb6():
+  v20:Flonum = RefineType v10, Flonum
+  PatchPoint MethodRedefined(Float, +)
+  v52:BasicObject = CCallWithFrame v20, :Float#+, v10
+  Jump bb4(v52)
+bb7():
+  CondBranchHasType v10, Fixnum, bb8(), bb9()
+bb8():
+  v25:Fixnum = RefineType v10, Fixnum
+  PatchPoint MethodRedefined(Integer, +)
+  v55:BasicObject = CCallWithFrame v25, :Integer#+, v10
+  Jump bb4(v55)
+bb9():
+  CondBranchHasType v10, NumericSubclass[class_exact:Rational], bb10(), bb11()
+bb10():
+  v30:NumericSubclass[class_exact:Rational] = RefineType v10, NumericSubclass[class_exact:Rational]
+  PatchPoint NoSingletonClass(Rational)
+  PatchPoint MethodRedefined(Rational, +)
+  v59:BasicObject = CCallWithFrame v30, :Rational#+, v10
+  Jump bb4(v59)
+bb11():
+  CondBranchHasType v10, StringExact, bb12(), bb13()
+bb12():
+  v35:StringExact = RefineType v10, StringExact
+  PatchPoint NoSingletonClass(String)
+  PatchPoint MethodRedefined(String, +)
+  v63:BasicObject = CCallWithFrame v35, :String#+, v10
+  Jump bb4(v63)
+bb13():
+  CondBranchHasType v10, ArrayExact, bb14(), bb5()
+bb14():
+  v40:ArrayExact = RefineType v10, ArrayExact
+  PatchPoint NoSingletonClass(Array)
+  PatchPoint MethodRedefined(Array, +)
+  v67:BasicObject = CCallWithFrame v40, :Array#+, v10
+  Jump bb4(v67)
+bb5():
+  v43:BasicObject = Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
+  Jump bb4(v43)
+bb4(v17:BasicObject):
+  CheckInterrupts
+  Return v17
+
+Optimized HIR:
+fn block (2 levels) in <main>@choppy.rb:3:
+bb1():
+  EntryPoint interpreter
+  v1:BasicObject = LoadSelf
+  v2:CPtr = LoadSP
+  v3:BasicObject = LoadField v2, :_1@-0x20
+  Jump bb3(v1, v3)
+bb2():
+  EntryPoint JIT(0)
+  v6:BasicObject = LoadArg :self@0
+  v7:BasicObject = LoadArg :_1@1
+  Jump bb3(v6, v7)
+bb3(v9:BasicObject, v10:BasicObject):
+  PatchPoint MethodRedefined(Object, double)
+  v23:ObjectSubclass[class_exact*:Object@VALUE(0x102200f00)] = GuardType v9, ObjectSubclass[class_exact*:Object@VALUE(0x102200f00)] recompile
+  PushInlineFrame :double, v23, num_args=1
+  CondBranchHasType v10, Flonum, bb8(), bb9()
+bb8():
+  v37:Flonum = RefineType v10, Flonum
+  PatchPoint MethodRedefined(Float, +)
+  v71:BasicObject = CCallWithFrame v37, :Float#+, v10
+  Jump bb6(v71)
+bb9():
+  CondBranchHasType v10, Fixnum, bb10(), bb11()
+bb10():
+  v42:Fixnum = RefineType v10, Fixnum
+  PatchPoint MethodRedefined(Integer, +)
+  v74:BasicObject = CCallWithFrame v42, :Integer#+, v10
+  Jump bb6(v74)
+bb11():
+  CondBranchHasType v10, NumericSubclass[class_exact:Rational], bb12(), bb13()
+bb12():
+  v47:NumericSubclass[class_exact:Rational] = RefineType v10, NumericSubclass[class_exact:Rational]
+  PatchPoint NoSingletonClass(Rational)
+  PatchPoint MethodRedefined(Rational, +)
+  v78:BasicObject = CCallWithFrame v47, :Rational#+, v10
+  Jump bb6(v78)
+bb13():
+  CondBranchHasType v10, StringExact, bb14(), bb15()
+bb14():
+  v52:StringExact = RefineType v10, StringExact
+  PatchPoint NoSingletonClass(String)
+  PatchPoint MethodRedefined(String, +)
+  v82:BasicObject = CCallWithFrame v52, :String#+, v10
+  Jump bb6(v82)
+bb15():
+  CondBranchHasType v10, ArrayExact, bb16(), bb7()
+bb16():
+  v57:ArrayExact = RefineType v10, ArrayExact
+  PatchPoint NoSingletonClass(Array)
+  PatchPoint MethodRedefined(Array, +)
+  v86:BasicObject = CCallWithFrame v57, :Array#+, v10
+  Jump bb6(v86)
+bb7():
+  v60:BasicObject = Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
+  Jump bb6(v60)
+bb6(v34:BasicObject):
+  PopInlineFrame
+  CheckInterrupts
+  Return v34
+
