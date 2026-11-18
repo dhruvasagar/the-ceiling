@@ -54,6 +54,13 @@ search for the quoted text.
 | YJIT has a low-level IR inside its code generator (Q&A) | stated | `yjit/src/backend/ir.rs` [12] |
 | *Interpretation:* inlining and optimising across a call is natural with a whole-method plan, and this is the "ceiling" | attributed | "raise the performance ceiling (bigger compilation unit size and SSA IR)" [2]; "gives more code at once to the optimizer" [1]. Said on stage as the team's words. |
 
+## So, why build the second one?
+
+| Claim (on screen) | Kind | Evidence |
+|---|---|---|
+| The next gains need the whole method as one plan; a compiler that works piece by piece never has one | stated + shown | "raise the performance ceiling (bigger compilation unit size and SSA IR)" [2]; "YJIT compiles one basic block at a time, so it never has the full picture of the function anyway" [15]; shown at the turn buoy (E3) and in `params` (E4b) |
+| A more traditional compiler, so more people can help build it | stated | "encourage more outside contribution (by becoming a more traditional method compiler)" [2]; "a more traditional “textbook” compiler so it is easy for the community to contribute to" [1] |
+
 ## Trade-offs
 
 | Claim | Kind | Evidence |

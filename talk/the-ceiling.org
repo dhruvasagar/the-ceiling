@@ -481,10 +481,13 @@ Same with sq: you can only splice it in if you can see the caller and the
 callee together.
 #+end_notes
 
-* In the ZJIT team's words
+* So, why build the second one?
 :PROPERTIES:
 :DURATION: 1:00
 :END:
+
+1. The next gains need the *whole method as one plan*. A compiler that works piece by piece never has one.
+2. A more traditional compiler, so *more people can help build it*.
 
 #+begin_quote
 "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)."
@@ -496,9 +499,12 @@ callee together.
 #+end_export
 
 #+begin_notes
-Raise the ceiling: a bigger piece compiled at once, as a plan with every
-value named once, which is what SSA means. And a traditional compiler
-shape, so more people can help build it.
+Back to the question I started with: why build a second one?
+
+Because the next gains, like seeing through that call, need the whole
+method as one plan, and a compiler that works piece by piece never has
+one. And because a traditional compiler shape lets more people help.
+In their words:
 
 It isn't free. ZJIT plans from what it saw while warming up. If your
 traffic changes after that, the plan is wrong: it falls back, then

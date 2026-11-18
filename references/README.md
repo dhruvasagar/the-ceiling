@@ -12,7 +12,7 @@ exact words used and where they're used.
 
 - "The main difference is that the team is making the intentional choice
   to build a more traditional “textbook” compiler so it is easy for the
-  community to contribute to." (talk: *In the ZJIT team's words*, notes;
+  community to contribute to." (talk: *So, why build the second one?*, notes;
   analysis §8)
 - "Instead of using lazy basic block versioning (LBBV) to profile types, it
   reads historical type information from the profiled interpreter" and
@@ -29,13 +29,13 @@ exact words used and where they're used.
 
 - "we want to both raise the performance ceiling (bigger compilation unit
   size and SSA IR) and encourage more outside contribution (by becoming a
-  more traditional method compiler)." (talk: *In the ZJIT team's words*, on the
+  more traditional method compiler)." (talk: *So, why build the second one?*, on the
   slide; analysis §8)
 - "It’s faster than the interpreter, but not yet as fast as YJIT. Yet."
-  (talk: *In the ZJIT team's words*, notes; analysis §8)
+  (talk: *So, why build the second one?*, notes; analysis §8)
 - "We only have a limited inliner that inlines constants, self, and
   parameters. In the fullness of time, we will add a general-purpose method
-  inlining facility." (talk: *In the ZJIT team's words*, notes; analysis §8)
+  inlining facility." (talk: *So, why build the second one?*, notes; analysis §8)
 - "if your method call patterns change significantly after your code has
   been compiled, we will frequently side-exit into the interpreter."
   (analysis §3, §6 E5)
@@ -135,7 +135,7 @@ https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
   reaches 40,000." (talk: *25 compiles, or one*, depth note)
   https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
 - `yjit/src/options.rs`: `max_versions: 4` (default number of versions
-  of a block). (talk: *In the ZJIT team's words*, notes)
+  of a block). (talk: *So, why build the second one?*, notes)
   https://github.com/ruby/ruby/blob/master/yjit/src/options.rs
 - `doc/jit/yjit.md` lines 70-71 and `doc/jit/zjit.md` line 53: both need
   the Rust compiler (`rustc`) to build. (analysis, Summary)

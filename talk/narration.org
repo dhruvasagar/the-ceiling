@@ -31,7 +31,7 @@ STORY beat (30 s).
 | 13 | 9:00 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
 | 14 | 10:30 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
 | 15 | 11:45 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
-| 16 | 12:15 | In the ZJIT team's words | 1:00 | 0:53 | 0:07 |  |
+| 16 | 12:15 | So, why build the second one? | 1:00 | 1:01 | -0:01 |  |
 | 17 | 13:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
 | 18 | 13:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
 | 19 | 14:30 | The feed stop | 0:30 | 0:20 | 0:10 |  |
@@ -43,7 +43,7 @@ STORY beat (30 s).
 | 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 | 26 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *18:10* | *1:35* | |
+|   |        | *Total* | *19:45* | *18:18* | *1:27* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -450,19 +450,24 @@ I couldn't get there one kick at a time."]
 Same with sq: you can only splice it in if you can see the caller and the
 callee together.
 
-/Next: In the ZJIT team's words/
+/Next: So, why build the second one?/
 
-** 16. In the ZJIT team's words  (12:15, 1:00)
+** 16. So, why build the second one?  (12:15, 1:00)
 
 /On screen:/
+- 1. The next gains need the *whole method as one plan*. A compiler that works piece by piece never has one.
+- 2. A more traditional compiler, so *more people can help build it*.
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
 - Source: railsatscale.com/2025-12-24-launch-zjit
 
 /Say:/
 
-Raise the ceiling: a bigger piece compiled at once, as a plan with every
-value named once, which is what SSA means. And a traditional compiler
-shape, so more people can help build it.
+Back to the question I started with: why build a second one?
+
+Because the next gains, like seeing through that call, need the whole
+method as one plan, and a compiler that works piece by piece never has
+one. And because a traditional compiler shape lets more people help.
+In their words:
 
 It isn't free. ZJIT plans from what it saw while warming up. If your
 traffic changes after that, the plan is wrong: it falls back, then
