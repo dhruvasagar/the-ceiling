@@ -130,7 +130,7 @@ calls into C are left out under both compilers.
 | Claim | Kind | Evidence |
 |---|---|---|
 | Calm: ZJIT inlines `double`, one guard, one add | shown | `GuardType v10, Fixnum`, `FixnumAdd v44, v44`, `zjit-calm.txt:21` |
-| Choppy: every ZJIT case is a call into C, even Integer; then a polymorphic fallback | shown | `:Integer#+` `zjit-choppy.txt:39`; `polymorphic fallback` `:57` |
+| Choppy: ZJIT checks each of the five types in turn and calls that type's `+` directly, even Integer; anything else gets a general `Send` | shown | `CondBranchHasType` `zjit-choppy.txt:19,27,35,42,49`; `CCallWithFrame … :Integer#+` `:39`; `Send … polymorphic fallback` `:57` |
 | Choppy: YJIT keeps an inline integer add and a version per type | shown | `guard arg0 fixnum` (no call) plus `call to Float#+`, `String#+`, `Array#+`, `Rational#+` in `yjit-choppy.txt` |
 | Choppy: ZJIT inlines `double`; YJIT calls it | shown | `PushInlineFrame :double` `zjit-choppy.txt:18`; `# call to Object#double` `yjit-choppy.txt:214` |
 | Neither bails out to the interpreter: 0 side exits each | shown | `side_exit_count: 0`, `zjit-choppy-stats.txt:40`, `yjit-choppy-stats.txt:94` |

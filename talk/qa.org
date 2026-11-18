@@ -162,10 +162,13 @@ code (less precise than LBBV and more versions) and probably bigger code"
 
 ** What happens when my code isn't monomorphic?
 *Say:* That's the choppy-water slide. With five types at one site, ZJIT
-turns every case into a call into C; YJIT keeps a fast path for whole
-numbers and a version per type, up to four. Neither bailed out.
+plans for all five: it copies the method in, checks the type in turn, and
+calls that type's =+= directly; anything else gets a general call. Whole
+numbers lose the inline add they get in calm water. YJIT keeps a
+real call to the method but builds a version per type inside it, and
+whole numbers keep the fast add. Neither handed back to the interpreter.
 
-*Evidence:* =zjit-choppy.txt:39,57=, =yjit-choppy.txt=; =side_exit_count:
+*Evidence:* =zjit-choppy.txt:18-57= (=PushInlineFrame=, five =CondBranchHasType=, =CCallWithFrame= per type, =Send= fallback), =yjit-choppy.txt= (=call to Object#double=, =guard arg0 fixnum= with no call, =call to Float#+= etc.); =side_exit_count:
 0= in both stats files; =max_versions: 4= [12]. In 4.0 the team wrote "We
 only optimize monomorphic calls right now" [2].
 

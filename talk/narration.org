@@ -37,14 +37,14 @@ STORY beat (30 s).
 | 19 | 14:15 | params, through both | 0:45 | 0:44 | 0:01 |  |
 | 20 | 15:00 | The feed stop | 0:30 | 0:21 | 0:09 |  |
 | 21 | 15:30 | A glimpse: seven everyday lines | 0:30 | 0:26 | 0:04 |  |
-| 22 | 16:00 | Calm water, choppy water | 1:15 | 1:13 | 0:02 |  |
+| 22 | 16:00 | Calm water, choppy water | 1:15 | 1:20 | -0:05 |  |
 | 23 | 17:15 | Measured: the ZJIT team's results, and ours | 0:45 | 0:42 | 0:03 |  |
 | 24 | 18:00 | Read your own code | 0:30 | 0:29 | 0:01 |  |
 | 25 | 18:30 | What it means for Ruby | 0:30 | 0:27 | 0:03 |  |
 | 26 | 19:00 | Head down | 0:45 | 0:51 | -0:06 | STORY OVER  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:15* | *0:30* | |
+|   |        | *Total* | *19:45* | *19:22* | *0:23* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -653,37 +653,41 @@ And as it says at the bottom: inlined isn't free.
 #+begin_example
 def double(x) = x + x   # called with Integers only, or with five types
 #+end_example
-- Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
-- listing (captures/zjit-calm.txt):
+- Calm water, only Integers: ZJIT copies ~double~ in, one check, one add. Choppy water, five types at the same spot. ZJIT plans for all five:
+- listing (captures/zjit-choppy.txt):
 #+begin_example
-v44:Fixnum = GuardType v10, Fixnum recompile
-v46:Fixnum = FixnumAdd v44, v44
+PushInlineFrame :double, v23, num_args=1               <- double copied in: no call
+CondBranchHasType v10, ArrayExact, bb8(), bb9()        <- sight: an Array?
+v72:BasicObject = CCallWithFrame v37, :Array#+, v10    <- yes: call Array's + directly
+ ...                                                   <- the same for Rational
+CondBranchHasType v10, Fixnum, bb12(), bb13()          <- a whole number?
+v79:BasicObject = CCallWithFrame v47, :Integer#+, v10  <- yes: a call into C, where calm water had one add
+ ...                                                   <- the same for Float and String
+v60:BasicObject = Send v10, :+, v10                    <- none of the five: a general call
 #+end_example
-- Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
-- listing (captures/yjit-choppy.txt, zjit-choppy.txt):
-#+begin_example
-YJIT                        ZJIT
-# guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
-# call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
-# call to String#+          ...
-# call to Array#+           Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
-#+end_example
+- YJIT, same chop: a real call to ~double~, then a version per type inside it. Whole numbers keep the fast inline add; the other four call C.
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
 
-Now the honest part: where ZJIT gives up.
+Now the honest part: chop.
 
-Calm water, only whole numbers: ZJIT splices double in, one check, one add.
+Calm water, only whole numbers: ZJIT copies double in, one check, one
+add.
 
-Choppy: five types. ZJIT doesn't specialise past the first type: every
-case becomes a general call, even whole numbers. YJIT keeps a fast add for whole numbers
-and a version per type. In chop, looking up more often is the efficient
-choice, and the swimmer who does beats one holding a planned line. Same
-here: today, YJIT has the faster path. ZJIT
-still saves the call to double itself. That's this build, today.
+Choppy: five types through the same line. ZJIT plans for all five. It
+checks the type, one after another, and calls that type's plus directly.
+Anything else gets a general call. But look at whole numbers: calm water
+got one add; here, a call into C.
 
-[Depth: neither bailed out to the interpreter, 0 side exits each
+YJIT still makes a real call to double, but inside it keeps a version per
+type, and whole numbers still get the fast add.
+
+In chop, both look up at every wave. ZJIT still takes the turn in stride,
+but swims every wave the careful way. YJIT stops at the turn, but keeps
+its fast stroke for the common wave. We didn't time which matters more.
+
+[Depth: neither handed back to the interpreter, 0 side exits each
 (captures zjit-choppy-stats, yjit-choppy-stats).]
 
 /Next: Measured: the ZJIT team's results, and ours/

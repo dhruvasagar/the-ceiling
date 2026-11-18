@@ -771,42 +771,57 @@ def double(x) = x + x   # called with Integers only, or with five types
 #+end_src
 
 #+attr_html: :class cap
-Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
+Calm water, only Integers: ZJIT copies =double= in, one check, one add. Choppy water, five types at the same spot. ZJIT plans for all five:
 
-# capture: zjit-calm.txt
+# capture: zjit-choppy.txt
 #+begin_example
-v44:Fixnum = GuardType v10, Fixnum recompile
-v46:Fixnum = FixnumAdd v44, v44
+PushInlineFrame :double, v23, num_args=1
+CondBranchHasType v10, ArrayExact, bb8(), bb9()
+v72:BasicObject = CCallWithFrame v37, :Array#+, v10
+ ...
+CondBranchHasType v10, Fixnum, bb12(), bb13()
+v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
+ ...
+v60:BasicObject = Send v10, :+, v10
 #+end_example
+#+begin_export html
+<ol class="ann-notes">
+<li data-l="1"><code>double</code> copied in: no call</li>
+<li data-l="2">sight: an Array?</li>
+<li data-l="3">yes: call Array's <code>+</code> directly</li>
+<li data-l="4">the same for Rational</li>
+<li data-l="5">a whole number?</li>
+<li data-l="6">yes: a call into C, where calm water had one add</li>
+<li data-l="7">the same for Float and String</li>
+<li data-l="8">none of the five: a general call</li>
+</ol>
+#+end_export
 
 #+attr_html: :class cap
-Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
-
-# capture: yjit-choppy.txt, zjit-choppy.txt
-#+begin_example
-YJIT                        ZJIT
-# guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
-# call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
-# call to String#+          ...
-# call to Array#+           Send v10, :+, v10 # SendFallbackReason: Send: polymorphic fallback
-#+end_example
+YJIT, same chop: a real call to =double=, then a version per type inside it. Whole numbers keep the fast inline add; the other four call C.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · default settings
 
 #+begin_notes
-Now the honest part: where ZJIT gives up.
+Now the honest part: chop.
 
-Calm water, only whole numbers: ZJIT splices double in, one check, one add.
+Calm water, only whole numbers: ZJIT copies double in, one check, one
+add.
 
-Choppy: five types. ZJIT doesn't specialise past the first type: every
-case becomes a general call, even whole numbers. YJIT keeps a fast add for whole numbers
-and a version per type. In chop, looking up more often is the efficient
-choice, and the swimmer who does beats one holding a planned line. Same
-here: today, YJIT has the faster path. ZJIT
-still saves the call to double itself. That's this build, today.
+Choppy: five types through the same line. ZJIT plans for all five. It
+checks the type, one after another, and calls that type's plus directly.
+Anything else gets a general call. But look at whole numbers: calm water
+got one add; here, a call into C.
 
-[Depth: neither bailed out to the interpreter, 0 side exits each
+YJIT still makes a real call to double, but inside it keeps a version per
+type, and whole numbers still get the fast add.
+
+In chop, both look up at every wave. ZJIT still takes the turn in stride,
+but swims every wave the careful way. YJIT stops at the turn, but keeps
+its fast stroke for the common wave. We didn't time which matters more.
+
+[Depth: neither handed back to the interpreter, 0 side exits each
 (captures zjit-choppy-stats, yjit-choppy-stats).]
 #+end_notes
 
