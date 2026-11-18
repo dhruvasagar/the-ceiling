@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
-  <title>The plateau: swim times stop dropping</title>
+  <title>The plateau: straight code is already fast; the time left is at method calls</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
-  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">The plateau</text>
-  <!-- axes -->
-  <path d="M160 180 V640 H1040" stroke="#1b2733" stroke-width="4" fill="none"/>
-  <text x="120" y="420" font-size="36" fill="#4a5a6a" text-anchor="middle" transform="rotate(-90 120 420)">time per swim</text>
-  <text x="600" y="700" font-size="36" fill="#4a5a6a" text-anchor="middle">weeks of training</text>
-  <!-- times: steep drop, then flat -->
-  <path d="M190 220 Q300 250 380 380 Q460 500 560 530 L1010 532" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
+  <text x="80" y="100" font-size="64" font-weight="700" fill="#1b2733">The plateau</text>
+
+  <!-- left: the swim -->
+  <text x="80" y="175" font-size="34" font-weight="700" fill="#4a5a6a">In the water</text>
+  <path d="M130 210 V560 H700" stroke="#1b2733" stroke-width="4" fill="none"/>
+  <text x="100" y="385" font-size="28" fill="#4a5a6a" text-anchor="middle" transform="rotate(-90 100 385)">time per swim</text>
+  <text x="415" y="605" font-size="28" fill="#4a5a6a" text-anchor="middle">weeks of training</text>
+  <path d="M150 235 Q230 260 290 350 Q350 440 420 465 L680 467" stroke="#c48a00" stroke-width="7" stroke-dasharray="20 12" fill="none"/>
   <g fill="#c48a00">
-    <circle cx="190" cy="220" r="9"/><circle cx="300" cy="262" r="9"/><circle cx="380" cy="380" r="9"/>
-    <circle cx="470" cy="495" r="9"/><circle cx="560" cy="530" r="9"/><circle cx="680" cy="531" r="9"/>
-    <circle cx="800" cy="532" r="9"/><circle cx="920" cy="531" r="9"/><circle cx="1010" cy="532" r="9"/>
+    <circle cx="150" cy="235" r="8"/><circle cx="230" cy="268" r="8"/><circle cx="290" cy="350" r="8"/>
+    <circle cx="355" cy="440" r="8"/><circle cx="420" cy="465" r="8"/><circle cx="510" cy="466" r="8"/>
+    <circle cx="600" cy="467" r="8"/><circle cx="680" cy="467" r="8"/>
   </g>
-  <text x="400" y="300" font-size="36" fill="#7a5a00">learning to sight</text>
-  <text x="400" y="342" font-size="36" fill="#7a5a00">faster every week</text>
-  <text x="580" y="490" font-size="34" fill="#7a5a00">...then the times stop</text>
-  <!-- where the time goes -->
-  <rect x="1090" y="200" width="440" height="380" rx="16" fill="#ffffff" stroke="#9cc7e6" stroke-width="4"/>
-  <text x="1310" y="260" font-size="36" font-weight="700" fill="#1b2733" text-anchor="middle">where the time goes</text>
-  <path d="M1120 400 H1240" stroke="#2e8b3e" stroke-width="8"/>
-  <text x="1180" y="450" font-size="30" fill="#1f6a2c" text-anchor="middle">the legs:</text><text x="1180" y="490" font-size="30" fill="#1f6a2c" text-anchor="middle">fine</text>
-  <circle cx="1430" cy="400" r="24" fill="#f08a24"/>
-  <g transform="translate(1430,362)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
-  <text x="1430" y="450" font-size="30" fill="#b23a3a" text-anchor="middle">the turns: slow,</text>
-  <text x="1430" y="490" font-size="30" fill="#b23a3a" text-anchor="middle">look up, restart</text>
-  <text x="80" y="790" font-size="48" fill="#1b2733">Sighting got the easy wins. The time left was at the turns.</text>
-  <text x="80" y="850" font-size="40" fill="#4a5a6a">In Ruby, a turn is a method call.</text>
+  <text x="310" y="290" font-size="28" fill="#7a5a00">sighting: faster every week</text>
+  <text x="440" y="430" font-size="28" fill="#7a5a00">...then flat</text>
+  <text x="130" y="665" font-size="30" fill="#1f6a2c">Straight legs: already fast.</text>
+  <text x="130" y="710" font-size="30" fill="#b23a3a">The time left: the turns.</text>
+
+  <!-- divider -->
+  <path d="M770 160 V720" stroke="#9cc7e6" stroke-width="4"/>
+
+  <!-- right: the code -->
+  <text x="820" y="175" font-size="34" font-weight="700" fill="#4a5a6a">In our Ruby</text>
+  <rect x="820" y="205" width="710" height="170" rx="14" fill="#ffffff" stroke="#9cc7e6" stroke-width="3"/>
+  <text x="845" y="250" font-size="30" font-weight="700" fill="#1f6a2c">Straight code:</text>
+  <text x="1065" y="250" font-size="30" font-family="ui-monospace, Menlo, monospace" fill="#1b2733">dx * dx</text>
+  <text x="845" y="300" font-size="28" fill="#1b2733">YJIT: no type check. ZJIT: no type check.</text>
+  <text x="845" y="345" font-size="28" fill="#4a5a6a">A tie. YJIT already gets these wins.</text>
+
+  <rect x="820" y="400" width="710" height="300" rx="14" fill="#ffffff" stroke="#e8a0a0" stroke-width="3"/>
+  <text x="845" y="445" font-size="30" font-weight="700" fill="#b23a3a">A call to a small method:</text>
+  <text x="845" y="495" font-size="28" font-weight="700" fill="#1b2733">YJIT, one piece at a time:</text>
+  <text x="845" y="535" font-size="28" fill="#1b2733">check the argument, make a real call, check the result</text>
+  <text x="845" y="595" font-size="28" font-weight="700" fill="#1b2733">ZJIT, the whole method as one plan:</text>
+  <text x="845" y="635" font-size="28" fill="#1b2733">copy the method in, drop the checks on both sides</text>
+  <text x="845" y="680" font-size="24" fill="#4a5a6a">(a light frame stays; more on the next slides)</text>
+
+  <text x="80" y="800" font-size="40" fill="#1b2733">A design limit, not YJIT standing still: it never sees the whole</text>
+  <text x="80" y="852" font-size="40" fill="#1b2733">method, so a call doing real work stays a call. ZJIT plans it all.</text>
 </svg>

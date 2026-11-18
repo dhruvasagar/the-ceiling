@@ -54,6 +54,15 @@ search for the quoted text.
 | YJIT has a low-level IR inside its code generator (Q&A) | stated | `yjit/src/backend/ir.rs` [12] |
 | *Interpretation:* inlining and optimising across a call is natural with a whole-method plan, and this is the "ceiling" | attributed | "raise the performance ceiling (bigger compilation unit size and SSA IR)" [2]; "gives more code at once to the optimizer" [1]. Said on stage as the team's words. |
 
+## The plateau
+
+| Claim (on screen) | Kind | Evidence |
+|---|---|---|
+| Straight code (`dx * dx`): no type check in either | shown | `yjit-distance.txt:1428`, `zjit-distance.txt:65` |
+| At a call to a small method, YJIT checks the argument, makes a real call, checks the result | shown | `yjit-sq.txt:258` (guard on `n`), `:1645` (call), `:2009` (check at `+`) |
+| ZJIT copies the method in and drops the checks on both sides; a light frame stays | shown | `zjit-sq.txt:86` (`PushInlineFrame`), `FixnumMult v95, v95`, `:94` (unguarded `FixnumAdd`); `hwia-zjit-stats.txt:93` |
+| A design limit: YJIT never sees the whole method | stated | "YJIT compiles one basic block at a time, so it never has the full picture of the function anyway" [15]; "raise the performance ceiling" [2] |
+
 ## So, why build the second one?
 
 | Claim (on screen) | Kind | Evidence |

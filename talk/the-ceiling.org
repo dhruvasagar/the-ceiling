@@ -334,11 +334,11 @@ ZJIT exists, we need something every Ruby codebase is full of.
 
 * The plateau
 :PROPERTIES:
-:DURATION: 1:00
+:DURATION: 1:15
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
-#+attr_html: :alt Swim times drop fast while learning to sight, then stop moving
+#+attr_html: :alt Swim times flatten once straight legs are fast; in Ruby, straight code is a tie and the time left is at method calls, which ZJIT can copy in
 [[file:img/out/plateau.svg]]
 
 #+begin_notes
@@ -346,13 +346,15 @@ ZJIT exists, we need something every Ruby codebase is full of.
 it stopped. When I looked at where the time went, the straight legs were
 fine. I was losing it at the turns." Keep only what's true for you.]
 
-The ZJIT team built ZJIT, in their words, to "raise the performance
-ceiling". Here's one place you can see what they mean: the turns. In Ruby, a turn
-is a method call, and we write small methods calling small methods.
-That's how we're taught.
+Ruby's plateau looks the same. YJIT already got the easy wins: dx * dx
+has no type checks, the tie we just saw. What's left is at the turns, and
+in Ruby a turn is a method call. We write small methods calling small
+methods.
 
-That's my plateau, not YJIT's report card: this is about how high a
-design can go.
+YJIT never sees the whole method: at a small call it checks, calls,
+checks again. ZJIT plans the whole method, so it can copy the small method
+in and drop those checks.
+A design limit, not YJIT standing still.
 
 Let's add one turn to our five lines.
 #+end_notes
@@ -447,7 +449,7 @@ is cheaper than a call, not free.]
 
 * Why it's a ceiling
 :PROPERTIES:
-:DURATION: 1:15
+:DURATION: 1:00
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -455,10 +457,8 @@ is cheaper than a call, not free.]
 [[file:img/out/ceiling.svg]]
 
 #+begin_notes
-So why can't YJIT just do what ZJIT did? Because of its shape.
-
-YJIT turns each piece into machine code as soon as it reaches it. There's
-never a picture of the whole method, so there's nothing to rearrange
+So why can't YJIT just do what ZJIT did? Its shape: each piece becomes
+machine code as soon as it's reached, so there's nothing to rearrange
 afterwards. It can fold in the tiniest things, like the attribute reader we saw.
 But in every capture in this talk, a method doing real work, sq,
 convert_key, double, stays a real call. And after the call returns, YJIT
