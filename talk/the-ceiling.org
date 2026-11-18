@@ -176,8 +176,8 @@ counts.]
 
 A just-in-time compiler does that for your busiest code. It looks once
 per stretch, not every stroke: a quick check called a guard, "is this
-still a number?", then a run of fast machine code. If the check fails, it goes back to the
-interpreter, the careful way.
+still a number?", then a run of fast machine code. If the check fails, it takes a slower,
+careful path.
 
 Ruby has two of them, and they look in different ways.
 #+end_notes
@@ -204,60 +204,72 @@ next few for exactly that. Sighting as you swim.
 
 * YJIT: in its own words
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 1:00
 :END:
 
 #+attr_html: :class cap
-YJIT's own comments from its dump, machine code removed: what it decided at =a.x=, one piece at a time.
+YJIT's dump, trimmed: its comments (=#=), and the arm64 machine code it wrote under each.
 
 #+begin_export html
 <div class="ir-grid"><div>
 #+end_export
 # capture: yjit-distance.txt
 #+begin_example
+# Block: distance@distance.rb:7
 # Insn: 0002 opt_send_without_block (stack_size: 1)
 # call to Point#x
 # guard not immediate
+0x16bbc4120: tst x1, #7
+0x16bbc4124: b.ne #0x16bbc6284
+ ...
 # guard known class
+0x16bbc4150: cmp x11, x12
+0x16bbc4154: b.ne #0x16bbc62fc
 # guard shape
+0x16bbc416c: cmp w12, w13
+0x16bbc4170: b.ne #0x16bbc6378
+0x16bbc4178: ldur x1, [x11, #0x10]
+ ...
 # Block: distance@distance.rb:7
 # Insn: 0004 getlocal_WC_0 (stack_size: 1)
 # defer_compilation
+0x16bbc417c: b #0x16bbc63b4
 #+end_example
 #+begin_export html
 </div>
 <table class="legend">
-<tr><td><code># Insn: 0002 …</code></td><td>the bytecode being compiled: <code>a.x</code></td></tr>
-<tr><td><code># call to Point#x</code></td><td>where the call goes: an <code>attr_reader</code></td></tr>
-<tr><td><code>guard not immediate</code></td><td>an object, not a small value? a sight</td></tr>
-<tr><td><code>guard known class</code></td><td>is it a <code>Point</code>? a sight</td></tr>
-<tr><td><code>guard shape</code></td><td>same layout as before? a sight</td></tr>
+<tr><td><code># …</code></td><td>YJIT's comments: what it decided</td></tr>
+<tr><td><code># Insn: 0002</code></td><td>the bytecode being compiled: <code>a.x</code></td></tr>
+<tr><td><code>tst</code>, <code>cmp</code> + <code>b.ne</code></td><td>a sight: test, and jump away if it fails</td></tr>
+<tr><td><code>ldur x1, [x11, #0x10]</code></td><td>read <code>@x</code> straight out of the object</td></tr>
 <tr><td><code># Block:</code></td><td>a new piece starts</td></tr>
-<tr><td><code>defer_compilation</code></td><td>stop; compile the next piece when we get here</td></tr>
+<tr><td><code>defer_compilation</code>, <code>b</code></td><td>jump to a stub: compile the next piece when the code gets here</td></tr>
 </table></div>
 #+end_export
 
 #+attr_html: :class cap
-All three sights pass, so YJIT reads =@x= straight out of the object: no call.
+Three sights, each a compare and a jump. All pass, so one load reads =@x=: no call.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --yjit --yjit-dump-disasm=
 
 #+begin_notes
-This is YJIT's own commentary. It prints these comments between the
-machine code it writes; I've taken the machine code out.
+This is YJIT's dump. The lines with a hash are its comments; under each is
+the machine code it wrote, for this Mac's arm64 chip.
 
-Insn 0002 is a.x from the bytecode. YJIT sees it's a call to Point#x, an
-attribute reader. Three sights: a real object, a Point, laid out as
-before. Then it reads @x directly.
+Insn 0002 is a.x from the bytecode: a call to Point#x, an attribute
+reader. Then three sights: a real object, a Point, laid out as before.
+Each one is two instructions: compare, and jump away if it's wrong. All
+three pass, and one load reads @x straight out of the object. No call.
 
-Block starts the next piece. defer_compilation: stop here, let the code
-run, and compile the next piece when we get there, for whatever b really
-is.
+Then a new piece, and defer_compilation: just a jump to a stub. The first
+time the code gets there, YJIT compiles the next piece, for whatever b
+really is.
 
-[Depth: stack_size is how many values sit on the VM stack. Between "guard
-shape" and "Block" the dump has machine code and housekeeping, trimmed.
-"Shape" is an object's instance-variable layout.]
+[Depth: each b.ne jumps to a branch stub: if a sight fails, YJIT compiles
+another version for what it found, up to a limit (four by default). "Shape"
+is an object's instance-variable layout. Trimmed: register moves and YJIT's
+housekeeping between these lines.]
 #+end_notes
 
 * ZJIT: watch, then plan
@@ -822,7 +834,7 @@ is out of the compiler's reach.
 
 * What it means for Ruby
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :END:
 
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a

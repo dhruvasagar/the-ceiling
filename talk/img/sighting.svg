@@ -23,5 +23,5 @@
   <text x="980" y="630" font-size="40" fill="#b23a3a">off course?</text>
   <text x="980" y="680" font-size="40" fill="#b23a3a">stop, look around properly</text>
   <text x="80" y="790" font-size="48" fill="#1b2733">The look is a <tspan font-weight="700">guard</tspan>: "is this still a number?"</text>
-  <text x="80" y="850" font-size="40" fill="#4a5a6a">One quick check per stretch of code, not per step. If it fails: back to the interpreter.</text>
+  <text x="80" y="850" font-size="40" fill="#4a5a6a">One quick check per stretch of code, not per step. If it fails: a slower, careful path.</text>
 </svg>
