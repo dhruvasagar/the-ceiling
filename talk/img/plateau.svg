@@ -32,7 +32,7 @@
   <text x="845" y="345" font-size="28" fill="#4a5a6a">A tie. YJIT already gets these wins.</text>
 
   <rect x="820" y="400" width="710" height="300" rx="14" fill="#ffffff" stroke="#e8a0a0" stroke-width="3"/>
-  <text x="845" y="445" font-size="30" font-weight="700" fill="#b23a3a">A call to a small method:</text>
+  <text x="845" y="445" font-size="30" font-weight="700" fill="#b23a3a">A call to a method that does work:</text>
   <text x="845" y="495" font-size="28" font-weight="700" fill="#1b2733">YJIT, one piece at a time:</text>
   <text x="845" y="535" font-size="28" fill="#1b2733">check the argument, make a real call, check the result</text>
   <text x="845" y="595" font-size="28" font-weight="700" fill="#1b2733">ZJIT, the whole method as one plan:</text>

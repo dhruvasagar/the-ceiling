@@ -66,12 +66,12 @@ step harder, but by wasting less.
 
 Ruby 4.0 came out last Christmas with two just-in-time compilers. YJIT has
 made real Rails apps faster for years. ZJIT is new: Ruby's release notes call it "the next
-generation of YJIT". And 4.1 ships in a few weeks. Most of us will upgrade without ever looking
-at what changed.
+generation of YJIT". Most of us will upgrade without ever looking at
+what changed.
 
-So why build a second one? We'll follow one five-line method through
-both, and by the end you'll see the exact line where one compiler has to
-stop and the other doesn't. And next time someone says "Ruby is slow",
+So why build a second one? We'll follow one five-line method, and one
+tiny refactor of it, through both. By the end you'll see the exact line
+where one compiler has to stop and the other doesn't. And next time someone says "Ruby is slow",
 you'll have a better question to ask.
 
 [Bio, one line: fifteen years of Ruby; I write Rust, which both are
@@ -198,12 +198,13 @@ and how many arguments. See the Q&A doc.]
 you swim the wrong way. The skill is looking less, and only when it
 counts.]
 
-A just-in-time compiler does that for your busiest code. It looks once
-per stretch, not every stroke: a quick check called a guard, "is this
-still a number?", then a run of fast machine code. If the check fails, it takes a slower,
-careful path.
+A just-in-time compiler does that for your busiest code: one quick check
+per stretch, a guard, "is this still a number?", then fast machine code.
+If it fails: YJIT compiles another version; ZJIT hands back to the
+interpreter.
 
-Ruby has two of them, and they look in different ways.
+Ruby has two. YJIT decides one piece at a time, as it swims. ZJIT watches
+first, then plans the whole method.
 #+end_notes
 
 * YJIT: compile as you go
@@ -211,7 +212,7 @@ Ruby has two of them, and they look in different ways.
 :DURATION: 0:15
 :END:
 
-- Once a method is warm, compile *a few instructions at a time*, and run them
+- Once a method is called often (warm), compile *a few instructions at a time*, and run them
 - Look at the values that really turned up
 - Compile the next few for exactly those
 
@@ -272,7 +273,7 @@ YJIT's dump, trimmed: its comments (=#=), and the arm64 machine code it wrote un
 #+end_export
 
 #+attr_html: :class cap
-Three sights, each a compare and a jump. All pass, so one load reads =@x=: no call.
+Three guards, three sights: each a compare and a jump. All pass, so one load reads =@x=: no call.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --yjit --yjit-dump-disasm=
@@ -283,7 +284,8 @@ the machine code it wrote, for this Mac's arm64 chip.
 
 Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
 call to Point#x, an attribute reader. Then three sights: a real object, a Point, laid out as before.
-Each one is two instructions: compare, and jump away if it's wrong. All
+Those are the guards. Each is two instructions: compare, and jump away if
+it's wrong. All
 three pass, and one load reads @x straight out of the object. No call.
 
 Then a new piece, and defer_compilation: just a jump to a stub. The first
@@ -352,7 +354,7 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
 <tr><td><code>GuardType</code></td><td>check the type: a sight</td></tr>
 <tr><td><code>GuardBitEquals</code></td><td>check the object's layout: also a sight</td></tr>
 <tr><td><code>LoadField</code></td><td>read <code>@x</code> directly, no call</td></tr>
-<tr><td><code>FixnumSub</code>, <code>FixnumMult</code></td><td>whole-number maths</td></tr>
+<tr><td><code>Fixnum</code>, <code>FixnumSub</code></td><td>a small Integer; whole-number maths</td></tr>
 <tr><td><code>CCallWithFrame</code></td><td>call into C (<code>Math.sqrt</code>)</td></tr>
 </table></div>
 #+end_export
@@ -374,9 +376,9 @@ FixnumSub v93, v94": a name, its type, then the operation and its inputs.
 Every value gets a name, set exactly once. v16 is a. GuardType: is it a
 Point? GuardBitEquals: laid out as expected? The same checks YJIT made.
 
-FixnumSub makes dx, named v95. Then dx times dx: FixnumMult v95, v95. And
-CCallWithFrame calls into C for Math.sqrt. Neither compiler sees inside
-that C code.
+Remember the minus from the bytecode? Here it's FixnumSub, after two
+GuardTypes, and it makes dx, v95. Then dx times dx: FixnumMult v95, v95.
+CCallWithFrame calls into C for Math.sqrt.
 
 [Depth: "set once" is SSA. Trimmed: PatchPoints, which discard this code
 if someone redefines Point#x.]
@@ -389,24 +391,29 @@ if someone redefines Point#x.]
 
 # capture: yjit-distance.txt, zjit-distance.txt
 #+begin_example
-YJIT                                         ZJIT
-# Insn: 0028 getlocal_WC_0 (stack_size: 2)   v95:Fixnum = FixnumSub v93, v94
-# Insn: 0030 opt_mult (stack_size: 3)        ...
-# Insn: 0032 getlocal_WC_0 (stack_size: 2)   v118:Fixnum = FixnumMult v95, v95
+YJIT                                      ZJIT
+# Insn: 0008 opt_minus (stack_size: 2)    v93:Fixnum = GuardType v83, Fixnum
+# guard arg0 fixnum                       v94:Fixnum = GuardType v90, Fixnum
+# guard arg1 fixnum                       v95:Fixnum = FixnumSub v93, v94
+ ...                                      ...
+# Insn: 0030 opt_mult (stack_size: 3)     v118:Fixnum = FixnumMult v95, v95
 #+end_example
 
 #+attr_html: :class cap
-At =dx * dx= neither checks again: both already know =dx= is a number. Nearly a tie.
+At the minus, both check for whole numbers. At =dx * dx=, neither checks again: both know =dx= is one. Nearly a tie.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · default settings
 
 #+begin_notes
-So who wins on our five lines? Honestly: nearly nobody.
+So who wins on our five lines? Honestly: nearly a tie.
 
-At dx times dx, YJIT doesn't check again. It carried "dx is a number"
-forward from the minus. ZJIT doesn't either. ZJIT is slightly ahead: it
-doesn't re-check a and b before reading y. But it's small.
+At the minus, both check: two guards each. At dx times dx, neither checks
+again. YJIT carried "dx is a number" forward from the minus, and ZJIT's
+plan knows it too.
+
+[Depth: ZJIT is slightly ahead: it doesn't re-check a and b before reading
+y. Small.]
 
 On straight-line code like this one, YJIT already gets the wins. To see why
 ZJIT exists, we need something every Ruby codebase is full of.
@@ -431,8 +438,8 @@ has no type checks, the tie we just saw. What's left is at the turns, and
 in Ruby a turn is a method call. We write small methods calling small
 methods.
 
-YJIT never sees the whole method: at a small call it checks, calls,
-checks again. ZJIT plans the whole method, so it can copy the small method
+YJIT folds in trivial calls, like that attribute reader. But at a call
+to a method that does work, it checks, calls, checks again. ZJIT plans the whole method, so it can copy the small method
 in and drop those checks.
 A design limit, not YJIT standing still.
 
@@ -505,14 +512,12 @@ YJIT: a real call into a general =sq=, and a check again when it returns. ZJIT: 
 Ruby 4.1.0-preview1 · default settings
 
 #+begin_notes
-Here's the turn, in each compiler's own words: the stop on the left, the
-stride on the right.
+The stop on the left, the stride on the right.
 
-YJIT, left. It compiles sq as its own code, so distance has to call it.
-
-A call isn't free. Save where you are, set up a new frame for sq, jump
-there, run it, tear the frame down, jump back. All of that to multiply two
-numbers. Since that sq serves every caller, it checks n. And when it
+YJIT compiles sq as its own code, so distance has to call it. A call
+means a frame: Ruby's bookkeeping for one method call, the line you'd see
+in a backtrace. Set it up, jump, run, tear down, jump back. All that to
+multiply two numbers. Since that sq serves every caller, it checks n. And when it
 returns, YJIT doesn't know what came back, so at the plus it checks again.
 
 ZJIT, right. sq is spliced in: no jump, no check on n. It still sets up a
@@ -539,10 +544,9 @@ is cheaper than a call, not free.]
 #+begin_notes
 So why can't YJIT just do what ZJIT did? Its shape: each piece becomes
 machine code as soon as it's reached, so there's nothing to rearrange
-afterwards. It can fold in the tiniest things, like the attribute reader we saw.
-But in every capture in this talk, a method doing real work, sq,
-convert_key, double, stays a real call. And after the call returns, YJIT
-checks the result again.
+afterwards. It folds in trivial things like the attribute reader, but in
+every capture in this talk, Rails ones included, a method doing real work
+stays a real call.
 
 ZJIT builds the whole method as a plan first. And a plan can be rewritten
 before it runs: splice a small method in, then drop the checks on both
@@ -600,17 +604,15 @@ Back to the question I started with: why build a second one?
 
 Because the next gains, like seeing through that call, need the whole
 method as one plan, and a compiler that works piece by piece never has
-one. And because a traditional compiler shape lets more people help.
-In their words:
+one. And a traditional compiler is a shape many compiler engineers
+already know, so more people can help build it. In their words:
 
-It isn't free. ZJIT plans from what it saw while warming up. If your
-traffic changes after that, the plan is wrong: it falls back, then
-recompiles from a new profile. YJIT adds another version on the spot, up
-to a limit (four by default).
+[Read the quote.] "Compilation unit": the whole method. "SSA IR": the plan
+you saw, where every value is named once.
 
-[Sources for the limit: YJIT's max_versions option, default 4,
-yjit/src/options.rs. "recompile" is marked on ZJIT's guards in every HIR
-capture.]
+[If asked about the cost: ZJIT plans from what it saw while warming up. If
+traffic changes after that, it hands back to the interpreter and
+recompiles. See the Q&A doc.]
 
 [Sources: launch post 2025-12-24 ("if your method call patterns change
 significantly after your code has been compiled, we will frequently
@@ -739,8 +741,7 @@ Five of them: YJIT makes real calls, ZJIT turns them into one plan. But
 read the bottom too. 5.minutes still calls initialize. try isn't inlined
 at all. And nil.blank? YJIT inlines that one as well.
 
-And inlined isn't free: ZJIT still sets up a light frame for each. We
-counted calls. We didn't time them.
+And as it says at the bottom: inlined isn't free.
 #+end_notes
 
 * Calm water, choppy water
@@ -781,11 +782,11 @@ Now the honest part: where ZJIT gives up.
 
 Calm water, only whole numbers: ZJIT splices double in, one check, one add.
 
-Choppy: five types. ZJIT plans for all of them, and every case becomes a
-call into C, even whole numbers. YJIT keeps a fast add for whole numbers
-and a version per type. In real chop, the swimmer who looks up often beats
-the one swimming a planned line. Same here: today, YJIT has the faster
-path. ZJIT
+Choppy: five types. ZJIT doesn't specialise past the first type: every
+case becomes a general call, even whole numbers. YJIT keeps a fast add for whole numbers
+and a version per type. In chop, looking up more often is the efficient
+choice, and the swimmer who does beats one holding a planned line. Same
+here: today, YJIT has the faster path. ZJIT
 still saves the call to double itself. That's this build, today.
 
 [Depth: neither bailed out to the interpreter, 0 side exits each
@@ -799,11 +800,11 @@ still saves the call to double itself. That's this build, today.
 
 | What                                      | YJIT    | ZJIT    | Source                      |
 |-------------------------------------------+---------+---------+-----------------------------|
-| Instance-variable writes (setivar), per run | 5 ms    | 2 ms    | ZJIT team, Mar 2026          |
+| Writing instance variables, per run       | 5 ms    | 2 ms    | ZJIT team, Mar 2026          |
 | JIT memory, Shopify storefront            | 125 MiB | 101 MiB | ZJIT team, Oct 2026          |
 | Ruby calls in =params[:name].present?=    | 4       | 0       | ours                        |
 | Machine code for our =params= program     | 320 KiB | 352 KiB | ours                        |
-| Bail-outs to the interpreter, choppy water | 0       | 0       | ours                        |
+| Hand-backs to the interpreter, choppy water | 0       | 0       | ours                        |
 
 #+attr_html: :class cap
 The team, Oct 2026: ZJIT is "probably as fast as or faster than YJIT" on Shopify's storefront, and "there are definitely some where we are worse". Ours are counts and sizes from this talk's captures, not timings.
@@ -816,15 +817,13 @@ The team, Oct 2026: ZJIT is "probably as fast as or faster than YJIT" on Shopify
 Don't take my word for it. Here's what the ZJIT team has measured, next to
 what we've seen today.
 
-Theirs: on a benchmark of instance-variable writes, ZJIT is over twice as
-fast as YJIT, from an optimization that works across the whole method. On
-Shopify's storefront, it uses less memory, and they call it probably as
-fast as or faster than YJIT. In their words, there are still some where
-it's worse.
+Theirs: writing instance variables, ZJIT is over twice as fast, from an
+optimization across the whole method. On Shopify's storefront it uses less
+memory, and is probably as fast or faster, with some places worse.
 
-Ours are counts, not timings: four calls gone in our params line, no
-bail-outs in chop. And ZJIT generated a bit more machine code, which the
-team says too.
+Ours are counts, not timings. ZJIT generated a bit more machine code,
+which the team says too. Different measures: their memory is the whole JIT
+on a big app; ours is the machine code for one small program.
 
 [Depth: team, Oct 2026: "we generate more code (less precise than LBBV and
 more versions) and probably bigger code". Sizes are each compiler's
@@ -871,8 +870,8 @@ less for them. That's the ceiling the ZJIT team set out to raise.
 For you: small, clear methods are exactly what inlining is for. The 4.1
 notes list "method inlining" for small Ruby methods.
 
-The 4.0 release notes call ZJIT "the next generation of YJIT", and set the
-goal "faster than YJIT and production-ready in Ruby 4.1". The 4.1 notes
+The 4.0 release notes set the goal "faster than YJIT and production-ready
+in Ruby 4.1". The 4.1 notes
 say it can still be slower on larger apps. 4.1 ships in a few weeks. Try
 it with --zjit.
 
@@ -895,11 +894,11 @@ Slides, code, every capture, the full write-up: [[https://github.com/dhruvasagar
 efficient, sighting only when it counted, through the turns without
 stopping. Two or three sentences.]
 
-Ruby is learning the same thing: waste less, look up less, and take the
-turns in stride.
+Ruby is learning the same thing: waste less, look up only when it counts,
+and take the turns in stride.
 
-Next time someone says "Ruby is slow", ask "which part?", and now you can
-show them. Thank you.
+Next time someone says "Ruby is slow", ask "which part?" Often it's the
+turns, and that's what the second compiler was built for. Thank you.
 #+end_notes
 
 * Sources

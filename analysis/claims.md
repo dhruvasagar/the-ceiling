@@ -39,8 +39,9 @@ search for the quoted text.
 
 | Claim | Kind | Evidence |
 |---|---|---|
+| At the minus, both check for whole numbers (*On five lines, a tie*) | shown | YJIT: `# guard arg0 fixnum`, `# guard arg1 fixnum` after `# Insn: 0008 opt_minus`, `yjit-distance.txt:746-751`; ZJIT: `GuardType v83, Fixnum`, `GuardType v90, Fixnum` before `FixnumSub`, `zjit-distance.txt:53-55` |
 | Neither compiler type-checks `dx` again at `dx * dx` (*On five lines, a tie*) | shown | YJIT: `# Insn: 0030 opt_mult` with no guard before the next instruction, `yjit-distance.txt:1428`; ZJIT: `FixnumMult v95, v95`, `zjit-distance.txt:65` |
-| ZJIT doesn't re-check `a` and `b` before reading `@y`; YJIT does (*On five lines, a tie*) | shown | ZJIT: `LoadField v79, :@y` with no new guard, `zjit-distance.txt:57`; YJIT: `# call to Point#y` followed by `guard known class` / `guard shape`, `yjit-distance.txt:918` |
+| ZJIT doesn't re-check `a` and `b` before reading `@y`; YJIT does (*On five lines, a tie*, notes, depth) | shown | ZJIT: `LoadField v79, :@y` with no new guard, `zjit-distance.txt:57`; YJIT: `# call to Point#y` followed by `guard known class` / `guard shape`, `yjit-distance.txt:918` |
 | Both call `Math.sqrt` in C (*ZJIT: in its own words*) | shown | ZJIT: `CCallWithFrame v54, :Math.sqrt`, `zjit-distance.txt`; YJIT: `call to Module#sqrt`, `yjit-distance.txt:1651` |
 
 ## The turn: `sq`
