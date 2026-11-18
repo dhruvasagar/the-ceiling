@@ -166,8 +166,8 @@ slide_text() {
   awk '
     /^\* / { skip = ($0 ~ /:noexport:/) }
     skip { next }
-    /^#\+begin_(notes|example|src|quote)/ { blk = 1; next }
-    /^#\+end_(notes|example|src|quote)/   { blk = 0; next }
+    /^#\+begin_(notes|example|src|quote|export)/ { blk = 1; next }
+    /^#\+end_(notes|example|src|quote|export)/   { blk = 0; next }
     blk || /^#/ || /^[ \t]*:/ { next }
     { print }
   ' "$TALK"

@@ -21,9 +21,9 @@ STORY beat (30 s).
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:00 | 1:10 | -0:10 | live OVER  |
 | 5 | 3:00 | Learning to sight | 1:00 | 0:56 | 0:04 | STORY  |
-| 6 | 4:00 | YJIT: compile as you go | 0:45 | 0:42 | 0:03 |  |
+| 6 | 4:00 | YJIT: compile as you go | 0:45 | 0:46 | -0:01 |  |
 | 7 | 4:45 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
-| 8 | 5:15 | ZJIT: the IR on one slide | 1:00 | 0:53 | 0:07 |  |
+| 8 | 5:15 | ZJIT: the IR on one slide | 1:00 | 0:59 | 0:01 |  |
 | 9 | 6:15 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
 | 10 | 7:00 | The plateau | 1:00 | 1:01 | -0:01 | STORY  |
 | 11 | 8:00 | One more call | 0:30 | 0:17 | 0:13 |  |
@@ -43,7 +43,7 @@ STORY beat (30 s).
 | 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 | 26 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *18:18* | *1:27* | |
+|   |        | *Total* | *19:45* | *18:28* | *1:17* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -178,9 +178,9 @@ Ruby has two of them, and they look in different ways.
 ** 6. YJIT: compile as you go  (4:00, 0:45)
 
 /On screen:/
-- Once a method is warm, compile a small piece, run it
+- Once a method is warm, compile *a few instructions at a time*, and run them
 - Look at the values that really turned up
-- Compile the next piece for exactly those
+- Compile the next few for exactly those
 - listing (captures/yjit-distance.txt):
 #+begin_example
 # Insn: 0002 opt_send_without_block (stack_size: 1)
@@ -196,16 +196,15 @@ Ruby has two of them, and they look in different ways.
 
 /Say:/
 
-YJIT compiles as it goes. This is its own commentary, machine code taken
-out.
+YJIT compiles as it goes. Each piece is a few bytecode instructions, a
+straight run with no branches; every "Block" line here starts one.
 
 At a.x it checks: a real object, a Point, laid out as before. Then it
 reads @x directly.
 
 "defer_compilation" means: stop here, let the code run, and compile the
-next piece when we get there, for whatever value is really there. So it
-only compiles code that actually runs, for the values that actually turn
-up.
+next piece when we get there, for whatever value is really there. It
+only compiles code that runs, for values that really turn up.
 
 [Depth: lazy basic block versioning. "Shape" is an object's
 instance-variable layout.]
@@ -232,15 +231,17 @@ representation, improves the plan, and compiles it in one go.
 ** 8. ZJIT: the IR on one slide  (5:15, 1:00)
 
 /On screen:/
+- The *IR* (intermediate representation) is ZJIT's plan for the whole method: one line per step, and every value gets a name, set exactly once.
+- 
 - listing (captures/zjit-distance.txt):
 #+begin_example
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v79:ObjectSubclass[class_exact:Point] = GuardType v16
-  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a) recompile
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)
   v83:BasicObject = LoadField v79, :@x
   ...
-  v93:Fixnum = GuardType v83, Fixnum recompile
+  v93:Fixnum = GuardType v83, Fixnum
   v94:Fixnum = GuardType v90, Fixnum
   v95:Fixnum = FixnumSub v93, v94
   ...
@@ -249,13 +250,23 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126
   Return v130
 #+end_example
-- The whole method as one plan. ~GuardType~ and ~GuardBitEquals~ are sights. ~v95~ is ~dx~.
+- 
+- 
+- v95a value's name, set once
+- GuardTypecheck the type: a sight
+- GuardBitEqualscheck the object's layout: also a sight
+- LoadFieldread @x directly, no call
+- FixnumSub, FixnumMultwhole-number maths
+- CCallWithFramecall into C (Math.sqrt)
+- 
+- ~v95~ is ~dx~: made once, then used for ~dx * dx~ with no more type checks.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 
 /Say:/
 
-This is ZJIT's plan for our five lines. The whole method fits on one
-slide.
+This is ZJIT's plan for our five lines: its IR, intermediate
+representation. The whole method fits on one slide, and the right-hand
+side tells you how to read it.
 
 Read one line and you can read them all. "v95, colon, Fixnum, equals,
 FixnumSub v93, v94": a name, its type, then the operation and its inputs.
