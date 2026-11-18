@@ -56,6 +56,39 @@ Building Ruby with YJIT/ZJIT needs a Rust toolchain on your PATH. If the
 build fails while installing bundled gems with a `libyaml` error, install
 libyaml (`brew install libyaml` on macOS) and retry.
 
+### The glimpse table
+
+The "A glimpse: seven everyday lines" slide counts calls; it is not a
+benchmark, and nothing on it is timed. Each of seven everyday
+ActiveSupport lines (`params[:name].present?`, `name.presence`,
+`text.squish`, `list.second`, `5.minutes`, `obj.try(:upcase)`,
+`nil.blank?`) runs in its own method, called 100,000 times so both JITs
+compile it at their default settings. Then we read each compiler's dump
+and count, per line, the calls into Ruby methods that remain and the ones
+that were inlined.
+
+| Step | Where |
+|---|---|
+| The program | `src/glimpse.rb`, tangled from the Demo section of `talk/the-ceiling.org` |
+| Run it under each JIT | `bin/capture glimpse-yjit glimpse-zjit` (`ruby --yjit --yjit-dump-disasm glimpse.rb`, `ruby --zjit --zjit-dump-hir glimpse.rb`) |
+| Raw output | `captures/glimpse-yjit.txt`, `captures/glimpse-zjit.txt` |
+| Count, and print the table rows | `bin/lib/glimpse.rb` |
+| Keep the slide honest | `bin/check glimpse` fails if the slide's table differs from what the script prints |
+
+```sh
+bin/capture glimpse-yjit glimpse-zjit
+ruby bin/lib/glimpse.rb captures/glimpse-yjit.txt captures/glimpse-zjit.txt
+```
+
+What counts (the header of `bin/lib/glimpse.rb` has the exact rules):
+- **YJIT:** a real call is a call into a Ruby method that pushes a frame;
+  a call YJIT marks "inlined" counts as inlined.
+- **ZJIT:** Ruby methods copied into the caller (`PushInlineFrame`) count
+  as inlined, and Ruby methods still sent to (`Send*`) count as calls. A
+  body reduced to a constant is reported as folded.
+- **Not counted under either:** calls into C, because both compilers make
+  them.
+
 Try it on your own code:
 
 ```sh
