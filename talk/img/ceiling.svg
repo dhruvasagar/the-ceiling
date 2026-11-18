@@ -44,6 +44,6 @@
   <text x="870" y="640" font-size="30" fill="#1b2733">Both sides are in the plan,</text>
   <text x="870" y="680" font-size="30" font-weight="700" fill="#1f6a2c">still open to change.</text>
 
-  <text x="80" y="790" font-size="42" fill="#1b2733">Better pieces can't take out the call. The limit is <tspan font-weight="700">what the compiler can see</tspan>.</text>
+  <text x="80" y="790" font-size="42" fill="#1b2733">Better pieces can't take out the call. YJIT's limit is <tspan font-weight="700">what it sees at once: a piece</tspan>.</text>
   <text x="80" y="850" font-size="34" fill="#4a5a6a">That's the ceiling. ZJIT raises it by compiling "one entire method at a time" (ZJIT team).</text>
 </svg>

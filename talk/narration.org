@@ -30,7 +30,7 @@ STORY beat (30 s).
 | 12 | 9:00 | One more call | 0:30 | 0:17 | 0:13 |  |
 | 13 | 9:30 | One more call is one more buoy | 0:30 | 0:20 | 0:10 |  |
 | 14 | 10:00 | At the turn buoy | 1:15 | 1:11 | 0:04 |  |
-| 15 | 11:15 | Why it's a ceiling | 1:00 | 1:05 | -0:05 |  |
+| 15 | 11:15 | Why it's a ceiling | 1:00 | 1:06 | -0:06 | OVER  |
 | 16 | 12:15 | The 2-beat kick | 0:30 | 0:37 | -0:07 | STORY OVER  |
 | 17 | 12:45 | So, why build the second one? | 1:00 | 0:56 | 0:04 |  |
 | 18 | 13:45 | Race day: params | 0:30 | 0:29 | 0:01 |  |
@@ -44,7 +44,7 @@ STORY beat (30 s).
 | 26 | 19:00 | Head down | 0:45 | 0:51 | -0:06 | STORY OVER  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:14* | *0:31* | |
+|   |        | *Total* | *19:45* | *19:15* | *0:30* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -474,8 +474,8 @@ reader, it can fold in; a method doing real work stays a call.
 ZJIT plans the whole method first. Both sides are in the plan, still open
 to change: copy sq in, drop the checks, then write machine code.
 
-So better pieces can't get you there. The limit is what the compiler can
-see. That's the ceiling, and ZJIT raises it by compiling, in the team's
+So better pieces can't get you there. YJIT's limit is what it sees at
+once: one piece. That's the ceiling, and ZJIT raises it by compiling, in the team's
 words, one entire method at a time.
 
 [If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code

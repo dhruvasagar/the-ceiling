@@ -563,8 +563,8 @@ reader, it can fold in; a method doing real work stays a call.
 ZJIT plans the whole method first. Both sides are in the plan, still open
 to change: copy sq in, drop the checks, then write machine code.
 
-So better pieces can't get you there. The limit is what the compiler can
-see. That's the ceiling, and ZJIT raises it by compiling, in the team's
+So better pieces can't get you there. YJIT's limit is what it sees at
+once: one piece. That's the ceiling, and ZJIT raises it by compiling, in the team's
 words, one entire method at a time.
 
 [If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code
