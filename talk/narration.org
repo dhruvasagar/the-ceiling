@@ -799,18 +799,36 @@ turns, and that's what the second compiler was built for. Thank you.
 
 /On screen:/
 - 
+- 
 - The ZJIT team, Rails at Scale
 - 
-- ZJIT has been merged into Ruby (Bernstein, 2025-05-14)
-- ZJIT is now available in Ruby 4.0 (Bernstein, 2025-12-24)
-- How ZJIT removes redundant object loads and stores (Denbeaux, 2026-03-18)
-- A new register allocator for ZJIT (Patterson, 2026-05-27)
-- The inliner is yielding benefits for ZJIT (Bernstein, 2026-07-28)
-- ZJIT is now as fast as YJIT (Bernstein, 2026-10-09)
+- ZJIT has been merged into RubyBernstein, 2025-05-14
+- ZJIT is now available in Ruby 4.0Bernstein, 2025-12-24
+- How ZJIT removes redundant object loads and storesDenbeaux, 2026-03-18
+- A new register allocator for ZJITPatterson, 2026-05-27
+- The inliner is yielding benefits for ZJITBernstein, 2026-07-28
+- ZJIT is now as fast as YJITBernstein, 2026-10-09
 - 
-- Ruby: 4.0.0 release notes · 4.1 NEWS · ZJIT docs · YJIT docs
-- YJIT research: Type check removal (ECOOP 2015) · YJIT (VMIL 2021) · YJIT in production (MPLR 2023)
-- Everything else, with exact quotes and every capture: github.com/dhruvasagar/the-ceiling (references/, analysis/claims.md)
+- 
+- 
+- Ruby
+- 
+- Ruby 4.0.0 release notes
+- Ruby 4.1 NEWS
+- ZJIT docs · YJIT docs
+- 
+- YJIT research
+- 
+- Type check removal ECOOP 2015
+- YJIT VMIL 2021
+- YJIT in production MPLR 2023
+- 
+- Everything else
+- 
+- github.com/dhruvasagar/the-ceiling
+- every capture, exact quotes, claims ledger
+- 
+- 
 - 
 
 /Say:/
