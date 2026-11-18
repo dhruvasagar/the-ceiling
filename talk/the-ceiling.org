@@ -547,23 +547,25 @@ is cheaper than a call, not free.]
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
-#+attr_html: :alt YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
+#+attr_html: :alt Taking out a call means changing both sides at once; YJIT's pieces are already machine code, ZJIT's whole-method plan is still open to change
 [[file:img/out/ceiling.svg]]
 
 #+begin_notes
-So why can't YJIT just do what ZJIT did? Its shape: each piece becomes
-machine code as soon as it's reached, so there's nothing to rearrange
-afterwards. It folds in trivial things like the attribute reader, but in
-every capture in this talk, Rails ones included, a method doing real work
-stays a real call.
+So why can't YJIT just do the same? Taking out a call means changing
+both sides at once. The caller, the method, and the
+checks between them.
 
-ZJIT builds the whole method as a plan first. And a plan can be rewritten
-before it runs: splice a small method in, then drop the checks on both
-sides of it, because the plan can see what goes in and what comes out.
+YJIT writes machine code as it goes. By the time it reaches the call,
+distance is already machine code, and sq was compiled on its own. No plan
+left to change, so the call stays. Trivial ones, like the attribute
+reader, it can fold in; a method doing real work stays a call.
 
-That's the ceiling. In the ZJIT team's words: instead of one piece at a
-time, one entire method at a time, which gives the optimizer more code to
-work with.
+ZJIT plans the whole method first. Both sides are in the plan, still open
+to change: copy sq in, drop the checks, then write machine code.
+
+So better pieces can't get you there. The limit is what the compiler can
+see. That's the ceiling, and ZJIT raises it by compiling, in the team's
+words, one entire method at a time.
 
 [If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code
 generator (yjit/src/backend/ir.rs). What it doesn't build is a plan of a
@@ -605,6 +607,11 @@ together.
 #+end_quote
 
 #+begin_export html
+<table class="legend" style="margin:6px auto 0;font-size:0.5em">
+<tr><td><b>compilation unit</b></td><td>how much is compiled at once: for ZJIT, a whole method</td></tr>
+<tr><td><b>SSA IR</b></td><td>the plan ZJIT showed us: an intermediate representation in <i>static single-assignment</i> form, where every value gets one name, set once</td></tr>
+<tr><td><b>method compiler</b></td><td>compiles one method at a time: the textbook shape</td></tr>
+</table>
 <p class="ver">Source: <a href="https://railsatscale.com/2025-12-24-launch-zjit/">railsatscale.com/2025-12-24-launch-zjit</a></p>
 #+end_export
 
@@ -616,8 +623,9 @@ method as one plan, and a compiler that works piece by piece never has
 one. And a traditional compiler is a shape many compiler engineers
 already know, so more people can help build it. In their words:
 
-[Read the quote.] "Compilation unit": the whole method. "SSA IR": the plan
-you saw, where every value is named once.
+[Read the quote.] The three terms are underneath: a compilation unit is
+how much gets compiled at once; SSA IR is the plan we saw, every value
+named once.
 
 [If asked about the cost: ZJIT plans from what it saw while warming up. If
 traffic changes after that, it hands back to the interpreter and

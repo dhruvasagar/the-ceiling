@@ -30,9 +30,9 @@ STORY beat (30 s).
 | 12 | 9:00 | One more call | 0:30 | 0:17 | 0:13 |  |
 | 13 | 9:30 | One more call is one more buoy | 0:30 | 0:20 | 0:10 |  |
 | 14 | 10:00 | At the turn buoy | 1:15 | 1:11 | 0:04 |  |
-| 15 | 11:15 | Why it's a ceiling | 1:00 | 1:00 | 0:00 |  |
+| 15 | 11:15 | Why it's a ceiling | 1:00 | 1:05 | -0:05 |  |
 | 16 | 12:15 | The 2-beat kick | 0:30 | 0:37 | -0:07 | STORY OVER  |
-| 17 | 12:45 | So, why build the second one? | 1:00 | 0:52 | 0:08 |  |
+| 17 | 12:45 | So, why build the second one? | 1:00 | 0:56 | 0:04 |  |
 | 18 | 13:45 | Race day: params | 0:30 | 0:29 | 0:01 |  |
 | 19 | 14:15 | params, through both | 0:45 | 0:44 | 0:01 |  |
 | 20 | 15:00 | The feed stop | 0:30 | 0:21 | 0:09 |  |
@@ -44,7 +44,7 @@ STORY beat (30 s).
 | 26 | 19:00 | Head down | 0:45 | 0:51 | -0:06 | STORY OVER  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:05* | *0:40* | |
+|   |        | *Total* | *19:45* | *19:14* | *0:31* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -458,23 +458,25 @@ is cheaper than a call, not free.]
 ** 15. Why it's a ceiling  (11:15, 1:00)
 
 /On screen:/
-- diagram img/out/ceiling.svg: YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
+- diagram img/out/ceiling.svg: Taking out a call means changing both sides at once; YJIT's pieces are already machine code, ZJIT's whole-method plan is still open to change
 
 /Say:/
 
-So why can't YJIT just do what ZJIT did? Its shape: each piece becomes
-machine code as soon as it's reached, so there's nothing to rearrange
-afterwards. It folds in trivial things like the attribute reader, but in
-every capture in this talk, Rails ones included, a method doing real work
-stays a real call.
+So why can't YJIT just do the same? Taking out a call means changing
+both sides at once. The caller, the method, and the
+checks between them.
 
-ZJIT builds the whole method as a plan first. And a plan can be rewritten
-before it runs: splice a small method in, then drop the checks on both
-sides of it, because the plan can see what goes in and what comes out.
+YJIT writes machine code as it goes. By the time it reaches the call,
+distance is already machine code, and sq was compiled on its own. No plan
+left to change, so the call stays. Trivial ones, like the attribute
+reader, it can fold in; a method doing real work stays a call.
 
-That's the ceiling. In the ZJIT team's words: instead of one piece at a
-time, one entire method at a time, which gives the optimizer more code to
-work with.
+ZJIT plans the whole method first. Both sides are in the plan, still open
+to change: copy sq in, drop the checks, then write machine code.
+
+So better pieces can't get you there. The limit is what the compiler can
+see. That's the ceiling, and ZJIT raises it by compiling, in the team's
+words, one entire method at a time.
 
 [If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code
 generator (yjit/src/backend/ir.rs). What it doesn't build is a plan of a
@@ -507,6 +509,11 @@ together.
 - 1. The next gains need the *whole method as one plan*. A compiler that works piece by piece never has one.
 - 2. A more traditional compiler, so *more people can help build it*.
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
+- 
+- compilation unithow much is compiled at once: for ZJIT, a whole method
+- SSA IRthe plan ZJIT showed us: an intermediate representation in static single-assignment form, where every value gets one name, set once
+- method compilercompiles one method at a time: the textbook shape
+- 
 - Source: railsatscale.com/2025-12-24-launch-zjit
 
 /Say:/
@@ -518,8 +525,9 @@ method as one plan, and a compiler that works piece by piece never has
 one. And a traditional compiler is a shape many compiler engineers
 already know, so more people can help build it. In their words:
 
-[Read the quote.] "Compilation unit": the whole method. "SSA IR": the plan
-you saw, where every value is named once.
+[Read the quote.] The three terms are underneath: a compilation unit is
+how much gets compiled at once; SSA IR is the plan we saw, every value
+named once.
 
 [If asked about the cost: ZJIT plans from what it saw while warming up. If
 traffic changes after that, it hands back to the interpreter and

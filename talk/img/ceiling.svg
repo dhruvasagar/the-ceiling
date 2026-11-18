@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
-  <title>Why it's a ceiling: compile as you go versus plan then compile</title>
+  <title>Why it's a ceiling: taking out a call needs both sides open to change, and only a whole-method plan has that</title>
   <rect width="1600" height="900" fill="#ffffff"/>
-  <text x="80" y="100" font-size="60" font-weight="700" fill="#1b2733">Why it's a ceiling</text>
+  <text x="80" y="92" font-size="60" font-weight="700" fill="#1b2733">Why it's a ceiling</text>
+  <text x="80" y="148" font-size="34" fill="#1b2733">To take out a call, change <tspan font-weight="700">both sides at once</tspan>: the caller, the method, and the checks between.</text>
 
   <!-- YJIT panel -->
-  <rect x="60" y="150" width="700" height="560" rx="18" fill="#fbf4e3" stroke="#c48a00" stroke-width="3"/>
-  <text x="90" y="205" font-size="40" font-weight="700" fill="#7a5a00">YJIT: compile as you go</text>
-  <text x="90" y="250" font-size="28" fill="#4a5a6a">each piece becomes machine code once reached</text>
-  <!-- distance pieces -->
-  <text x="90" y="320" font-size="30" fill="#1b2733">distance</text>
-  <g fill="#ffffff" stroke="#c48a00" stroke-width="3">
-    <rect x="240" y="290" width="90" height="46" rx="6"/><rect x="350" y="290" width="90" height="46" rx="6"/>
-    <rect x="460" y="290" width="90" height="46" rx="6"/><rect x="570" y="290" width="90" height="46" rx="6"/>
+  <rect x="60" y="180" width="700" height="530" rx="18" fill="#fbf4e3" stroke="#c48a00" stroke-width="3"/>
+  <text x="90" y="232" font-size="40" font-weight="700" fill="#7a5a00">YJIT: compile as you go</text>
+  <text x="90" y="272" font-size="28" fill="#4a5a6a">each piece is machine code (dark) once reached</text>
+  <text x="90" y="335" font-size="30" fill="#1b2733">distance</text>
+  <g fill="#1e1f29" stroke="#c48a00" stroke-width="3">
+    <rect x="240" y="305" width="90" height="46" rx="6"/><rect x="350" y="305" width="90" height="46" rx="6"/>
+    <rect x="460" y="305" width="90" height="46" rx="6"/><rect x="570" y="305" width="90" height="46" rx="6"/>
   </g>
-  <g stroke="#c48a00" stroke-width="3"><path d="M330 313 H350 M440 313 H460 M550 313 H570"/></g>
-  <!-- sq pieces, compiled separately -->
-  <text x="90" y="510" font-size="30" fill="#1b2733">sq</text>
-  <g fill="#ffffff" stroke="#c48a00" stroke-width="3">
-    <rect x="460" y="480" width="90" height="46" rx="6"/><rect x="570" y="480" width="90" height="46" rx="6"/>
+  <g stroke="#c48a00" stroke-width="3"><path d="M330 328 H350 M440 328 H460 M550 328 H570"/></g>
+  <text x="90" y="505" font-size="30" fill="#1b2733">sq</text>
+  <g fill="#1e1f29" stroke="#c48a00" stroke-width="3">
+    <rect x="460" y="475" width="90" height="46" rx="6"/><rect x="570" y="475" width="90" height="46" rx="6"/>
   </g>
-  <path d="M550 503 H570" stroke="#c48a00" stroke-width="3"/>
-  <!-- the call: jump and back -->
-  <path d="M505 336 C 470 400, 470 430, 500 476" stroke="#b23a3a" stroke-width="5" fill="none" stroke-dasharray="12 8"/>
-  <path d="M615 476 C 650 430, 650 400, 615 340" stroke="#b23a3a" stroke-width="5" fill="none" stroke-dasharray="12 8"/>
-  <text x="250" y="420" font-size="30" fill="#b23a3a">a real call:</text>
-  <text x="250" y="456" font-size="30" fill="#b23a3a">jump, frame, back</text>
-  <text x="90" y="610" font-size="32" fill="#1b2733">Already machine code. Nothing</text>
-  <text x="90" y="652" font-size="32" fill="#1b2733">left to rearrange or merge.</text>
+  <path d="M550 498 H570" stroke="#c48a00" stroke-width="3"/>
+  <path d="M505 351 C 470 405, 470 430, 500 471" stroke="#b23a3a" stroke-width="5" fill="none" stroke-dasharray="12 8"/>
+  <path d="M615 471 C 650 430, 650 405, 615 355" stroke="#b23a3a" stroke-width="5" fill="none" stroke-dasharray="12 8"/>
+  <text x="200" y="420" font-size="30" fill="#b23a3a">a real call:</text>
+  <text x="200" y="456" font-size="30" fill="#b23a3a">jump, frame, back</text>
+  <text x="90" y="590" font-size="30" fill="#1b2733">distance is already machine code,</text>
+  <text x="90" y="630" font-size="30" fill="#1b2733">and sq was compiled on its own.</text>
+  <text x="90" y="680" font-size="30" font-weight="700" fill="#7a5a00">No plan left to change: the call stays.</text>
 
   <!-- ZJIT panel -->
-  <rect x="840" y="150" width="700" height="560" rx="18" fill="#eaf6ec" stroke="#2e8b3e" stroke-width="3"/>
-  <text x="870" y="205" font-size="40" font-weight="700" fill="#1f6a2c">ZJIT: plan, then compile</text>
-  <text x="870" y="250" font-size="30" fill="#4a5a6a">the whole method becomes a plan first (the IR)</text>
-  <rect x="890" y="285" width="600" height="190" rx="12" fill="#ffffff" stroke="#2e8b3e" stroke-width="3"/>
-  <text x="915" y="330" font-size="30" fill="#1b2733">plan for distance</text>
-  <rect x="915" y="350" width="550" height="100" rx="10" fill="#d8f0dc" stroke="#2e8b3e" stroke-width="2" stroke-dasharray="8 6"/>
-  <text x="940" y="395" font-size="30" fill="#1f6a2c">sq, spliced in (inlined)</text>
-  <text x="940" y="432" font-size="28" fill="#1f6a2c">dx already proved: no check</text>
-  <path d="M1190 480 V530" stroke="#2e8b3e" stroke-width="5"/>
-  <path d="M1176 518 L1190 538 L1204 518" stroke="#2e8b3e" stroke-width="5" fill="none"/>
-  <rect x="1040" y="545" width="300" height="56" rx="8" fill="#ffffff" stroke="#2e8b3e" stroke-width="3"/>
-  <text x="1190" y="583" font-size="30" text-anchor="middle" fill="#1b2733">machine code</text>
-  <text x="870" y="652" font-size="32" fill="#1b2733">A plan can be rewritten before it runs.</text>
+  <rect x="840" y="180" width="700" height="530" rx="18" fill="#eaf6ec" stroke="#2e8b3e" stroke-width="3"/>
+  <text x="870" y="232" font-size="40" font-weight="700" fill="#1f6a2c">ZJIT: plan, then compile</text>
+  <text x="870" y="272" font-size="28" fill="#4a5a6a">the whole method becomes a plan first (the IR)</text>
+  <rect x="890" y="295" width="600" height="180" rx="12" fill="#ffffff" stroke="#2e8b3e" stroke-width="3"/>
+  <text x="915" y="337" font-size="30" fill="#1b2733">plan for distance</text>
+  <rect x="915" y="355" width="550" height="100" rx="10" fill="#d8f0dc" stroke="#2e8b3e" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="940" y="397" font-size="30" fill="#1f6a2c">sq, copied in (inlined)</text>
+  <text x="940" y="435" font-size="28" fill="#1f6a2c">checks on both sides: dropped</text>
+  <path d="M1190 480 V520" stroke="#2e8b3e" stroke-width="5"/>
+  <path d="M1176 508 L1190 528 L1204 508" stroke="#2e8b3e" stroke-width="5" fill="none"/>
+  <rect x="1040" y="535" width="300" height="52" rx="8" fill="#1e1f29" stroke="#2e8b3e" stroke-width="3"/>
+  <text x="1190" y="570" font-size="28" text-anchor="middle" fill="#ffffff">then machine code</text>
+  <text x="870" y="640" font-size="30" fill="#1b2733">Both sides are in the plan,</text>
+  <text x="870" y="680" font-size="30" font-weight="700" fill="#1f6a2c">still open to change.</text>
 
-  <text x="80" y="790" font-size="44" fill="#1b2733">To splice in real work and optimise across it, you want <tspan font-weight="700">a plan</tspan>.</text>
-  <text x="80" y="850" font-size="36" fill="#4a5a6a">YJIT builds piece by piece. ZJIT starts with the plan. That is the ceiling, and the way through it.</text>
+  <text x="80" y="790" font-size="42" fill="#1b2733">Better pieces can't take out the call. The limit is <tspan font-weight="700">what the compiler can see</tspan>.</text>
+  <text x="80" y="850" font-size="34" fill="#4a5a6a">That's the ceiling. ZJIT raises it by compiling "one entire method at a time" (ZJIT team).</text>
 </svg>
