@@ -99,6 +99,38 @@ cheaper than a call: no jump, no separate code, fewer checks. Not nothing.
 check, SP save, local spills and a frame push; =empty_inline_frame_count:
 0= in =hwia-zjit-stats.txt:93=.
 
+** What happens when a guard fails?
+*Say:* Each compiler takes a slower path, but a different one. YJIT jumps
+to a stub that compiles another version for what actually turned up, up
+to four by default. ZJIT leaves its compiled code for the interpreter and
+can recompile from a new profile.
+
+*Evidence:* YJIT: =b.ne #0x16bbc6284= (=yjit-distance.txt:415=) lands on
+=# branch stub hit= (=:317=); =max_versions= default 4 [12]. ZJIT:
+=recompile= on guards in every HIR capture; "we will frequently side-exit
+into the interpreter" [2].
+
+** Does inlining mean ZJIT skips sq's work?
+*Say:* No. Both swimmers still round the buoy: =n * n= still runs. What
+goes is the stop: the jump, the call setup, and the checks either side.
+
+*Evidence:* =FixnumMult v95, v95= inside =PushInlineFrame :sq=
+(=zjit-sq.txt:86-88=).
+
+** Why is the machine code arm64?
+*Say:* I captured it on an Apple Silicon Mac. On an Intel or AMD machine
+the instructions differ; YJIT's comments and the guards are the same.
+
+*Evidence:* =captures/env.txt= (=arm64-darwin=); the YJIT capture's first
+line.
+
+** What's a stack, in the bytecode?
+*Say:* Ruby's bytecode passes values on a stack: =getlocal= puts a value
+on it, =opt_minus= takes the top two and puts the result back,
+=setlocal= takes it off into a variable.
+
+*Evidence:* =yarv-distance.txt:5-10=.
+
 ** Doesn't YJIT have an IR?
 *Say:* It has a low-level one inside its code generator. What it doesn't
 build is a plan of a whole method.
@@ -217,7 +249,12 @@ I'll re-run every capture after the release; the repo will say so.
 * Background terms (if someone asks)
 
 - *Guard*: a quick check in compiled code ("is this still a number?"); if
-  it fails, the code leaves for a slower path.
+  it fails, a slower path: YJIT compiles another version, ZJIT exits to
+  the interpreter.
+- *Bytecode*: the small stack-based steps Ruby compiles your code into and
+  the interpreter runs.
+- *Branch stub*: a placeholder YJIT jumps to; reaching it compiles the
+  next piece (or another version).
 - *Side exit*: leaving compiled code back to the interpreter [7].
 - *IR, HIR*: ZJIT's intermediate representation of the whole method, "in
   static single-assignment (SSA) form" [7].

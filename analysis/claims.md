@@ -23,6 +23,18 @@ search for the quoted text.
 | Both compile `distance` during call 30; YJIT logs 25 compile events, ZJIT one; none on calls 31 to 40 (analysis E0; no longer on a slide) | shown | `how-yjit.txt` (first event at :40, all events follow `call 30`), `how-zjit.txt:33` |
 | YJIT raises its threshold to 120 calls once a process has 40,000 ISEQs (analysis) | stated | `doc/jit/yjit.md` line 200 [12] |
 
+## Reading the dumps
+
+| Claim (on screen) | Kind | Evidence |
+|---|---|---|
+| Bytecode steps `0000`-`0010` are `dx = a.x - b.x`: get `a`, call `x`, get `b`, call `x`, minus, store in `dx` (*The bytecode*) | shown | `yarv-distance.txt:5-10` |
+| `opt_minus` has a fast path for whole numbers but checks the types each time it runs (*The bytecode*) | stated | CRuby `vm_opt_minus` checks `FIXNUM_2_P` and that `Integer#-` is not redefined on every execution [12] |
+| A guard is one quick check per stretch of code; if it fails, a slower path (*Learning to sight*) | shown | guards in `yjit-distance.txt`, `zjit-distance.txt`; YJIT failure targets below; ZJIT `recompile` / side exit [2][7] |
+| Each YJIT sight is a compare and a jump (*YJIT: in its own words*) | shown | `tst`/`cmp` + `b.ne`, `yjit-distance.txt:414-436` |
+| A failed YJIT sight jumps to a branch stub, which compiles another version (notes) | shown + stated | `b.ne #0x16bbc6284` (`:415`) lands on `# branch stub hit` (`:317`); likewise `:428`→`:353`, `:436`→`:390`; `max_versions` default 4 [12] |
+| After the three sights, one load reads `@x` (*YJIT: in its own words*) | shown | `ldur x1, [x11, #0x10]`, `yjit-distance.txt:438` |
+| `defer_compilation` is a jump to a stub (*YJIT: in its own words*) | shown | `b #0x16bbc63b4` (`:463`) → `# branch stub hit` at `0x16bbc63b4` (`:440-441`) |
+
 ## The five-line method
 
 | Claim | Kind | Evidence |
@@ -43,6 +55,14 @@ search for the quoted text.
 | The cost of a YJIT call: save state, push a frame, jump, run, pop, jump back (*At the turn buoy*) | shown | the comment lines around `# call to Object#sq` in `yjit-sq.txt` (stack overflow check, save PC, push frame, …, pop stack frame) |
 | Forced to compile early, YJIT carries "n is a number" into `sq` (Q&A) | shown | `yjit-sq-eager.txt` (`--yjit-call-threshold=1`): the last `Block: sq@` version has no guard at `opt_mult`; the call stays, `:2343` |
 | YJIT's architecture "allows for easy interprocedural type-based specialization"; ZJIT's "gives more code at once to the optimizer" (Q&A, *Why it's a ceiling*) | stated | [1] |
+
+## One more call = one more turn buoy
+
+| Claim (on screen) | Kind | Evidence |
+|---|---|---|
+| Both still make the turn: `n * n` still runs under ZJIT | shown | `PushInlineFrame :sq` then `FixnumMult v95, v95`, `zjit-sq.txt:86-88` |
+| YJIT: save the frame, jump to `sq`, check `n`, jump back, check the result | shown | `yjit-sq.txt:1645` (call), `push callee control frame`, `:1709` (jump), `:258` (guard on `n`), `pop stack frame`, `:2009` (check at `+`) |
+| ZJIT: no jump, no re-checks; a light frame stays | shown | `zjit-sq.txt:86-94`; `hwia-zjit-stats.txt:93` |
 
 ## Why it's a ceiling
 

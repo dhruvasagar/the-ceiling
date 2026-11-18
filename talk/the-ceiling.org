@@ -125,7 +125,7 @@ interpreter runs that.
 
 * The bytecode
 :PROPERTIES:
-:DURATION: 1:00
+:DURATION: 1:15
 :END:
 
 # LIVE: C-c C-c on stage. Instant, the same every run. Fallback below.
@@ -133,6 +133,12 @@ interpreter runs that.
 ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
 #+end_src
 
+#+attr_html: :class cap
+Ruby turns =distance= into *bytecode*: small steps that pass values on a stack. Steps =0000=-=0010= are the first line, =dx = a.x - b.x=.
+
+#+begin_export html
+<div class="ir-grid"><div>
+#+end_export
 # capture: yarv-distance.txt
 #+begin_example
 0000 getlocal_WC_0          a@0
@@ -145,6 +151,21 @@ ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).di
 0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>
 0042 leave
 #+end_example
+#+begin_export html
+</div>
+<table class="legend">
+<tr><td><code>0000</code>, <code>0002</code> …</td><td>each step's position</td></tr>
+<tr><td><code>getlocal_WC_0 a@0</code></td><td>put the local <code>a</code> on the stack</td></tr>
+<tr><td><code>opt_send_without_block</code></td><td>call a method on it</td></tr>
+<tr><td><code>calldata!mid:x, argc:0</code></td><td>which method (<code>x</code>), how many arguments (none): <code>a.x</code></td></tr>
+<tr><td><code>opt_minus</code></td><td>subtract the top two: <code>a.x - b.x</code></td></tr>
+<tr><td><code>setlocal_WC_0 dx@2</code></td><td>store the result in <code>dx</code></td></tr>
+<tr><td><code>leave</code></td><td>return</td></tr>
+</table></div>
+#+end_export
+
+#+attr_html: :class cap
+=opt_minus= could be any =-=. It has a fast path for whole numbers, but it checks the types first, every time it runs: the interpreter lifting its head.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1
@@ -152,12 +173,16 @@ Ruby 4.1.0-preview1
 #+begin_notes
 [Run the live block.]
 
-Top to bottom: get a, call x on it. Get b, call x on it. Minus. Store it
-in dx.
+This is what Ruby actually runs: bytecode. Small steps that pass values
+on a stack. The first six steps are our first line.
 
-That "minus" doesn't know it's subtracting numbers. It could be anything
-with a minus method. There's a fast path for plain numbers, but it has to
-check first, every single time: the interpreter lifting its head. You can run this line on your own code tonight.
+Get a, call x on it. Get b, call x on it. Minus. Store it in dx. The
+calldata just says which method, and how many arguments.
+
+That minus doesn't know it's subtracting numbers. It could be anything
+with a minus method. There's a fast path for whole numbers, but it has to
+check first, every single time: the interpreter lifting its head. You can
+run this line on your own code tonight.
 #+end_notes
 
 * Learning to sight
@@ -685,7 +710,7 @@ garbage collection. A JIT speeds up the swim, not the stop at the boat.
 
 * A glimpse: seven everyday lines
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :END:
 
 #+attr_html: :class cap
