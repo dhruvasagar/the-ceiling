@@ -939,9 +939,9 @@ turns, and that's what the second compiler was built for. Thank you.
 :END:
 
 #+begin_export html
-<div class="cap" style="text-align:left;font-size:0.5em;line-height:1.5">
+<div class="cap" style="text-align:center;font-size:0.5em;line-height:1.5">
 <p><b>The ZJIT team, Rails at Scale</b></p>
-<ul>
+<ul style="list-style:none;margin:0 auto;padding:0;display:block;text-align:center">
 <li><a href="https://railsatscale.com/2025-05-14-merge-zjit/">ZJIT has been merged into Ruby</a> (Bernstein, 2025-05-14)</li>
 <li><a href="https://railsatscale.com/2025-12-24-launch-zjit/">ZJIT is now available in Ruby 4.0</a> (Bernstein, 2025-12-24)</li>
 <li><a href="https://railsatscale.com/2026-03-18-how-zjit-removes-redundant-object-loads-and-stores/">How ZJIT removes redundant object loads and stores</a> (Denbeaux, 2026-03-18)</li>
