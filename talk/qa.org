@@ -1,0 +1,235 @@
+#+TITLE: The Ceiling — questions to expect
+#+OPTIONS: toc:nil num:nil
+#+STARTUP: showall
+
+Likely questions, each with a short answer to say and the evidence behind
+it. Numbers like [3] are entries in [[file:../references/README.md][references/README.md]];
+capture files are in [[file:../captures/][captures/]]. Where the honest answer is "I don't
+know" or "not measured", the answer says so. Facts checked against the
+sources on 2026-11-18; versions are Ruby 4.1.0-preview1 unless noted.
+
+Rule of thumb on stage: say what was shown, attribute what was stated, and
+don't predict the team's roadmap for them.
+
+* Should I use it?
+
+** Should I switch from YJIT to ZJIT today?
+*Say:* Not blindly. Measure your app. ZJIT is opt-in with =--zjit=, and the
+team's own notes still say it can be slower on large apps in the 4.1
+previews.
+
+*Evidence:* 4.0 notes "advise against deploying it in production for now"
+and set the goal "faster than YJIT and production-ready in Ruby 4.1" [4].
+4.1 NEWS: "faster than YJIT on many benchmarks, but … can be still slower
+than YJIT on larger benchmarks or applications as of Ruby 4.1.0 preview
+releases" [5].
+
+** Is ZJIT faster for Rails apps?
+*Say:* On Shopify's storefront, the team says probably as fast or faster,
+measured in a couple of small regions. On larger apps they say it can still
+be slower. I didn't time anything myself.
+
+*Evidence:* "ZJIT is probably as fast as or faster than YJIT", "a couple
+small regions", "there are definitely some where we are worse" [3]; NEWS
+caveat [5]. Our build is a developer build, so we report structure, not
+speed (analysis §9).
+
+** Will YJIT be deprecated or removed?
+*Say:* Nothing I've read says so. The release notes call ZJIT "the next
+generation of YJIT", and YJIT is still getting features, for example
+Windows support in 4.1. I'd rather not guess the roadmap.
+
+*Evidence:* "developed as the next generation of YJIT" [4]; NEWS: "YJIT now
+supports Windows (mswin) on x64 and arm64 CPUs" [5].
+
+** Does it run on my platform?
+*Say:* ZJIT: macOS, Linux and BSD, on x86-64 and arm64. Not Windows yet.
+YJIT now supports Windows.
+
+*Evidence:* zjit.md: "ZJIT is currently supported for macOS, Linux and BSD
+on x86-64 and arm64/aarch64 CPUs" [7]; NEWS on YJIT Windows [5].
+
+** How do I try it, and read what it does?
+*Say:* =--zjit= to enable it. =--zjit-dump-hir= shows the plan,
+=--zjit-stats= the counters, and =RubyVM::InstructionSequence...disasm= the
+bytecode. Those three commands are on the "Read your own code" slide.
+
+*Evidence:* captures' first lines show every command; README "Reproduce
+it". We used a developer build (=--enable-yjit=dev --enable-zjit=dev=);
+=bin/check env= tells you whether your Ruby prints these dumps.
+
+* How they differ
+
+** Why didn't they just improve YJIT?
+*Say:* Two reasons, in their words: raise the performance ceiling with a
+bigger unit of compilation and an SSA IR, and build a more traditional
+compiler that more people can contribute to. YJIT compiles a block at a
+time, so it never has the whole method to optimize.
+
+*Evidence:* "raise the performance ceiling (bigger compilation unit size
+and SSA IR) and encourage more outside contribution" [2]; "a more
+traditional “textbook” compiler so it is easy for the community to
+contribute to" [1]; "YJIT compiles one basic block at a time, so it never
+has the full picture of the function anyway" [15].
+
+** Doesn't YJIT inline methods too?
+*Say:* Yes, the tiniest ones. Attribute readers, and trivial methods like
+=nil.blank?=. In every capture in this talk, a method doing real work,
+=sq=, =convert_key=, =double=, stays a real call under YJIT.
+
+*Evidence:* =a.x= reads =@x= directly (=yjit-distance.txt:412=);
+=inlined simple ISEQ= after =call to NilClass#blank?= (=glimpse-yjit.txt=);
+real calls in =yjit-sq.txt:1645=, =hwia-yjit-disasm.txt:63247=,
+=yjit-choppy.txt:214=.
+
+** Can YJIT carry type information into a call?
+*Say:* Yes, it can. Force it to compile early and it carries "n is a
+number" into =sq=. At default settings, =sq= got compiled first on its own,
+so it checks. Either way, the call itself stays.
+
+*Evidence:* =yjit-sq-eager.txt= (=--yjit-call-threshold=1=): the last
+=sq= version has no guard. The team: YJIT's architecture "allows for easy
+interprocedural type-based specialization" [1].
+
+** Is inlining free?
+*Say:* No. ZJIT still sets up a light frame for each inlined method. It's
+cheaper than a call: no jump, no separate code, fewer checks. Not nothing.
+
+*Evidence:* =--zjit-dump-lir= at =PushInlineFrame= shows a stack-overflow
+check, SP save, local spills and a frame push; =empty_inline_frame_count:
+0= in =hwia-zjit-stats.txt:93=.
+
+** Doesn't YJIT have an IR?
+*Say:* It has a low-level one inside its code generator. What it doesn't
+build is a plan of a whole method.
+
+*Evidence:* =yjit/src/backend/ir.rs= [12]; [1] and [15] on block-at-a-time
+compilation.
+
+** Doesn't ZJIT take longer to warm up?
+*Say:* In my test both compiled the method on the same call, call 30. The
+team says ZJIT's compile time is "not a deal breaker" and its warm-up curve
+looks much like YJIT's.
+
+*Evidence:* =how-yjit.txt=, =how-zjit.txt= (both at call 30; analysis E0);
+"ZJIT compile time is not a deal breaker … the general warmup curve for
+ZJIT does not look much different from YJIT" [3]. Note: YJIT raises its
+threshold to 120 once a process has 40,000 ISEQs [12].
+
+** What about memory?
+*Say:* On Shopify's storefront, ZJIT used less: 101 MiB against 125. But it
+generates more code; on my small =params= program ZJIT's code region was
+about 10% larger.
+
+*Evidence:* "YJIT takes 125MiB and ZJIT takes 101MiB"; "we generate more
+code (less precise than LBBV and more versions) and probably bigger code"
+[3]; =code_region_bytes: 360,448= vs =code_region_size: 327,680=
+(=hwia-*-stats.txt=; different counters, see analysis §9).
+
+* Where it struggles
+
+** What happens when my code isn't monomorphic?
+*Say:* That's the choppy-water slide. With five types at one site, ZJIT
+turns every case into a call into C; YJIT keeps a fast path for whole
+numbers and a version per type, up to four. Neither bailed out.
+
+*Evidence:* =zjit-choppy.txt:39,57=, =yjit-choppy.txt=; =side_exit_count:
+0= in both stats files; =max_versions: 4= [12]. In 4.0 the team wrote "We
+only optimize monomorphic calls right now" [2].
+
+** What if my traffic changes after ZJIT compiles?
+*Say:* Then its plan is out of date. It falls back to the interpreter and
+can recompile. The team calls this out as a known weakness.
+
+*Evidence:* "We don't handle phase changes particularly well yet; if your
+method call patterns change significantly after your code has been
+compiled, we will frequently side-exit into the interpreter" [2];
+=recompile= on guards in every HIR capture.
+
+** What about code with lots of exceptions?
+*Say:* The team says they don't have a great approach to exception handlers
+yet, and they hand a lot of begin/rescue to the interpreter.
+
+*Evidence:* "We don't have a great approach to exception handlers right
+now"; "we delegate a lot of begin/rescue and break/next-in-block to the
+interpreter" [3].
+
+** Number-crunching and floats?
+*Say:* In October the team said ZJIT wouldn't look much better than YJIT on
+heavy numerics, with no float support in its backend yet. The 4.1 NEWS now
+lists specialized =Float= arithmetic, so check the final release.
+
+*Evidence:* "if your benchmark is a really heavy numerics benchmark, ZJIT
+probably won't look much better than YJIT … We don't even have support for
+them in our backend yet!" [3] (2026-10-09); NEWS: "Specialized code for
+many core methods, e.g. `Float` arithmetic" [5]. The two sources disagree
+by date; say so.
+
+** Will ZJIT speed up my JSON / Nokogiri / database-heavy endpoint?
+*Say:* Mostly not. That's the feed stop: C code and waiting on the database
+run as before. Both JITs special-case some core methods, but not your C
+extensions.
+
+*Evidence:* =Hash#[]= stays a C call under both (=hwia-zjit-hir.txt:4005=,
+=hwia-yjit-disasm.txt:63436=); analysis §7. Special-casing:
+=inline_cfunc_optimized_send_count= (=hwia-zjit-stats.txt=), YJIT
+"inlined leaf builtin" for =Symbol#name=.
+
+* About the talk's own evidence
+
+** Did you benchmark this?
+*Say:* No, on purpose. My Ruby is a developer build, and timings from it
+would mislead. I compared what each compiler emits, and quoted the team's
+measurements, with dates.
+
+*Evidence:* analysis §9 "Developer builds"; the "Measured" slide labels
+every row "ZJIT team" or "ours".
+
+** How did you count calls on the glimpse slide?
+*Say:* Calls into Ruby methods only, from the raw dumps, by a script in the
+repo. Calls into C happen under both, so I left them out. And the table
+shows where ZJIT doesn't win: =5.minutes=, =try=, =nil.blank?=.
+
+*Evidence:* =bin/lib/glimpse.rb=, =captures/glimpse-*.txt=; =bin/check
+glimpse= fails if slide and captures disagree; analysis E6.
+
+** Isn't the plateau unfair to YJIT?
+*Say:* The plateau is my swimming, not YJIT's report card. It's about how
+high a design can go. The team itself built ZJIT to "raise the performance
+ceiling".
+
+*Evidence:* [2].
+
+** Your five-line example looks like a tie. So where's the difference?
+*Say:* It is nearly a tie, on purpose. Straight-line code is where YJIT
+already gets the wins. The difference shows up at the first method call.
+
+*Evidence:* no type check at =dx * dx= in either (=yjit-distance.txt:1428=,
+=zjit-distance.txt:65=); ZJIT skips re-checking =a= and =b= before =@y=
+(=zjit-distance.txt:57= vs =yjit-distance.txt:918=).
+
+** Will these listings still be true in 4.1.0 final?
+*Say:* Probably close, but instruction names and value numbers can change.
+I'll re-run every capture after the release; the repo will say so.
+
+*Evidence:* analysis §9 "Preview build".
+
+* Background terms (if someone asks)
+
+- *Guard*: a quick check in compiled code ("is this still a number?"); if
+  it fails, the code leaves for a slower path.
+- *Side exit*: leaving compiled code back to the interpreter [7].
+- *IR, HIR*: ZJIT's intermediate representation of the whole method, "in
+  static single-assignment (SSA) form" [7].
+- *SSA*: every value is set exactly once, so a fact proved about it holds
+  everywhere it's used.
+- *Lazy basic block versioning*: YJIT's design; compile one straight-line
+  piece at a time, specialised on the values actually seen [8][9].
+- *Inlining*: copying a called method's body into the caller's plan.
+- *Profile*: the types the interpreter recorded before ZJIT compiled.
+
+* Out of scope (say so, briefly)
+
+- Other Ruby implementations (TruffleRuby, JRuby): not compared here.
+- Our own speed numbers: not measured (see above).
+- Whether ZJIT becomes the default: none of our sources say.

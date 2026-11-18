@@ -278,7 +278,7 @@ check_references() {
     done
     if curl -sfI --max-time 5 https://www.ruby-lang.org/ >/dev/null 2>&1; then
       # shellcheck disable=SC2013  # one URL per match, no spaces
-      for u in $(grep -oE 'https://[^ )>]+' "$REFS" | sort -u); do
+      for u in $(grep -ohE 'https://[^] )>"<]+' "$REFS" "$TALK" | sed 's/[.,;]$//' | sort -u); do
         case $u in
           # publishers block scripted fetches (HTTP 403); ask Crossref instead
           https://doi.org/*) u="https://api.crossref.org/works/${u#https://doi.org/}" ;;

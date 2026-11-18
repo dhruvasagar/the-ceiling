@@ -20,29 +20,30 @@ STORY beat (30 s).
 | 2 | 1:15 | Ruby swims with its head up | 0:15 | 0:14 | 0:01 |  |
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:00 | 1:10 | -0:10 | live OVER  |
-| 5 | 3:00 | Learning to sight | 1:00 | 0:53 | 0:07 | STORY  |
-| 6 | 4:00 | YJIT: compile as you go | 1:00 | 0:42 | 0:18 |  |
-| 7 | 5:00 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
-| 8 | 5:30 | ZJIT: the IR on one slide | 1:00 | 0:53 | 0:07 |  |
-| 9 | 6:30 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
-| 10 | 7:15 | The plateau | 1:00 | 0:54 | 0:06 | STORY  |
-| 11 | 8:15 | One more call | 0:30 | 0:17 | 0:13 |  |
-| 12 | 8:45 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
-| 13 | 9:15 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
-| 14 | 10:45 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
-| 15 | 12:00 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
-| 16 | 12:30 | In the ZJIT team's words | 1:00 | 0:53 | 0:07 |  |
-| 17 | 13:30 | Race day: params | 0:30 | 0:29 | 0:01 |  |
-| 18 | 14:00 | params, through both | 0:45 | 0:44 | 0:01 |  |
-| 19 | 14:45 | The feed stop | 0:30 | 0:20 | 0:10 |  |
-| 20 | 15:15 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
-| 21 | 16:00 | Calm water, choppy water | 1:00 | 1:04 | -0:04 |  |
+| 5 | 3:00 | Learning to sight | 1:00 | 0:56 | 0:04 | STORY  |
+| 6 | 4:00 | YJIT: compile as you go | 0:45 | 0:42 | 0:03 |  |
+| 7 | 4:45 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
+| 8 | 5:15 | ZJIT: the IR on one slide | 1:00 | 0:53 | 0:07 |  |
+| 9 | 6:15 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
+| 10 | 7:00 | The plateau | 1:00 | 1:01 | -0:01 | STORY  |
+| 11 | 8:00 | One more call | 0:30 | 0:17 | 0:13 |  |
+| 12 | 8:30 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
+| 13 | 9:00 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
+| 14 | 10:30 | Why it's a ceiling | 1:15 | 1:12 | 0:03 |  |
+| 15 | 11:45 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
+| 16 | 12:15 | In the ZJIT team's words | 1:00 | 0:53 | 0:07 |  |
+| 17 | 13:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 18 | 13:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
+| 19 | 14:30 | The feed stop | 0:30 | 0:20 | 0:10 |  |
+| 20 | 15:00 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
+| 21 | 15:45 | Calm water, choppy water | 1:15 | 1:12 | 0:03 |  |
 | 22 | 17:00 | Measured: the ZJIT team's results, and ours | 0:45 | 0:47 | -0:02 |  |
 | 23 | 17:45 | Read your own code | 0:30 | 0:29 | 0:01 |  |
 | 24 | 18:15 | What it means for Ruby | 0:45 | 0:30 | 0:15 |  |
 | 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
+| 26 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *17:52* | *1:53* | |
+|   |        | *Total* | *19:45* | *18:10* | *1:35* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -166,15 +167,15 @@ check first, every single time: the interpreter lifting its head. You can run th
 you swim the wrong way. The skill is looking less, and only when it
 counts.]
 
-A just-in-time compiler does that for your busiest code. It looks once,
-a quick check called a guard, "is this still a number?", then runs fast
-machine code. If the check fails, it falls back to the careful way.
+A just-in-time compiler does that for your busiest code. It looks once
+per stretch, not every stroke: a quick check called a guard, "is this
+still a number?", then a run of fast machine code. If the check fails, it falls back to the careful way.
 
 Ruby has two of them, and they look in different ways.
 
 /Next: YJIT: compile as you go/
 
-** 6. YJIT: compile as you go  (4:00, 1:00)
+** 6. YJIT: compile as you go  (4:00, 0:45)
 
 /On screen:/
 - Once a method is warm, compile a small piece, run it
@@ -211,7 +212,7 @@ instance-variable layout.]
 
 /Next: ZJIT: watch, then plan/
 
-** 7. ZJIT: watch, then plan  (5:00, 0:30)
+** 7. ZJIT: watch, then plan  (4:45, 0:30)
 
 /On screen:/
 - While the interpreter runs the method, record which types turn up: a *profile*
@@ -228,7 +229,7 @@ representation, improves the plan, and compiles it in one go.
 
 /Next: ZJIT: the IR on one slide/
 
-** 8. ZJIT: the IR on one slide  (5:30, 1:00)
+** 8. ZJIT: the IR on one slide  (5:15, 1:00)
 
 /On screen:/
 - listing (captures/zjit-distance.txt):
@@ -271,7 +272,7 @@ if someone redefines Point#x.]
 
 /Next: On five lines, a tie/
 
-** 9. On five lines, a tie  (6:30, 0:45)
+** 9. On five lines, a tie  (6:15, 0:45)
 
 /On screen:/
 - listing (captures/yjit-distance.txt, zjit-distance.txt):
@@ -297,7 +298,7 @@ ZJIT exists, we need something every Ruby codebase is full of.
 
 /Next: The plateau/
 
-** 10. The plateau  (7:15, 1:00)
+** 10. The plateau  (7:00, 1:00)
 
 /On screen:/
 - diagram img/out/plateau.svg: Swim times drop fast while learning to sight, then stop moving
@@ -313,11 +314,14 @@ ceiling". Here's one place you can see what they mean: the turns. In Ruby, a tur
 is a method call, and we write small methods calling small methods.
 That's how we're taught.
 
+That's my plateau, not YJIT's report card: this is about how high a
+design can go.
+
 Let's add one turn to our five lines.
 
 /Next: One more call/
 
-** 11. One more call  (8:15, 0:30)
+** 11. One more call  (8:00, 0:30)
 
 /On screen:/
 - code:
@@ -338,7 +342,7 @@ called sq.
 
 /Next: One more call is one more buoy/
 
-** 12. One more call is one more buoy  (8:45, 0:30)
+** 12. One more call is one more buoy  (8:30, 0:30)
 
 /On screen:/
 - diagram img/out/turn-buoy.svg: One more call is one more turn buoy
@@ -353,7 +357,7 @@ distance. That's called inlining.
 
 /Next: At the turn buoy/
 
-** 13. At the turn buoy  (9:15, 1:30)
+** 13. At the turn buoy  (9:00, 1:30)
 
 /On screen:/
 - listing (captures/yjit-sq.txt, zjit-sq.txt):
@@ -399,7 +403,7 @@ is cheaper than a call, not free.]
 
 /Next: Why it's a ceiling/
 
-** 14. Why it's a ceiling  (10:45, 1:15)
+** 14. Why it's a ceiling  (10:30, 1:15)
 
 /On screen:/
 - diagram img/out/ceiling.svg: YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
@@ -433,7 +437,7 @@ more code at once to the optimizer".]
 
 /Next: The 2-beat kick/
 
-** 15. The 2-beat kick  (12:00, 0:30)
+** 15. The 2-beat kick  (11:45, 0:30)
 
 /On screen:/
 - diagram img/out/two-beat-kick.svg: The 2-beat kick is timed to the whole stroke
@@ -448,10 +452,11 @@ callee together.
 
 /Next: In the ZJIT team's words/
 
-** 16. In the ZJIT team's words  (12:30, 1:00)
+** 16. In the ZJIT team's words  (12:15, 1:00)
 
 /On screen:/
 - quote: "we want to both raise the performance ceiling (bigger compilation unit size and SSA IR) and encourage more outside contribution (by becoming a more traditional method compiler)." --- Max Bernstein, ZJIT team, Rails at Scale, 2025-12-24 
+- Source: railsatscale.com/2025-12-24-launch-zjit
 
 /Say:/
 
@@ -476,7 +481,7 @@ contribute to").]
 
 /Next: Race day: params/
 
-** 17. Race day: params  (13:30, 0:30)
+** 17. Race day: params  (13:15, 0:30)
 
 /On screen:/
 - listing (captures/hwia-source.txt):
@@ -501,7 +506,7 @@ method calling a small method.
 
 /Next: params, through both/
 
-** 18. params, through both  (14:00, 0:45)
+** 18. params, through both  (13:45, 0:45)
 
 /On screen:/
 - YJIT at ~[]~:
@@ -538,7 +543,7 @@ convert_key into it and folds "Symbol === :id" away entirely.]
 
 /Next: The feed stop/
 
-** 19. The feed stop  (14:45, 0:30)
+** 19. The feed stop  (14:30, 0:30)
 
 /On screen:/
 - diagram img/out/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
@@ -551,7 +556,7 @@ garbage collection. A better stroke doesn't shorten the stop at the boat.
 
 /Next: A glimpse: seven everyday lines/
 
-** 20. A glimpse: seven everyday lines  (15:15, 0:45)
+** 20. A glimpse: seven everyday lines  (15:00, 0:45)
 
 /On screen:/
 - Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
@@ -582,7 +587,7 @@ counted calls. We didn't time them.
 
 /Next: Calm water, choppy water/
 
-** 21. Calm water, choppy water  (16:00, 1:00)
+** 21. Calm water, choppy water  (15:45, 1:15)
 
 /On screen:/
 - code:
@@ -614,7 +619,9 @@ Calm water, only whole numbers: ZJIT splices double in, one check, one add.
 
 Choppy: five types. ZJIT plans for all of them, and every case becomes a
 call into C, even whole numbers. YJIT keeps a fast add for whole numbers
-and a version per type. In chop, today, YJIT has the faster path. ZJIT
+and a version per type. In real chop, the swimmer who looks up often beats
+the one swimming a planned line. Same here: today, YJIT has the faster
+path. ZJIT
 still saves the call to double itself. That's this build, today.
 
 [Depth: neither bailed out to the interpreter, 0 side exits each
@@ -724,3 +731,27 @@ through the turns.
 
 Next time someone says "Ruby is slow", ask "which part?", and now you can
 show them. Thank you.
+
+/Next: Sources/
+
+** 26. Sources  (19:45, 0:00)
+
+/On screen:/
+- 
+- The ZJIT team, Rails at Scale
+- 
+- ZJIT has been merged into Ruby (Bernstein, 2025-05-14)
+- ZJIT is now available in Ruby 4.0 (Bernstein, 2025-12-24)
+- How ZJIT removes redundant object loads and stores (Denbeaux, 2026-03-18)
+- A new register allocator for ZJIT (Patterson, 2026-05-27)
+- The inliner is yielding benefits for ZJIT (Bernstein, 2026-07-28)
+- ZJIT is now as fast as YJIT (Bernstein, 2026-10-09)
+- 
+- Ruby: 4.0.0 release notes · 4.1 NEWS · ZJIT docs · YJIT docs
+- YJIT research: Type check removal (ECOOP 2015) · YJIT (VMIL 2021) · YJIT in production (MPLR 2023)
+- Everything else, with exact quotes and every capture: github.com/dhruvasagar/the-ceiling (references/, analysis/claims.md)
+- 
+
+/Say:/
+
+[Leave this up for questions.]
