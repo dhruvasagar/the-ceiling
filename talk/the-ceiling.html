@@ -11,7 +11,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
-<style>.reveal pre{font-size:0.62em;width:fit-content;min-width:55%;max-width:96%;margin:18px auto;padding:44px 26px 20px;background:#1e1f29;color:#e6e6e6;border-radius:12px;position:relative;box-shadow:0 20px 48px rgba(0,0,0,.35);text-align:left;overflow:hidden}.reveal pre::before{content:'';position:absolute;top:0;left:0;right:0;height:30px;background:#2c2d3a;border-radius:12px 12px 0 0}.reveal pre::after{content:'';position:absolute;top:10px;left:16px;width:12px;height:12px;border-radius:50%;background:#ff5f56;box-shadow:20px 0 #ffbd2e,40px 0 #27c93f}.reveal pre code{max-height:none;line-height:1.4;background:transparent;padding:0;color:inherit}.reveal pre,.reveal code{font-family:'SF Mono',Menlo,Monaco,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}.reveal pre.example{color:#d6deeb}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal .ir-grid{display:grid;grid-template-columns:3fr 2fr;gap:28px;align-items:center}.reveal .ir-grid pre{font-size:0.5em;width:100%;margin:0}.reveal table.legend{font-size:0.5em;border-collapse:collapse;margin:0}.reveal table.legend td{padding:6px 10px;border-bottom:1px solid #d8e0ea;vertical-align:top}.reveal table.legend td:first-child{white-space:nowrap}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style>
+<style>.reveal pre{font-size:0.62em;width:fit-content;min-width:55%;max-width:96%;margin:18px auto;padding:44px 26px 20px;background:#1e1f29;color:#e6e6e6;border-radius:12px;position:relative;box-shadow:0 20px 48px rgba(0,0,0,.35);text-align:left;overflow:hidden}.reveal pre::before{content:'';position:absolute;top:0;left:0;right:0;height:30px;background:#2c2d3a;border-radius:12px 12px 0 0}.reveal pre::after{content:'';position:absolute;top:10px;left:16px;width:12px;height:12px;border-radius:50%;background:#ff5f56;box-shadow:20px 0 #ffbd2e,40px 0 #27c93f}.reveal pre code{max-height:none;line-height:1.4;background:transparent;padding:0;color:inherit}.reveal pre,.reveal code{font-family:'SF Mono',Menlo,Monaco,Consolas,'DejaVu Sans Mono','Liberation Mono',monospace;font-variant-ligatures:none;font-feature-settings:'liga' 0,'calt' 0}.reveal pre.example{color:#d6deeb}.reveal img{max-height:560px;border:0;box-shadow:none}.reveal .ver{font-size:0.45em;color:#6a7a8a}.reveal .cap{font-size:0.6em}.reveal h2{font-size:1.6em}.reveal .ir-grid{display:grid;grid-template-columns:3fr 2fr;gap:28px;align-items:center}.reveal .ir-grid pre{font-size:0.5em;width:100%;margin:0}.reveal table.legend{font-size:0.5em;border-collapse:collapse;margin:0}.reveal table.legend td{padding:6px 10px;border-bottom:1px solid #d8e0ea;vertical-align:top}.reveal table.legend td:first-child{white-space:nowrap}.reveal .ann{display:grid;grid-template-columns:max-content minmax(0,1fr);column-gap:22px;width:fit-content;max-width:98%;margin:14px auto;text-align:left}.reveal .ann .c{background:#1e1f29;color:#d6deeb;font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;font-variant-ligatures:none;font-size:0.46em;line-height:1.5;white-space:pre;padding:0 26px;box-shadow:0 1px 0 #1e1f29,0 -1px 0 #1e1f29}.reveal .ann .bar{height:30px;background:#2c2d3a;border-radius:12px 12px 0 0;position:relative;padding:0}.reveal .ann .bar::after{content:'';position:absolute;top:10px;left:16px;width:12px;height:12px;border-radius:50%;background:#ff5f56;box-shadow:20px 0 #ffbd2e,40px 0 #27c93f}.reveal .ann .sp{height:12px;padding:0}.reveal .ann .end{border-radius:0 0 12px 12px}.reveal .ann .n{font-size:0.45em;line-height:1.3;color:#1b2733;align-self:center}.reveal .ann .n:not(:empty)::before{content:'\2190  ';color:#8a9aaa}.reveal .ann .n code{font-size:0.95em}.reveal section.diagram h2{display:none}.reveal section.diagram img{max-height:800px}</style><script>(function(){function ann(){document.querySelectorAll('ol.ann-notes').forEach(function(ol){var pre=ol.previousElementSibling;if(!pre||pre.tagName!=='PRE')return;var lines=pre.textContent.replace(/\n+$/,'').split('\n'),notes={};ol.querySelectorAll('li').forEach(function(li){notes[li.getAttribute('data-l')]=li.innerHTML});var g=document.createElement('div');g.className='ann';function add(cls,txt,html){var c=document.createElement('div');c.className='c '+cls;c.textContent=txt;var n=document.createElement('div');n.className='n';if(html)n.innerHTML=html;g.appendChild(c);g.appendChild(n)}add('bar','');add('sp','');lines.forEach(function(t,i){add('',t||' ',notes[i+1])});add('sp end','');pre.parentNode.replaceChild(g,pre);ol.parentNode.removeChild(ol)});setTimeout(function(){if(window.Reveal&&Reveal.layout)Reveal.layout()},0)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ann);else ann()})();</script>
 </head>
 <body>
 <div class="reveal">
@@ -20,8 +20,8 @@
 <h1>The Ceiling: Why Ruby 4.0 Needed a Second Compiler</h1><p>Dhruva Sagar · RubyConf 2026</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 </section>
 <section>
-<section id="slide-org458d227">
-<h2 id="org458d227">Every time you lift your head</h2>
+<section id="slide-org0e20bd0">
+<h2 id="org0e20bd0">Every time you lift your head</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -66,10 +66,10 @@ written in.]
 </section>
 </section>
 <section>
-<section id="slide-org043184d" class="diagram">
-<h2 id="org043184d">Ruby swims with its head up</h2>
+<section id="slide-orgbfc2c93" class="diagram">
+<h2 id="orgbfc2c93">Ruby swims with its head up</h2>
 
-<div id="org5035dff" class="figure">
+<div id="org9d7b4bd" class="figure">
 <p><img src="img/out/head-up.svg" alt="The beginner swimmer lifts their head every stroke" class="org-svg" />
 </p>
 </div>
@@ -88,8 +88,8 @@ Ruby's interpreter runs your code a lot like that. Let me show you.
 </section>
 </section>
 <section>
-<section id="slide-org7393fd1">
-<h2 id="org7393fd1">Our five lines</h2>
+<section id="slide-org23e0681">
+<h2 id="org23e0681">Our five lines</h2>
 <div class="org-src-container">
 
 <pre id="point-class"><code class="ruby" >class Point
@@ -123,8 +123,8 @@ interpreter runs that.
 </section>
 </section>
 <section>
-<section id="slide-orge95dcde">
-<h2 id="orge95dcde">The bytecode</h2>
+<section id="slide-org8b98c78">
+<h2 id="org8b98c78">The bytecode</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
@@ -135,9 +135,7 @@ interpreter runs that.
 What the interpreter actually runs. Steps <code>0000</code>-<code>0010</code> are the first line, <code>dx = a.x - b.x</code>.
 </p>
 
-<div class="ir-grid"><div>
-
-<pre class="example" id="org8790744">
+<pre class="example" id="org16122bc">
 0000 getlocal_WC_0          a@0
 0002 opt_send_without_block &lt;calldata!mid:x, argc:0, ARGS_SIMPLE&gt;
 0004 getlocal_WC_0          b@1
@@ -148,13 +146,17 @@ What the interpreter actually runs. Steps <code>0000</code>-<code>0010</code> ar
 0040 opt_send_without_block &lt;calldata!mid:sqrt, argc:1, ARGS_SIMPLE&gt;
 0042 leave
 </pre>
-</div>
-<table class="legend">
-<tr><td><code>0000 getlocal</code></td><td>get <code>a</code></td></tr>
-<tr><td><code>0002 … mid:x</code></td><td>call <code>x</code> on it: <code>a.x</code></td></tr>
-<tr><td><code>0008 opt_minus</code></td><td>minus: is this a whole number? checked every time</td></tr>
-<tr><td><code>0010 setlocal</code></td><td>store it in <code>dx</code></td></tr>
-</table></div>
+<ol class="ann-notes">
+<li data-l="1">get <code>a</code></li>
+<li data-l="2">call <code>x</code> on it: <code>a.x</code></li>
+<li data-l="3">get <code>b</code></li>
+<li data-l="4"><code>b.x</code></li>
+<li data-l="5">minus: whole numbers? checked every time</li>
+<li data-l="6">store it in <code>dx</code></li>
+<li data-l="7">the same for <code>dy</code>, then <code>dx * dx + dy * dy</code></li>
+<li data-l="8"><code>Math.sqrt(...)</code></li>
+<li data-l="9">return</li>
+</ol>
 
 <p class="cap">
 Every step is general, and checks as it goes, every time it runs: the interpreter with its head up. Remember <code>0002</code> and the minus.
@@ -194,10 +196,10 @@ and how many arguments. See the Q&amp;A doc.]
 </section>
 </section>
 <section>
-<section id="slide-org0ea1c22" class="diagram">
-<h2 id="org0ea1c22">Learning to sight</h2>
+<section id="slide-org51f654a" class="diagram">
+<h2 id="org51f654a">Learning to sight</h2>
 
-<div id="orga781ea6" class="figure">
+<div id="orgf0e8a14" class="figure">
 <p><img src="img/out/sighting.svg" alt="A trained swimmer looks once, then keeps their head down" class="org-svg" />
 </p>
 </div>
@@ -225,8 +227,8 @@ first, then plans the whole method.
 </section>
 </section>
 <section>
-<section id="slide-org1fc1625">
-<h2 id="org1fc1625">YJIT: compile as you go</h2>
+<section id="slide-org7dd2397">
+<h2 id="org7dd2397">YJIT: compile as you go</h2>
 <ul>
 <li>Once a method is called often (warm), compile <b>a few instructions at a time</b>, and run them</li>
 <li>Look at the values that really turned up</li>
@@ -253,15 +255,13 @@ next few for exactly that. Sighting as you swim.
 </section>
 </section>
 <section>
-<section id="slide-org2c01ca4">
-<h2 id="org2c01ca4">YJIT: in its own words</h2>
+<section id="slide-orgb470492">
+<h2 id="orgb470492">YJIT: in its own words</h2>
 <p class="cap">
 YJIT's dump, trimmed: its comments (<code>#</code>), and the arm64 machine code it wrote under each.
 </p>
 
-<div class="ir-grid"><div>
-
-<pre class="example" id="org4097343">
+<pre class="example" id="org945ca1d">
 # Block: distance@distance.rb:7
 # Insn: 0002 opt_send_without_block (stack_size: 1)
 # call to Point#x
@@ -282,15 +282,25 @@ YJIT's dump, trimmed: its comments (<code>#</code>), and the arm64 machine code 
 # defer_compilation
 0x16bbc417c: b #0x16bbc63b4
 </pre>
-</div>
-<table class="legend">
-<tr><td><code># …</code></td><td>YJIT's comments: what it decided</td></tr>
-<tr><td><code># Insn: 0002</code></td><td>step 0002 from the bytecode: <code>a.x</code></td></tr>
-<tr><td><code>tst</code>, <code>cmp</code> + <code>b.ne</code></td><td>a sight: test, and jump away if it fails</td></tr>
-<tr><td><code>ldur x1, [x11, #0x10]</code></td><td>read <code>@x</code> straight out of the object</td></tr>
-<tr><td><code># Block:</code></td><td>a new piece starts</td></tr>
-<tr><td><code>defer_compilation</code>, <code>b</code></td><td>jump to a stub: compile the next piece when the code gets here</td></tr>
-</table></div>
+<ol class="ann-notes">
+<li data-l="1">a new piece starts</li>
+<li data-l="2">step <code>0002</code> from the bytecode: <code>a.x</code></li>
+<li data-l="3">an <code>attr_reader</code></li>
+<li data-l="4">sight 1: an object, not a small value?</li>
+<li data-l="5">test it</li>
+<li data-l="6">wrong? jump away</li>
+<li data-l="8">sight 2: is it a <code>Point</code>?</li>
+<li data-l="9">compare its class</li>
+<li data-l="10">wrong? jump away</li>
+<li data-l="11">sight 3: same layout as before?</li>
+<li data-l="12">compare its shape</li>
+<li data-l="13">wrong? jump away</li>
+<li data-l="14">all three passed: read <code>@x</code> straight out. No call</li>
+<li data-l="16">the next piece</li>
+<li data-l="17">step <code>0004</code>: get <code>b</code></li>
+<li data-l="18">not compiled yet, so:</li>
+<li data-l="19">jump to a stub: compile it when we get here</li>
+</ol>
 
 <p class="cap">
 Three guards, three sights: each a compare and a jump. All pass, so one load reads <code>@x</code>: no call.
@@ -331,8 +341,8 @@ housekeeping between these lines.]
 </section>
 </section>
 <section>
-<section id="slide-org62000c7">
-<h2 id="org62000c7">ZJIT: watch, then plan</h2>
+<section id="slide-org802fac2">
+<h2 id="org802fac2">ZJIT: watch, then plan</h2>
 <ul>
 <li>While the interpreter runs the method, record which types turn up: a <b>profile</b></li>
 <li>Then turn the <b>whole method</b> into a plan: the <b>IR</b> (intermediate representation)</li>
@@ -360,15 +370,13 @@ watching a few laps, then planning the whole course.
 </section>
 </section>
 <section>
-<section id="slide-org87267ec">
-<h2 id="org87267ec">ZJIT: in its own words</h2>
+<section id="slide-orga403695">
+<h2 id="orga403695">ZJIT: in its own words</h2>
 <p class="cap">
 ZJIT's own dump, trimmed: its <b>IR</b> (intermediate representation), the plan for the whole method.
 </p>
 
-<div class="ir-grid"><div>
-
-<pre class="example" id="orgf98fc2e">
+<pre class="example" id="org863c0a7">
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v79:ObjectSubclass[class_exact:Point] = GuardType v16
@@ -384,15 +392,19 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126
   Return v130
 </pre>
-</div>
-<table class="legend">
-<tr><td><code>v95</code></td><td>a value's name, set once</td></tr>
-<tr><td><code>GuardType</code></td><td>check the type: a sight</td></tr>
-<tr><td><code>GuardBitEquals</code></td><td>check the object's layout: also a sight</td></tr>
-<tr><td><code>LoadField</code></td><td>read <code>@x</code> directly, no call</td></tr>
-<tr><td><code>Fixnum</code>, <code>FixnumSub</code></td><td>a small Integer; whole-number maths</td></tr>
-<tr><td><code>CCallWithFrame</code></td><td>call into C (<code>Math.sqrt</code>)</td></tr>
-</table></div>
+<ol class="ann-notes">
+<li data-l="1">the plan for the whole method</li>
+<li data-l="2">its inputs: <code>self</code>, <code>a</code> (<code>v16</code>), <code>b</code></li>
+<li data-l="3">sight: is <code>v16</code>, our <code>a</code>, a <code>Point</code>?</li>
+<li data-l="4">sight: laid out as before?</li>
+<li data-l="5">read <code>@x</code> directly, no call</li>
+<li data-l="7">sight: <code>a.x</code> a whole number (Fixnum)?</li>
+<li data-l="8">and <code>b.x</code>?</li>
+<li data-l="9">the minus: <code>dx</code>, named <code>v95</code>, set once</li>
+<li data-l="11"><code>dx * dx</code>: no new check</li>
+<li data-l="13">call into C: <code>Math.sqrt</code></li>
+<li data-l="14">return it</li>
+</ol>
 
 <p class="cap">
 Every value gets a name, set once: <code>v95</code> is <code>dx</code>, then used for <code>dx * dx</code> with no more type checks.
@@ -434,9 +446,9 @@ if someone redefines Point#x.]
 </section>
 </section>
 <section>
-<section id="slide-org2e84ce8">
-<h2 id="org2e84ce8">On five lines, a tie</h2>
-<pre class="example" id="org2db02d9">
+<section id="slide-orgd5cc8d9">
+<h2 id="orgd5cc8d9">On five lines, a tie</h2>
+<pre class="example" id="orgfceed10">
 YJIT                                      ZJIT
 # Insn: 0008 opt_minus (stack_size: 2)    v93:Fixnum = GuardType v83, Fixnum
 # guard arg0 fixnum                       v94:Fixnum = GuardType v90, Fixnum
@@ -478,10 +490,10 @@ ZJIT exists, we need something every Ruby codebase is full of.
 </section>
 </section>
 <section>
-<section id="slide-org7f08e3a" class="diagram">
-<h2 id="org7f08e3a">The plateau</h2>
+<section id="slide-orge9ed552" class="diagram">
+<h2 id="orge9ed552">The plateau</h2>
 
-<div id="org0ef24dc" class="figure">
+<div id="orgf99ce93" class="figure">
 <p><img src="img/out/plateau.svg" alt="Swim times flatten once straight legs are fast; in Ruby, straight code is a tie and the time left is at method calls, which ZJIT can copy in" class="org-svg" />
 </p>
 </div>
@@ -515,8 +527,8 @@ Let's add one turn to our five lines.
 </section>
 </section>
 <section>
-<section id="slide-orga57c86b">
-<h2 id="orga57c86b">One more call</h2>
+<section id="slide-orgb34c89b">
+<h2 id="orgb34c89b">One more call</h2>
 <div class="org-src-container">
 
 <pre id="distance-v2"><code class="ruby" >def sq(n) = n * n
@@ -539,10 +551,10 @@ called sq.
 </section>
 </section>
 <section>
-<section id="slide-org91ec9d4" class="diagram">
-<h2 id="org91ec9d4">One more call is one more buoy</h2>
+<section id="slide-org54e45c0" class="diagram">
+<h2 id="org54e45c0">One more call is one more buoy</h2>
 
-<div id="orgd6dfdc6" class="figure">
+<div id="orgd94bce2" class="figure">
 <p><img src="img/out/turn-buoy.svg" alt="One more call is one more turn buoy" class="org-svg" />
 </p>
 </div>
@@ -559,9 +571,9 @@ into distance. That's called inlining.
 </section>
 </section>
 <section>
-<section id="slide-org2f32b7f">
-<h2 id="org2f32b7f">At the turn buoy</h2>
-<pre class="example" id="org7d8736c">
+<section id="slide-org50ad8c9">
+<h2 id="org50ad8c9">At the turn buoy</h2>
+<pre class="example" id="org4340471">
 YJIT                                     ZJIT
 # call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
 # push callee control frame              ...
@@ -617,10 +629,10 @@ is cheaper than a call, not free.]
 </section>
 </section>
 <section>
-<section id="slide-org8f92436" class="diagram">
-<h2 id="org8f92436">Why it's a ceiling</h2>
+<section id="slide-orgcd4cde6" class="diagram">
+<h2 id="orgcd4cde6">Why it's a ceiling</h2>
 
-<div id="org0e39f27" class="figure">
+<div id="orgbb8c747" class="figure">
 <p><img src="img/out/ceiling.svg" alt="YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it" class="org-svg" />
 </p>
 </div>
@@ -662,10 +674,10 @@ more code at once to the optimizer".]
 </section>
 </section>
 <section>
-<section id="slide-org6253ffd" class="diagram">
-<h2 id="org6253ffd">The 2-beat kick</h2>
+<section id="slide-org14881c0" class="diagram">
+<h2 id="org14881c0">The 2-beat kick</h2>
 
-<div id="orgc92a0b5" class="figure">
+<div id="org813943e" class="figure">
 <p><img src="img/out/two-beat-kick.svg" alt="The 2-beat kick is timed to the whole stroke" class="org-svg" />
 </p>
 </div>
@@ -685,8 +697,8 @@ together.
 </section>
 </section>
 <section>
-<section id="slide-org2de63fc">
-<h2 id="org2de63fc">So, why build the second one?</h2>
+<section id="slide-orga6b5b68">
+<h2 id="orga6b5b68">So, why build the second one?</h2>
 <ol>
 <li>The next gains need the <b>whole method as one plan</b>. A compiler that works piece by piece never has one.</li>
 <li>A more traditional compiler, so <b>more people can help build it</b>.</li>
@@ -737,9 +749,9 @@ contribute to").]
 </section>
 </section>
 <section>
-<section id="slide-org6717f1c">
-<h2 id="org6717f1c">Race day: params</h2>
-<pre class="example" id="orgd85ad35">
+<section id="slide-orgd149308">
+<h2 id="orgd149308">Race day: params</h2>
+<pre class="example" id="orgae04993">
 def [](key)
   super(convert_key(key))
 end
@@ -769,13 +781,13 @@ method calling a small method.
 </section>
 </section>
 <section>
-<section id="slide-org342bb4f">
-<h2 id="org342bb4f">params, through both</h2>
+<section id="slide-orgdb0d9bc">
+<h2 id="orgdb0d9bc">params, through both</h2>
 <p class="cap">
 YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</code>
 </p>
 
-<pre class="example" id="org3ee83c1">
+<pre class="example" id="orgccb0db1">
 # call to ActiveSupport::HashWithIndifferentAccess#convert_key
 # push callee control frame
 # gen_direct_jmp: existing block
@@ -785,7 +797,7 @@ YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</co
 ZJIT at <code>[]</code>: takes it in stride, <code>convert_key</code> copied in
 </p>
 
-<pre class="example" id="org76e7abe">
+<pre class="example" id="org6327b6f">
 PushInlineFrame :convert_key, v27, num_args=1
 v78:BoolExact = IsA v10, v43
 CondBranch v50, bb8(), bb7()
@@ -822,10 +834,10 @@ convert<sub>key</sub> into it and folds "Symbol <code>=</code> :id" away entirel
 </section>
 </section>
 <section>
-<section id="slide-orge4e9bf7" class="diagram">
-<h2 id="orge4e9bf7">The feed stop</h2>
+<section id="slide-org5508f40" class="diagram">
+<h2 id="org5508f40">The feed stop</h2>
 
-<div id="org1724f00" class="figure">
+<div id="orgd1c6204" class="figure">
 <p><img src="img/out/feed-stop.svg" alt="A feed stop: a better stroke doesn't make it shorter" class="org-svg" />
 </p>
 </div>
@@ -841,8 +853,8 @@ garbage collection. A JIT speeds up the swim, not the stop at the boat.
 </section>
 </section>
 <section>
-<section id="slide-org6e3796c">
-<h2 id="org6e3796c">A glimpse: seven everyday lines</h2>
+<section id="slide-org34bbac1">
+<h2 id="org34bbac1">A glimpse: seven everyday lines</h2>
 <p class="cap">
 Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
 </p>
@@ -936,8 +948,8 @@ And as it says at the bottom: inlined isn't free.
 </section>
 </section>
 <section>
-<section id="slide-org5d4dd83">
-<h2 id="org5d4dd83">Calm water, choppy water</h2>
+<section id="slide-org43c877c">
+<h2 id="org43c877c">Calm water, choppy water</h2>
 <div class="org-src-container">
 
 <pre><code class="ruby" >def double(x) = x + x   # called with Integers only, or with five types
@@ -948,7 +960,7 @@ And as it says at the bottom: inlined isn't free.
 Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
 </p>
 
-<pre class="example" id="orgf2faef8">
+<pre class="example" id="orgcaca190">
 v44:Fixnum = GuardType v10, Fixnum recompile
 v46:Fixnum = FixnumAdd v44, v44
 </pre>
@@ -957,7 +969,7 @@ v46:Fixnum = FixnumAdd v44, v44
 Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
 </p>
 
-<pre class="example" id="org7e9e9a2">
+<pre class="example" id="orgef282d5">
 YJIT                        ZJIT
 # guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
 # call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
@@ -996,8 +1008,8 @@ still saves the call to double itself. That's this build, today.
 </section>
 </section>
 <section>
-<section id="slide-orgbe7edb1">
-<h2 id="orgbe7edb1">Measured: the ZJIT team's results, and ours</h2>
+<section id="slide-org14633f3">
+<h2 id="org14633f3">Measured: the ZJIT team's results, and ours</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -1091,8 +1103,8 @@ hwia-yjit-stats and hwia-zjit-stats.]
 </section>
 </section>
 <section>
-<section id="slide-org62f28a8">
-<h2 id="org62f28a8">Read your own code</h2>
+<section id="slide-org2bccbde">
+<h2 id="org2bccbde">Read your own code</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'
@@ -1126,8 +1138,8 @@ is out of the compiler's reach.
 </section>
 </section>
 <section>
-<section id="slide-org0c68a8d">
-<h2 id="org0c68a8d">What it means for Ruby</h2>
+<section id="slide-orgc58743b">
+<h2 id="orgc58743b">What it means for Ruby</h2>
 <p>
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 whole method at once, so it can see through small method calls and pay
@@ -1159,8 +1171,8 @@ it with &#x2013;zjit.
 </section>
 </section>
 <section>
-<section id="slide-org2e299d5">
-<h2 id="org2e299d5">Head down</h2>
+<section id="slide-org8dce44f">
+<h2 id="org8dce44f">Head down</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -1194,8 +1206,8 @@ turns, and that's what the second compiler was built for. Thank you.
 </section>
 </section>
 <section>
-<section id="slide-org7c14f73">
-<h2 id="org7c14f73">Sources</h2>
+<section id="slide-orgd3d0be4">
+<h2 id="orgd3d0be4">Sources</h2>
 <div class="cap" style="text-align:left;font-size:0.5em;line-height:1.5">
 <p><b>The ZJIT team, Rails at Scale</b></p>
 <ul>

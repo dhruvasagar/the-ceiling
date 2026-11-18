@@ -131,26 +131,18 @@ interpreter runs that.
 ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
 #+end_example
 - What the interpreter actually runs. Steps ~0000~-~0010~ are the first line, ~dx ~ a.x - b.x~.
-- 
 - listing (captures/yarv-distance.txt):
 #+begin_example
-0000 getlocal_WC_0          a@0
-0002 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>
-0004 getlocal_WC_0          b@1
-0006 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>
-0008 opt_minus              <calldata!mid:-, argc:1, ARGS_SIMPLE>
-0010 setlocal_WC_0          dx@2
- ...
-0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>
-0042 leave
+0000 getlocal_WC_0          a@0                                       <- get a
+0002 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>     <- call x on it: a.x
+0004 getlocal_WC_0          b@1                                       <- get b
+0006 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>     <- b.x
+0008 opt_minus              <calldata!mid:-, argc:1, ARGS_SIMPLE>     <- minus: whole numbers? checked every time
+0010 setlocal_WC_0          dx@2                                      <- store it in dx
+ ...                                                                  <- the same for dy, then dx * dx + dy * dy
+0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>  <- Math.sqrt(...)
+0042 leave                                                            <- return
 #+end_example
-- 
-- 
-- 0000 getlocalget a
-- 0002 … mid:xcall x on it: a.x
-- 0008 opt_minusminus: is this a whole number? checked every time
-- 0010 setlocalstore it in dx
-- 
 - Every step is general, and checks as it goes, every time it runs: the interpreter with its head up. Remember ~0002~ and the minus.
 - Ruby 4.1.0-preview1
 
@@ -216,38 +208,28 @@ next few for exactly that. Sighting as you swim.
 
 /On screen:/
 - YJIT's dump, trimmed: its comments (~#~), and the arm64 machine code it wrote under each.
-- 
 - listing (captures/yjit-distance.txt):
 #+begin_example
-# Block: distance@distance.rb:7
-# Insn: 0002 opt_send_without_block (stack_size: 1)
-# call to Point#x
-# guard not immediate
-0x16bbc4120: tst x1, #7
-0x16bbc4124: b.ne #0x16bbc6284
+# Block: distance@distance.rb:7                      <- a new piece starts
+# Insn: 0002 opt_send_without_block (stack_size: 1)  <- step 0002 from the bytecode: a.x
+# call to Point#x                                    <- an attr_reader
+# guard not immediate                                <- sight 1: an object, not a small value?
+0x16bbc4120: tst x1, #7                              <- test it
+0x16bbc4124: b.ne #0x16bbc6284                       <- wrong? jump away
  ...
-# guard known class
-0x16bbc4150: cmp x11, x12
-0x16bbc4154: b.ne #0x16bbc62fc
-# guard shape
-0x16bbc416c: cmp w12, w13
-0x16bbc4170: b.ne #0x16bbc6378
-0x16bbc4178: ldur x1, [x11, #0x10]
+# guard known class                                  <- sight 2: is it a Point?
+0x16bbc4150: cmp x11, x12                            <- compare its class
+0x16bbc4154: b.ne #0x16bbc62fc                       <- wrong? jump away
+# guard shape                                        <- sight 3: same layout as before?
+0x16bbc416c: cmp w12, w13                            <- compare its shape
+0x16bbc4170: b.ne #0x16bbc6378                       <- wrong? jump away
+0x16bbc4178: ldur x1, [x11, #0x10]                   <- all three passed: read @x straight out. No call
  ...
-# Block: distance@distance.rb:7
-# Insn: 0004 getlocal_WC_0 (stack_size: 1)
-# defer_compilation
-0x16bbc417c: b #0x16bbc63b4
+# Block: distance@distance.rb:7                      <- the next piece
+# Insn: 0004 getlocal_WC_0 (stack_size: 1)           <- step 0004: get b
+# defer_compilation                                  <- not compiled yet, so:
+0x16bbc417c: b #0x16bbc63b4                          <- jump to a stub: compile it when we get here
 #+end_example
-- 
-- 
-- # …YJIT's comments: what it decided
-- # Insn: 0002step 0002 from the bytecode: a.x
-- tst, cmp + b.nea sight: test, and jump away if it fails
-- ldur x1, [x11, #0x10]read @x straight out of the object
-- # Block:a new piece starts
-- defer_compilation, bjump to a stub: compile the next piece when the code gets here
-- 
 - Three guards, three sights: each a compare and a jump. All pass, so one load reads ~@x~: no call.
 - Ruby 4.1.0-preview1 · ~ruby --yjit --yjit-dump-disasm~
 
@@ -296,33 +278,23 @@ watching a few laps, then planning the whole course.
 
 /On screen:/
 - ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
-- 
 - listing (captures/zjit-distance.txt):
 #+begin_example
-fn distance@distance.rb:7:
-bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
-  v79:ObjectSubclass[class_exact:Point] = GuardType v16
-  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)
-  v83:BasicObject = LoadField v79, :@x
+fn distance@distance.rb:7:                                     <- the plan for the whole method
+bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):        <- its inputs: self, a (v16), b
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16        <- sight: is v16, our a, a Point?
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)  <- sight: laid out as before?
+  v83:BasicObject = LoadField v79, :@x                         <- read @x directly, no call
   ...
-  v93:Fixnum = GuardType v83, Fixnum
-  v94:Fixnum = GuardType v90, Fixnum
-  v95:Fixnum = FixnumSub v93, v94
+  v93:Fixnum = GuardType v83, Fixnum                           <- sight: a.x a whole number (Fixnum)?
+  v94:Fixnum = GuardType v90, Fixnum                           <- and b.x?
+  v95:Fixnum = FixnumSub v93, v94                              <- the minus: dx, named v95, set once
   ...
-  v118:Fixnum = FixnumMult v95, v95
+  v118:Fixnum = FixnumMult v95, v95                            <- dx * dx: no new check
   ...
-  v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126
-  Return v130
+  v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126      <- call into C: Math.sqrt
+  Return v130                                                  <- return it
 #+end_example
-- 
-- 
-- v95a value's name, set once
-- GuardTypecheck the type: a sight
-- GuardBitEqualscheck the object's layout: also a sight
-- LoadFieldread @x directly, no call
-- Fixnum, FixnumSuba small Integer; whole-number maths
-- CCallWithFramecall into C (Math.sqrt)
-- 
 - Every value gets a name, set once: ~v95~ is ~dx~, then used for ~dx * dx~ with no more type checks.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 

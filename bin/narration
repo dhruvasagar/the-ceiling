@@ -23,6 +23,19 @@ function words(txt,   g, n, w, i, c) {
   return c
 }
 function stories(txt,   g, c) { g = txt; c = gsub(/\[STORY/, "", g); return c }
+# A listing is held until we know whether line notes (ol.ann-notes) follow;
+# then each note is printed beside its line, as on the slide.
+function flushlst(   i, wd, fmt, ln) {
+  if (!held) return
+  wd = 0; for (i = 1; i <= nlb; i++) if (length(LB[i]) > wd) wd = length(LB[i])
+  fmt = "%-" wd "s  <- %s"
+  for (i = 1; i <= nlb; i++) {
+    ln = (i in ANN) ? sprintf(fmt, LB[i], ANN[i]) : LB[i]
+    screen = screen ln "\n"
+  }
+  screen = screen "#+end_example\n"
+  held = 0; nlb = 0; split("", LB); split("", ANN)
+}
 function finish() {
   if (title == "") return
   N++; T[N] = title; D[N] = secs; NOTES[N] = notes; SCREEN[N] = screen
@@ -31,6 +44,7 @@ function finish() {
   W[N] = w; S[N] = s; E[N] = est; B[N] = blocks; L[N] = live
   title = ""; secs = 0; notes = ""; screen = ""; blocks = 0; live = 0; quote = ""
 }
+held && !inx && $0 !~ /^#\+begin_export html/ { flushlst() }
 /^\* / {
   finish()
   if ($0 !~ /:noexport:/) title = substr($0, 3)
@@ -51,11 +65,18 @@ inq { quote = quote " " $0; qtxt = qtxt $0 " "; next }
   screen = screen "- " kind (cap != "" ? " (captures/" cap ")" : "") ":\n#+begin_example\n"; cap = ""
   next
 }
-/^#\+end_(example|src)/ { inb = 0; screen = screen "#+end_example\n"; next }
-inb { screen = screen $0 "\n"; next }
+/^#\+end_(example|src)/ { inb = 0; held = 1; next }
+inb { LB[++nlb] = $0; next }
 /^#\+begin_export html/ { inx = 1; next }
-/^#\+end_export/ { inx = 0; next }
-inx { xt = $0; gsub(/<[^>]*>/, "", xt); screen = screen "- " xt "\n"; next }
+/^#\+end_export/ { inx = 0; if (annm) { annm = 0; flushlst() }; next }
+inx && /<ol class="ann-notes">/ { annm = 1; next }
+inx && annm && /<li data-l="/ {
+  k = $0; sub(/^.*data-l="/, "", k); sub(/".*$/, "", k)
+  xt = $0; sub(/^<li[^>]*>/, "", xt); sub(/<\/li>$/, "", xt); gsub(/<[^>]*>/, "", xt)
+  ANN[k + 0] = xt; next
+}
+inx && annm { next }
+inx { if (held) flushlst(); xt = $0; gsub(/<[^>]*>/, "", xt); screen = screen "- " xt "\n"; next }
 /^\|/ { if (!intable) screen = screen "\n"; intable = 1; screen = screen $0 "\n"; next }
 intable && !/^\|/ { intable = 0; screen = screen "\n" }
 /^# capture: / { cap = $0; sub(/^# capture: /, "", cap); next }
@@ -64,6 +85,7 @@ intable && !/^\|/ { intable = 0; screen = screen "\n" }
 /^#/ || /^:/ || /^[ \t]*$/ { next }
 { line = $0; sub(/^- /, "", line); gsub(/=/, "~", line); screen = screen "- " line "\n" }
 END {
+  flushlst()
   finish()
   print "#+TITLE: The Ceiling — narration"
   print "#+OPTIONS: toc:nil num:nil"
