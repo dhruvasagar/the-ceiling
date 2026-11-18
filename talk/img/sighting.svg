@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
-  <title>A trained swimmer sights once, then keeps their head down</title>
+  <title>A trained swimmer sights at the start of each stretch, then keeps their head down</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
   <text x="80" y="120" font-size="64" font-weight="700" fill="#1b2733">A JIT: the trained swimmer</text>
   <!-- straight course -->
@@ -10,18 +10,18 @@
   <!-- one sight -->
   
   <g transform="translate(200,430)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
-  <text x="200" y="300" font-size="40" text-anchor="middle" font-weight="700" fill="#1b2733">look once</text>
+  <text x="200" y="300" font-size="40" text-anchor="middle" font-weight="700" fill="#1b2733">look up</text>
   <!-- head-down strokes -->
   <g>
     <g transform="translate(420,436)"><path d="M-26 6 A26 26 0 0 1 26 6 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g><g transform="translate(620,436)"><path d="M-26 6 A26 26 0 0 1 26 6 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g>
     <g transform="translate(820,436)"><path d="M-26 6 A26 26 0 0 1 26 6 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g><g transform="translate(1020,436)"><path d="M-26 6 A26 26 0 0 1 26 6 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g>
   </g>
-  <text x="720" y="380" font-size="40" text-anchor="middle" fill="#1f6a2c">head down, fast</text>
+  <text x="720" y="380" font-size="40" text-anchor="middle" fill="#1f6a2c">then a stretch head down, fast</text>
   <!-- off course branch -->
   <path d="M620 460 Q700 640 900 650" stroke="#b23a3a" stroke-width="6" stroke-dasharray="14 10" fill="none"/>
   <g transform="translate(930,650)"><circle r="30" fill="#f2c9a1" stroke="#b23a3a" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#b23a3a" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
   <text x="980" y="630" font-size="40" fill="#b23a3a">off course?</text>
   <text x="980" y="680" font-size="40" fill="#b23a3a">stop, look around properly</text>
-  <text x="80" y="790" font-size="48" fill="#1b2733">The look is a <tspan font-weight="700">guard</tspan>: one quick check, then trust it.</text>
-  <text x="80" y="850" font-size="40" fill="#4a5a6a">If the check fails, fall back to the slow, careful way.</text>
+  <text x="80" y="790" font-size="48" fill="#1b2733">The look is a <tspan font-weight="700">guard</tspan>: "is this still a number?"</text>
+  <text x="80" y="850" font-size="40" fill="#4a5a6a">One quick check per stretch of code, not per step. If it fails: back to the interpreter.</text>
 </svg>

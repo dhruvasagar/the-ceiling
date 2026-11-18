@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
-  <title>One more call is one more buoy</title>
+  <title>One more call is one more turn buoy: YJIT stops at it, ZJIT rounds it in stride</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
-  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">One more call = one more turn buoy</text>
-  <g fill="#f08a24"><circle cx="220" cy="470" r="28"/><circle cx="800" cy="470" r="28"/><circle cx="1380" cy="470" r="28"/></g>
-  <g font-size="38" text-anchor="middle" fill="#1b2733">
-    <text x="220" y="535">start</text><text x="800" y="535">sq(dx)</text><text x="1380" y="535">finish</text>
-  </g>
+  <text x="80" y="100" font-size="64" font-weight="700" fill="#1b2733">One more call = one more turn buoy</text>
+
   <!-- YJIT lane -->
-  <text x="80" y="250" font-size="44" font-weight="700" fill="#7a5a00">YJIT</text>
-  <path d="M220 300 Q510 240 800 300 Q1090 240 1380 300" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
-  <g font-size="56" text-anchor="middle"><g transform="translate(220,272)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g><g transform="translate(800,272)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g><g transform="translate(1380,272)"><circle r="30" fill="#f2c9a1" stroke="#1b2733" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g></g>
-  <text x="800" y="200" font-size="36" text-anchor="middle" fill="#7a5a00">a real call at the turn: stop, turn, start again</text>
+  <text x="80" y="185" font-size="40" font-weight="700" fill="#7a5a00">YJIT</text>
+  <text x="200" y="185" font-size="34" fill="#7a5a00">stops at the turn: head up, turn, start again</text>
+  <g fill="#f08a24"><circle cx="240" cy="320" r="22"/><circle cx="800" cy="320" r="22"/><circle cx="1360" cy="320" r="22"/></g>
+  <g font-size="28" text-anchor="middle" fill="#1b2733"><text x="240" y="372">start</text><text x="800" y="372">sq(dx)</text><text x="1360" y="372">finish</text></g>
+  <path d="M265 280 H680" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
+  <path d="M740 280 A60 60 0 0 1 860 280 H1335" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
+  <g transform="translate(712,262)"><circle r="30" fill="#f2c9a1" stroke="#b23a3a" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#b23a3a" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
+  <text x="665" y="240" font-size="30" font-weight="700" fill="#b23a3a" text-anchor="end">stop</text>
+  <text x="200" y="430" font-size="30" fill="#4a5a6a">In code: save the frame, jump to sq, check n, jump back, check the result.</text>
+
+  <!-- divider -->
+  <path d="M80 470 H1520" stroke="#9cc7e6" stroke-width="3"/>
+
   <!-- ZJIT lane -->
-  <text x="80" y="700" font-size="44" font-weight="700" fill="#1f6a2c">ZJIT</text>
-  <path d="M220 650 Q800 610 1380 650" stroke="#2e8b3e" stroke-width="10" fill="none"/>
-  <g transform="translate(220,698)"><path d="M-36 -22 L-12 -30 L12 -22 L36 -30 L36 26 L12 34 L-12 26 L-36 34 Z" fill="#fdf6df" stroke="#1b2733" stroke-width="4"/><path d="M-12 -30 V26 M12 -22 V34" stroke="#1b2733" stroke-width="3"/><path d="M-28 18 Q-6 -10 28 -14" stroke="#2e8b3e" stroke-width="4" fill="none" stroke-dasharray="6 5"/></g>
-  <text x="800" y="740" font-size="36" text-anchor="middle" fill="#1f6a2c">sees the whole course: swims straight through the turn</text>
-  <text x="80" y="850" font-size="44" fill="#1b2733">Seeing through the call and swimming on: <tspan font-weight="700">inlining</tspan>.</text>
+  <text x="80" y="535" font-size="40" font-weight="700" fill="#1f6a2c">ZJIT</text>
+  <text x="200" y="535" font-size="34" fill="#1f6a2c">knew the turn from its plan: rounds it in stride</text>
+  <g transform="translate(1440,525)"><path d="M-36 -22 L-12 -30 L12 -22 L36 -30 L36 26 L12 34 L-12 26 L-36 34 Z" fill="#fdf6df" stroke="#1b2733" stroke-width="4"/><path d="M-12 -30 V26 M12 -22 V34" stroke="#1b2733" stroke-width="3"/><path d="M-28 18 Q-6 -10 28 -14" stroke="#2e8b3e" stroke-width="4" fill="none" stroke-dasharray="6 5"/></g>
+  <g fill="#f08a24"><circle cx="240" cy="670" r="22"/><circle cx="800" cy="670" r="22"/><circle cx="1360" cy="670" r="22"/></g>
+  <g font-size="28" text-anchor="middle" fill="#1b2733"><text x="240" y="722">start</text><text x="800" y="722">sq(dx)</text><text x="1360" y="722">finish</text></g>
+  <path d="M265 630 H740 A60 60 0 0 1 860 630 H1335" stroke="#2e8b3e" stroke-width="9" fill="none"/>
+  <g transform="translate(1010,630)"><path d="M-26 0 A26 26 0 0 1 26 0 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g>
+  <text x="1010" y="590" font-size="28" fill="#1f6a2c" text-anchor="middle">head down</text>
+  <text x="200" y="780" font-size="30" fill="#4a5a6a">In code: sq's n * n copied into distance. No jump, no re-checks; a light frame stays.</text>
+
+  <text x="80" y="860" font-size="40" fill="#1b2733">Both still make the turn. ZJIT doesn't stop for it: that's <tspan font-weight="700">inlining</tspan>.</text>
 </svg>

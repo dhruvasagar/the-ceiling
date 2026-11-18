@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
   <title>The 2-beat kick is timed to the whole stroke cycle</title>
   <rect width="1600" height="900" fill="#e6f2fb"/>
-  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">Why ZJIT was built: the 2-beat kick</text>
+  <text x="80" y="110" font-size="64" font-weight="700" fill="#1b2733">The 2-beat kick: fewer kicks, better placed</text>
   <!-- top row: kick by kick -->
   <text x="80" y="250" font-size="44" font-weight="700" fill="#7a5a00">Kick by kick</text>
   <path d="M520 240 H1500" stroke="#9cc7e6" stroke-width="4"/>
@@ -23,5 +23,5 @@
   <text x="560" y="570" font-size="36" fill="#1f6a2c">one kick per arm stroke, timed to the whole cycle</text>
   <text x="80" y="720" font-size="48" fill="#1b2733">You can't get there one kick at a time.</text>
   <text x="80" y="790" font-size="48" fill="#1b2733">You have to see the <tspan font-weight="700">whole stroke</tspan>.</text>
-  <text x="80" y="855" font-size="40" fill="#4a5a6a">YJIT tunes each piece. ZJIT sees the whole method.</text>
+  <text x="80" y="855" font-size="40" fill="#4a5a6a">In Ruby: fewer calls and checks, placed by seeing the whole method.</text>
 </svg>

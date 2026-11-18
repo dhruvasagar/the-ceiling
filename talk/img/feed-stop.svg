@@ -13,6 +13,6 @@
   <g transform="translate(760,338)"><circle r="30" fill="#fff" stroke="#1b2733" stroke-width="5"/><rect x="-7" y="-44" width="14" height="12" fill="#1b2733"/><path d="M0 0 V-20 M0 0 L14 8" stroke="#b23a3a" stroke-width="5" stroke-linecap="round"/></g>
   <text x="760" y="560" font-size="36" text-anchor="middle" fill="#4a5a6a">stopped, drinking</text>
   <text x="80" y="700" font-size="48" fill="#1b2733">A better stroke doesn't make the stop shorter.</text>
-  <text x="80" y="780" font-size="40" fill="#4a5a6a">Waiting on the database or the network. Code written in C.</text>
-  <text x="80" y="835" font-size="40" fill="#4a5a6a">Garbage collection. No JIT speeds these up.</text>
+  <text x="80" y="780" font-size="40" fill="#4a5a6a">Waiting on the database or the network. Most code written in C.</text>
+  <text x="80" y="835" font-size="40" fill="#4a5a6a">Garbage collection. A JIT speeds up the swim, not the stop.</text>
 </svg>

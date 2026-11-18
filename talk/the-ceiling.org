@@ -176,7 +176,8 @@ counts.]
 
 A just-in-time compiler does that for your busiest code. It looks once
 per stretch, not every stroke: a quick check called a guard, "is this
-still a number?", then a run of fast machine code. If the check fails, it falls back to the careful way.
+still a number?", then a run of fast machine code. If the check fails, it goes back to the
+interpreter, the careful way.
 
 Ruby has two of them, and they look in different ways.
 #+end_notes
@@ -189,6 +190,9 @@ Ruby has two of them, and they look in different ways.
 - Once a method is warm, compile *a few instructions at a time*, and run them
 - Look at the values that really turned up
 - Compile the next few for exactly those
+
+#+attr_html: :class cap
+/In the water: sighting as you swim, deciding stretch by stretch./
 
 # capture: yjit-distance.txt
 #+begin_example
@@ -229,12 +233,16 @@ instance-variable layout.]
 - Then turn the *whole method* into a plan: the *IR* (intermediate representation)
 - Improve the plan, then compile it, once
 
+#+attr_html: :class cap
+/In the water: watch a few laps, then plan the whole course, turns included./
+
 #+begin_notes
 ZJIT does it the other way round. While the interpreter runs your method,
 it keeps notes on which types showed up. That's a profile.
 
 Then it turns the whole method into a plan, its intermediate
-representation, improves the plan, and compiles it in one go.
+representation, improves the plan, and compiles it in one go. Like
+watching a few laps, then planning the whole course.
 #+end_notes
 
 * ZJIT: the IR on one slide
@@ -382,7 +390,7 @@ called sq.
 
 * One more call is one more buoy
 :PROPERTIES:
-:DURATION: 0:30
+:DURATION: 0:45
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
@@ -390,16 +398,15 @@ called sq.
 [[file:img/out/turn-buoy.svg]]
 
 #+begin_notes
-YJIT reaches the turn and has to make the call: sq is separate machine
-code.
-
-ZJIT can see the whole course, turn included. It splices sq into
-distance. That's called inlining.
+Both swimmers still go round the buoy: sq's multiply still happens.
+YJIT stops at it: head up, turn, start again. That's a real call.
+ZJIT planned the course, so it rounds the buoy in stride: sq is copied
+into distance. That's called inlining.
 #+end_notes
 
 * At the turn buoy
 :PROPERTIES:
-:DURATION: 1:30
+:DURATION: 1:15
 :END:
 
 # capture: yjit-sq.txt, zjit-sq.txt
@@ -426,7 +433,8 @@ YJIT: a real call into a general =sq=, and a check again when it returns. ZJIT: 
 Ruby 4.1.0-preview1 · default settings
 
 #+begin_notes
-Here's the turn, in each compiler's own words.
+Here's the turn, in each compiler's own words: the stop on the left, the
+stride on the right.
 
 YJIT, left. It compiles sq as its own code, so distance has to call it.
 
@@ -494,8 +502,8 @@ more code at once to the optimizer".]
 [STORY, short: the 2-beat kick. "Fewer kicks, timed to the whole stroke.
 I couldn't get there one kick at a time."]
 
-Same with sq: you can only splice it in if you can see the caller and the
-callee together.
+ZJIT does the same with calls and checks: it sees the caller and sq
+together.
 #+end_notes
 
 * So, why build the second one?
@@ -574,7 +582,7 @@ method calling a small method.
 :END:
 
 #+attr_html: :class cap
-YJIT at =[]=:
+YJIT at =[]=: stops at the turn, a real call to =convert_key=
 
 # capture: hwia-yjit-disasm.txt
 #+begin_example
@@ -584,7 +592,7 @@ YJIT at =[]=:
 #+end_example
 
 #+attr_html: :class cap
-ZJIT at =[]=:
+ZJIT at =[]=: takes it in stride, =convert_key= copied in
 
 # capture: hwia-zjit-hir.txt
 #+begin_example
@@ -600,7 +608,7 @@ v35:BasicObject = CCallWithFrame v27, :Hash#[], v71
 Ruby 4.1.0-preview1 · default settings
 
 #+begin_notes
-The same turn, in real code.
+The same turn buoy, on a real course.
 
 YJIT makes a real call into convert_key, just like sq.
 
@@ -624,7 +632,7 @@ convert_key into it and folds "Symbol === :id" away entirely.]
 #+begin_notes
 And that's the feed stop. Hashing the key and finding it happens in C, and
 no Ruby compiler speeds up the C itself. Same for waiting on the database, and for
-garbage collection. A better stroke doesn't shorten the stop at the boat.
+garbage collection. A JIT speeds up the swim, not the stop at the boat.
 #+end_notes
 
 * A glimpse: seven everyday lines
@@ -673,7 +681,7 @@ def double(x) = x + x   # called with Integers only, or with five types
 #+end_src
 
 #+attr_html: :class cap
-Calm, ZJIT: spliced in, one check, one add.
+Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
 
 # capture: zjit-calm.txt
 #+begin_example
@@ -682,7 +690,7 @@ v46:Fixnum = FixnumAdd v44, v44
 #+end_example
 
 #+attr_html: :class cap
-Choppy: five types.
+Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
 
 # capture: yjit-choppy.txt, zjit-choppy.txt
 #+begin_example
@@ -815,8 +823,8 @@ Slides, code, every capture, the full write-up: [[https://github.com/dhruvasagar
 efficient, sighting only when it counted, through the turns without
 stopping. Two or three sentences.]
 
-Ruby is learning the same thing: waste less, look up less, and swim
-through the turns.
+Ruby is learning the same thing: waste less, look up less, and take the
+turns in stride.
 
 Next time someone says "Ruby is slow", ask "which part?", and now you can
 show them. Thank you.

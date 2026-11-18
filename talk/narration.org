@@ -20,21 +20,21 @@ STORY beat (30 s).
 | 2 | 1:15 | Ruby swims with its head up | 0:15 | 0:14 | 0:01 |  |
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:00 | 1:10 | -0:10 | live OVER  |
-| 5 | 3:00 | Learning to sight | 1:00 | 0:56 | 0:04 | STORY  |
+| 5 | 3:00 | Learning to sight | 1:00 | 0:57 | 0:03 | STORY  |
 | 6 | 4:00 | YJIT: compile as you go | 0:45 | 0:46 | -0:01 |  |
-| 7 | 4:45 | ZJIT: watch, then plan | 0:30 | 0:21 | 0:09 |  |
+| 7 | 4:45 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
 | 8 | 5:15 | ZJIT: the IR on one slide | 1:00 | 0:59 | 0:01 |  |
 | 9 | 6:15 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
 | 10 | 7:00 | The plateau | 1:15 | 1:12 | 0:03 | STORY  |
 | 11 | 8:15 | One more call | 0:30 | 0:17 | 0:13 |  |
-| 12 | 8:45 | One more call is one more buoy | 0:30 | 0:14 | 0:16 |  |
-| 13 | 9:15 | At the turn buoy | 1:30 | 1:10 | 0:20 |  |
+| 12 | 8:45 | One more call is one more buoy | 0:45 | 0:20 | 0:25 | room  |
+| 13 | 9:30 | At the turn buoy | 1:15 | 1:15 | -0:00 |  |
 | 14 | 10:45 | Why it's a ceiling | 1:00 | 1:06 | -0:06 | OVER  |
-| 15 | 11:45 | The 2-beat kick | 0:30 | 0:39 | -0:09 | STORY OVER  |
+| 15 | 11:45 | The 2-beat kick | 0:30 | 0:37 | -0:07 | STORY OVER  |
 | 16 | 12:15 | So, why build the second one? | 1:00 | 1:01 | -0:01 |  |
 | 17 | 13:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
 | 18 | 13:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
-| 19 | 14:30 | The feed stop | 0:30 | 0:20 | 0:10 |  |
+| 19 | 14:30 | The feed stop | 0:30 | 0:21 | 0:09 |  |
 | 20 | 15:00 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
 | 21 | 15:45 | Calm water, choppy water | 1:15 | 1:12 | 0:03 |  |
 | 22 | 17:00 | Measured: the ZJIT team's results, and ours | 0:45 | 0:47 | -0:02 |  |
@@ -43,7 +43,7 @@ STORY beat (30 s).
 | 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 | 26 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *18:33* | *1:12* | |
+|   |        | *Total* | *19:45* | *18:49* | *0:56* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -169,7 +169,8 @@ counts.]
 
 A just-in-time compiler does that for your busiest code. It looks once
 per stretch, not every stroke: a quick check called a guard, "is this
-still a number?", then a run of fast machine code. If the check fails, it falls back to the careful way.
+still a number?", then a run of fast machine code. If the check fails, it goes back to the
+interpreter, the careful way.
 
 Ruby has two of them, and they look in different ways.
 
@@ -181,6 +182,7 @@ Ruby has two of them, and they look in different ways.
 - Once a method is warm, compile *a few instructions at a time*, and run them
 - Look at the values that really turned up
 - Compile the next few for exactly those
+- /In the water: sighting as you swim, deciding stretch by stretch./
 - listing (captures/yjit-distance.txt):
 #+begin_example
 # Insn: 0002 opt_send_without_block (stack_size: 1)
@@ -217,6 +219,7 @@ instance-variable layout.]
 - While the interpreter runs the method, record which types turn up: a *profile*
 - Then turn the *whole method* into a plan: the *IR* (intermediate representation)
 - Improve the plan, then compile it, once
+- /In the water: watch a few laps, then plan the whole course, turns included./
 
 /Say:/
 
@@ -224,7 +227,8 @@ ZJIT does it the other way round. While the interpreter runs your method,
 it keeps notes on which types showed up. That's a profile.
 
 Then it turns the whole method into a plan, its intermediate
-representation, improves the plan, and compiles it in one go.
+representation, improves the plan, and compiles it in one go. Like
+watching a few laps, then planning the whole course.
 
 /Next: ZJIT: the IR on one slide/
 
@@ -355,22 +359,21 @@ called sq.
 
 /Next: One more call is one more buoy/
 
-** 12. One more call is one more buoy  (8:45, 0:30)
+** 12. One more call is one more buoy  (8:45, 0:45)
 
 /On screen:/
 - diagram img/out/turn-buoy.svg: One more call is one more turn buoy
 
 /Say:/
 
-YJIT reaches the turn and has to make the call: sq is separate machine
-code.
-
-ZJIT can see the whole course, turn included. It splices sq into
-distance. That's called inlining.
+Both swimmers still go round the buoy: sq's multiply still happens.
+YJIT stops at it: head up, turn, start again. That's a real call.
+ZJIT planned the course, so it rounds the buoy in stride: sq is copied
+into distance. That's called inlining.
 
 /Next: At the turn buoy/
 
-** 13. At the turn buoy  (9:15, 1:30)
+** 13. At the turn buoy  (9:30, 1:15)
 
 /On screen:/
 - listing (captures/yjit-sq.txt, zjit-sq.txt):
@@ -394,7 +397,8 @@ YJIT                                     ZJIT
 
 /Say:/
 
-Here's the turn, in each compiler's own words.
+Here's the turn, in each compiler's own words: the stop on the left, the
+stride on the right.
 
 YJIT, left. It compiles sq as its own code, so distance has to call it.
 
@@ -458,8 +462,8 @@ more code at once to the optimizer".]
 [STORY, short: the 2-beat kick. "Fewer kicks, timed to the whole stroke.
 I couldn't get there one kick at a time."]
 
-Same with sq: you can only splice it in if you can see the caller and the
-callee together.
+ZJIT does the same with calls and checks: it sees the caller and sq
+together.
 
 /Next: So, why build the second one?/
 
@@ -525,14 +529,14 @@ method calling a small method.
 ** 18. params, through both  (13:45, 0:45)
 
 /On screen:/
-- YJIT at ~[]~:
+- YJIT at ~[]~: stops at the turn, a real call to ~convert_key~
 - listing (captures/hwia-yjit-disasm.txt):
 #+begin_example
 # call to ActiveSupport::HashWithIndifferentAccess#convert_key
 # push callee control frame
 # gen_direct_jmp: existing block
 #+end_example
-- ZJIT at ~[]~:
+- ZJIT at ~[]~: takes it in stride, ~convert_key~ copied in
 - listing (captures/hwia-zjit-hir.txt):
 #+begin_example
 PushInlineFrame :convert_key, v27, num_args=1
@@ -546,7 +550,7 @@ v35:BasicObject = CCallWithFrame v27, :Hash#[], v71
 
 /Say:/
 
-The same turn, in real code.
+The same turn buoy, on a real course.
 
 YJIT makes a real call into convert_key, just like sq.
 
@@ -568,7 +572,7 @@ convert_key into it and folds "Symbol === :id" away entirely.]
 
 And that's the feed stop. Hashing the key and finding it happens in C, and
 no Ruby compiler speeds up the C itself. Same for waiting on the database, and for
-garbage collection. A better stroke doesn't shorten the stop at the boat.
+garbage collection. A JIT speeds up the swim, not the stop at the boat.
 
 /Next: A glimpse: seven everyday lines/
 
@@ -610,13 +614,13 @@ counted calls. We didn't time them.
 #+begin_example
 def double(x) = x + x   # called with Integers only, or with five types
 #+end_example
-- Calm, ZJIT: spliced in, one check, one add.
+- Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
 - listing (captures/zjit-calm.txt):
 #+begin_example
 v44:Fixnum = GuardType v10, Fixnum recompile
 v46:Fixnum = FixnumAdd v44, v44
 #+end_example
-- Choppy: five types.
+- Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
 - listing (captures/yjit-choppy.txt, zjit-choppy.txt):
 #+begin_example
 YJIT                        ZJIT
@@ -742,8 +746,8 @@ it with --zjit.
 efficient, sighting only when it counted, through the turns without
 stopping. Two or three sentences.]
 
-Ruby is learning the same thing: waste less, look up less, and swim
-through the turns.
+Ruby is learning the same thing: waste less, look up less, and take the
+turns in stride.
 
 Next time someone says "Ruby is slow", ask "which part?", and now you can
 show them. Thank you.
