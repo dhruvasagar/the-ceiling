@@ -434,7 +434,7 @@ ZJIT exists, we need something every Ruby codebase is full of.
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
-#+attr_html: :alt Swim times flatten once straight legs are fast; in Ruby, straight code is a tie and the time left is at method calls, which ZJIT can copy in
+#+attr_html: :alt Swim times flatten once straight legs are fast; in Ruby the time left is at method calls, which ZJIT can copy in
 [[file:img/out/plateau.svg]]
 
 #+begin_notes
@@ -442,9 +442,9 @@ ZJIT exists, we need something every Ruby codebase is full of.
 it stopped. When I looked at where the time went, the straight legs were
 fine. I was losing it at the turns." Keep only what's true for you.]
 
-Ruby's plateau looks the same. YJIT already got the easy wins: dx * dx
-has no type checks, the tie we just saw. What's left is at the turns, and
-in Ruby a turn is a method call. We write small methods calling small
+Ruby's plateau looks the same. Straight code is the tie we just saw: YJIT
+already got those wins. What's left is at the turns, and in Ruby a turn is
+a method call. We write small methods calling small
 methods.
 
 YJIT folds in trivial calls, like that attribute reader. But at a call
