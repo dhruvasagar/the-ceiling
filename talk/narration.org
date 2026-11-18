@@ -19,10 +19,10 @@ STORY beat (30 s).
 | 1 | 0:00 | Every time you lift your head | 1:15 | 1:24 | -0:09 | STORY OVER  |
 | 2 | 1:15 | Ruby swims with its head up | 0:15 | 0:14 | 0:01 |  |
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
-| 4 | 2:00 | The bytecode | 1:15 | 1:24 | -0:09 | live OVER  |
+| 4 | 2:00 | The bytecode | 1:15 | 1:17 | -0:02 | live  |
 | 5 | 3:15 | Learning to sight | 1:00 | 0:56 | 0:04 | STORY  |
 | 6 | 4:15 | YJIT: compile as you go | 0:15 | 0:16 | -0:01 |  |
-| 7 | 4:30 | YJIT: in its own words | 1:00 | 0:59 | 0:01 |  |
+| 7 | 4:30 | YJIT: in its own words | 1:00 | 1:02 | -0:02 |  |
 | 8 | 5:30 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
 | 9 | 6:00 | ZJIT: in its own words | 1:00 | 0:59 | 0:01 |  |
 | 10 | 7:00 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
@@ -44,7 +44,7 @@ STORY beat (30 s).
 | 26 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:31* | *0:14* | |
+|   |        | *Total* | *19:45* | *19:27* | *0:18* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -130,7 +130,7 @@ interpreter runs that.
 #+begin_example
 ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
 #+end_example
-- Ruby turns ~distance~ into *bytecode*: small steps that pass values on a stack. Steps ~0000~-~0010~ are the first line, ~dx ~ a.x - b.x~.
+- What the interpreter actually runs. Steps ~0000~-~0010~ are the first line, ~dx ~ a.x - b.x~.
 - 
 - listing (captures/yarv-distance.txt):
 #+begin_example
@@ -146,31 +146,30 @@ ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).di
 #+end_example
 - 
 - 
-- 0000, 0002 …each step's position
-- getlocal_WC_0 a@0put the local a on the stack
-- opt_send_without_blockcall a method on it
-- calldata!mid:x, argc:0which method (x), how many arguments (none): a.x
-- opt_minussubtract the top two: a.x - b.x
-- setlocal_WC_0 dx@2store the result in dx
-- leavereturn
+- 0000 getlocalget a
+- 0002 … mid:xcall x on it: a.x
+- 0008 opt_minusminus: is this a whole number? checked every time
+- 0010 setlocalstore it in dx
 - 
-- ~opt_minus~ could be any ~-~. It has a fast path for whole numbers, but it checks the types first, every time it runs: the interpreter lifting its head.
+- Every step is general, and checks as it goes, every time it runs: the interpreter with its head up. Remember ~0002~ and the minus.
 - Ruby 4.1.0-preview1
 
 /Say:/
 
 [Run the live block.]
 
-This is what Ruby actually runs: bytecode. Small steps that pass values
-on a stack. The first six steps are our first line.
-
-Get a, call x on it. Get b, call x on it. Minus. Store it in dx. The
-calldata just says which method, and how many arguments.
+This is what the interpreter actually runs. Get a, call x on it. Get b,
+call x on it. Minus. Store it in dx.
 
 That minus doesn't know it's subtracting numbers. It could be anything
 with a minus method. There's a fast path for whole numbers, but it has to
-check first, every single time: the interpreter lifting its head. You can
-run this line on your own code tonight.
+check first, every single time: the interpreter lifting its head.
+
+Remember step 0002, a.x, and that minus. We'll see both again. You can run
+this line on your own code tonight.
+
+[If asked about the rest: it's a stack machine; calldata says which method
+and how many arguments. See the Q&A doc.]
 
 /Next: Learning to sight/
 
@@ -242,7 +241,7 @@ next few for exactly that. Sighting as you swim.
 - 
 - 
 - # …YJIT's comments: what it decided
-- # Insn: 0002the bytecode being compiled: a.x
+- # Insn: 0002step 0002 from the bytecode: a.x
 - tst, cmp + b.nea sight: test, and jump away if it fails
 - ldur x1, [x11, #0x10]read @x straight out of the object
 - # Block:a new piece starts
@@ -256,8 +255,8 @@ next few for exactly that. Sighting as you swim.
 This is YJIT's dump. The lines with a hash are its comments; under each is
 the machine code it wrote, for this Mac's arm64 chip.
 
-Insn 0002 is a.x from the bytecode: a call to Point#x, an attribute
-reader. Then three sights: a real object, a Point, laid out as before.
+Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
+call to Point#x, an attribute reader. Then three sights: a real object, a Point, laid out as before.
 Each one is two instructions: compare, and jump away if it's wrong. All
 three pass, and one load reads @x straight out of the object. No call.
 

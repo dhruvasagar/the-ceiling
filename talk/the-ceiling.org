@@ -134,7 +134,7 @@ ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).di
 #+end_src
 
 #+attr_html: :class cap
-Ruby turns =distance= into *bytecode*: small steps that pass values on a stack. Steps =0000=-=0010= are the first line, =dx = a.x - b.x=.
+What the interpreter actually runs. Steps =0000=-=0010= are the first line, =dx = a.x - b.x=.
 
 #+begin_export html
 <div class="ir-grid"><div>
@@ -154,18 +154,15 @@ Ruby turns =distance= into *bytecode*: small steps that pass values on a stack. 
 #+begin_export html
 </div>
 <table class="legend">
-<tr><td><code>0000</code>, <code>0002</code> …</td><td>each step's position</td></tr>
-<tr><td><code>getlocal_WC_0 a@0</code></td><td>put the local <code>a</code> on the stack</td></tr>
-<tr><td><code>opt_send_without_block</code></td><td>call a method on it</td></tr>
-<tr><td><code>calldata!mid:x, argc:0</code></td><td>which method (<code>x</code>), how many arguments (none): <code>a.x</code></td></tr>
-<tr><td><code>opt_minus</code></td><td>subtract the top two: <code>a.x - b.x</code></td></tr>
-<tr><td><code>setlocal_WC_0 dx@2</code></td><td>store the result in <code>dx</code></td></tr>
-<tr><td><code>leave</code></td><td>return</td></tr>
+<tr><td><code>0000 getlocal</code></td><td>get <code>a</code></td></tr>
+<tr><td><code>0002 … mid:x</code></td><td>call <code>x</code> on it: <code>a.x</code></td></tr>
+<tr><td><code>0008 opt_minus</code></td><td>minus: is this a whole number? checked every time</td></tr>
+<tr><td><code>0010 setlocal</code></td><td>store it in <code>dx</code></td></tr>
 </table></div>
 #+end_export
 
 #+attr_html: :class cap
-=opt_minus= could be any =-=. It has a fast path for whole numbers, but it checks the types first, every time it runs: the interpreter lifting its head.
+Every step is general, and checks as it goes, every time it runs: the interpreter with its head up. Remember =0002= and the minus.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1
@@ -173,16 +170,18 @@ Ruby 4.1.0-preview1
 #+begin_notes
 [Run the live block.]
 
-This is what Ruby actually runs: bytecode. Small steps that pass values
-on a stack. The first six steps are our first line.
-
-Get a, call x on it. Get b, call x on it. Minus. Store it in dx. The
-calldata just says which method, and how many arguments.
+This is what the interpreter actually runs. Get a, call x on it. Get b,
+call x on it. Minus. Store it in dx.
 
 That minus doesn't know it's subtracting numbers. It could be anything
 with a minus method. There's a fast path for whole numbers, but it has to
-check first, every single time: the interpreter lifting its head. You can
-run this line on your own code tonight.
+check first, every single time: the interpreter lifting its head.
+
+Remember step 0002, a.x, and that minus. We'll see both again. You can run
+this line on your own code tonight.
+
+[If asked about the rest: it's a stack machine; calldata says which method
+and how many arguments. See the Q&A doc.]
 #+end_notes
 
 * Learning to sight
@@ -264,7 +263,7 @@ YJIT's dump, trimmed: its comments (=#=), and the arm64 machine code it wrote un
 </div>
 <table class="legend">
 <tr><td><code># …</code></td><td>YJIT's comments: what it decided</td></tr>
-<tr><td><code># Insn: 0002</code></td><td>the bytecode being compiled: <code>a.x</code></td></tr>
+<tr><td><code># Insn: 0002</code></td><td>step 0002 from the bytecode: <code>a.x</code></td></tr>
 <tr><td><code>tst</code>, <code>cmp</code> + <code>b.ne</code></td><td>a sight: test, and jump away if it fails</td></tr>
 <tr><td><code>ldur x1, [x11, #0x10]</code></td><td>read <code>@x</code> straight out of the object</td></tr>
 <tr><td><code># Block:</code></td><td>a new piece starts</td></tr>
@@ -282,8 +281,8 @@ Ruby 4.1.0-preview1 · =ruby --yjit --yjit-dump-disasm=
 This is YJIT's dump. The lines with a hash are its comments; under each is
 the machine code it wrote, for this Mac's arm64 chip.
 
-Insn 0002 is a.x from the bytecode: a call to Point#x, an attribute
-reader. Then three sights: a real object, a Point, laid out as before.
+Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
+call to Point#x, an attribute reader. Then three sights: a real object, a Point, laid out as before.
 Each one is two instructions: compare, and jump away if it's wrong. All
 three pass, and one load reads @x straight out of the object. No call.
 

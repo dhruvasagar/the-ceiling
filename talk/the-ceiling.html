@@ -20,8 +20,8 @@
 <h1>The Ceiling: Why Ruby 4.0 Needed a Second Compiler</h1><p>Dhruva Sagar · RubyConf 2026</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 </section>
 <section>
-<section id="slide-org98611e3">
-<h2 id="org98611e3">Every time you lift your head</h2>
+<section id="slide-org65872ca">
+<h2 id="org65872ca">Every time you lift your head</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -66,10 +66,10 @@ written in.]
 </section>
 </section>
 <section>
-<section id="slide-org4d560cd" class="diagram">
-<h2 id="org4d560cd">Ruby swims with its head up</h2>
+<section id="slide-orgc1b3e4c" class="diagram">
+<h2 id="orgc1b3e4c">Ruby swims with its head up</h2>
 
-<div id="org18e951d" class="figure">
+<div id="org3ea5a3f" class="figure">
 <p><img src="img/out/head-up.svg" alt="The beginner swimmer lifts their head every stroke" class="org-svg" />
 </p>
 </div>
@@ -88,8 +88,8 @@ Ruby's interpreter runs your code a lot like that. Let me show you.
 </section>
 </section>
 <section>
-<section id="slide-orga82751a">
-<h2 id="orga82751a">Our five lines</h2>
+<section id="slide-org9bb1faf">
+<h2 id="org9bb1faf">Our five lines</h2>
 <div class="org-src-container">
 
 <pre id="point-class"><code class="ruby" >class Point
@@ -123,8 +123,8 @@ interpreter runs that.
 </section>
 </section>
 <section>
-<section id="slide-org16cbd92">
-<h2 id="org16cbd92">The bytecode</h2>
+<section id="slide-orgb3cef41">
+<h2 id="orgb3cef41">The bytecode</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
@@ -132,12 +132,12 @@ interpreter runs that.
 </div>
 
 <p class="cap">
-Ruby turns <code>distance</code> into <b>bytecode</b>: small steps that pass values on a stack. Steps <code>0000</code>-<code>0010</code> are the first line, <code>dx = a.x - b.x</code>.
+What the interpreter actually runs. Steps <code>0000</code>-<code>0010</code> are the first line, <code>dx = a.x - b.x</code>.
 </p>
 
 <div class="ir-grid"><div>
 
-<pre class="example" id="orgbcdbf32">
+<pre class="example" id="org6a04c8b">
 0000 getlocal_WC_0          a@0
 0002 opt_send_without_block &lt;calldata!mid:x, argc:0, ARGS_SIMPLE&gt;
 0004 getlocal_WC_0          b@1
@@ -150,17 +150,14 @@ Ruby turns <code>distance</code> into <b>bytecode</b>: small steps that pass val
 </pre>
 </div>
 <table class="legend">
-<tr><td><code>0000</code>, <code>0002</code> …</td><td>each step's position</td></tr>
-<tr><td><code>getlocal_WC_0 a@0</code></td><td>put the local <code>a</code> on the stack</td></tr>
-<tr><td><code>opt_send_without_block</code></td><td>call a method on it</td></tr>
-<tr><td><code>calldata!mid:x, argc:0</code></td><td>which method (<code>x</code>), how many arguments (none): <code>a.x</code></td></tr>
-<tr><td><code>opt_minus</code></td><td>subtract the top two: <code>a.x - b.x</code></td></tr>
-<tr><td><code>setlocal_WC_0 dx@2</code></td><td>store the result in <code>dx</code></td></tr>
-<tr><td><code>leave</code></td><td>return</td></tr>
+<tr><td><code>0000 getlocal</code></td><td>get <code>a</code></td></tr>
+<tr><td><code>0002 … mid:x</code></td><td>call <code>x</code> on it: <code>a.x</code></td></tr>
+<tr><td><code>0008 opt_minus</code></td><td>minus: is this a whole number? checked every time</td></tr>
+<tr><td><code>0010 setlocal</code></td><td>store it in <code>dx</code></td></tr>
 </table></div>
 
 <p class="cap">
-<code>opt_minus</code> could be any <code>-</code>. It has a fast path for whole numbers, but it checks the types first, every time it runs: the interpreter lifting its head.
+Every step is general, and checks as it goes, every time it runs: the interpreter with its head up. Remember <code>0002</code> and the minus.
 </p>
 
 <p class="ver">
@@ -173,30 +170,34 @@ Ruby 4.1.0-preview1
 </p>
 
 <p>
-This is what Ruby actually runs: bytecode. Small steps that pass values
-on a stack. The first six steps are our first line.
-</p>
-
-<p>
-Get a, call x on it. Get b, call x on it. Minus. Store it in dx. The
-calldata just says which method, and how many arguments.
+This is what the interpreter actually runs. Get a, call x on it. Get b,
+call x on it. Minus. Store it in dx.
 </p>
 
 <p>
 That minus doesn't know it's subtracting numbers. It could be anything
 with a minus method. There's a fast path for whole numbers, but it has to
-check first, every single time: the interpreter lifting its head. You can
-run this line on your own code tonight.
+check first, every single time: the interpreter lifting its head.
+</p>
+
+<p>
+Remember step 0002, a.x, and that minus. We'll see both again. You can run
+this line on your own code tonight.
+</p>
+
+<p>
+[If asked about the rest: it's a stack machine; calldata says which method
+and how many arguments. See the Q&amp;A doc.]
 </p>
 
 </aside>
 </section>
 </section>
 <section>
-<section id="slide-org851c1eb" class="diagram">
-<h2 id="org851c1eb">Learning to sight</h2>
+<section id="slide-orge722584" class="diagram">
+<h2 id="orge722584">Learning to sight</h2>
 
-<div id="org9cf1539" class="figure">
+<div id="org552c3bd" class="figure">
 <p><img src="img/out/sighting.svg" alt="A trained swimmer looks once, then keeps their head down" class="org-svg" />
 </p>
 </div>
@@ -223,8 +224,8 @@ Ruby has two of them, and they look in different ways.
 </section>
 </section>
 <section>
-<section id="slide-org7f20e7d">
-<h2 id="org7f20e7d">YJIT: compile as you go</h2>
+<section id="slide-orgaa27bba">
+<h2 id="orgaa27bba">YJIT: compile as you go</h2>
 <ul>
 <li>Once a method is warm, compile <b>a few instructions at a time</b>, and run them</li>
 <li>Look at the values that really turned up</li>
@@ -251,15 +252,15 @@ next few for exactly that. Sighting as you swim.
 </section>
 </section>
 <section>
-<section id="slide-org0eb8e8d">
-<h2 id="org0eb8e8d">YJIT: in its own words</h2>
+<section id="slide-orga69a27d">
+<h2 id="orga69a27d">YJIT: in its own words</h2>
 <p class="cap">
 YJIT's dump, trimmed: its comments (<code>#</code>), and the arm64 machine code it wrote under each.
 </p>
 
 <div class="ir-grid"><div>
 
-<pre class="example" id="orgd6070f3">
+<pre class="example" id="org24c3cbb">
 # Block: distance@distance.rb:7
 # Insn: 0002 opt_send_without_block (stack_size: 1)
 # call to Point#x
@@ -283,7 +284,7 @@ YJIT's dump, trimmed: its comments (<code>#</code>), and the arm64 machine code 
 </div>
 <table class="legend">
 <tr><td><code># …</code></td><td>YJIT's comments: what it decided</td></tr>
-<tr><td><code># Insn: 0002</code></td><td>the bytecode being compiled: <code>a.x</code></td></tr>
+<tr><td><code># Insn: 0002</code></td><td>step 0002 from the bytecode: <code>a.x</code></td></tr>
 <tr><td><code>tst</code>, <code>cmp</code> + <code>b.ne</code></td><td>a sight: test, and jump away if it fails</td></tr>
 <tr><td><code>ldur x1, [x11, #0x10]</code></td><td>read <code>@x</code> straight out of the object</td></tr>
 <tr><td><code># Block:</code></td><td>a new piece starts</td></tr>
@@ -305,8 +306,8 @@ the machine code it wrote, for this Mac's arm64 chip.
 </p>
 
 <p>
-Insn 0002 is a.x from the bytecode: a call to Point#x, an attribute
-reader. Then three sights: a real object, a Point, laid out as before.
+Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
+call to Point#x, an attribute reader. Then three sights: a real object, a Point, laid out as before.
 Each one is two instructions: compare, and jump away if it's wrong. All
 three pass, and one load reads @x straight out of the object. No call.
 </p>
@@ -328,8 +329,8 @@ housekeeping between these lines.]
 </section>
 </section>
 <section>
-<section id="slide-orgb98e346">
-<h2 id="orgb98e346">ZJIT: watch, then plan</h2>
+<section id="slide-org4aae1b3">
+<h2 id="org4aae1b3">ZJIT: watch, then plan</h2>
 <ul>
 <li>While the interpreter runs the method, record which types turn up: a <b>profile</b></li>
 <li>Then turn the <b>whole method</b> into a plan: the <b>IR</b> (intermediate representation)</li>
@@ -357,15 +358,15 @@ watching a few laps, then planning the whole course.
 </section>
 </section>
 <section>
-<section id="slide-org45a17aa">
-<h2 id="org45a17aa">ZJIT: in its own words</h2>
+<section id="slide-orgb55d9c5">
+<h2 id="orgb55d9c5">ZJIT: in its own words</h2>
 <p class="cap">
 ZJIT's own dump, trimmed: its <b>IR</b> (intermediate representation), the plan for the whole method.
 </p>
 
 <div class="ir-grid"><div>
 
-<pre class="example" id="org9096ed8">
+<pre class="example" id="org4dc1e79">
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v79:ObjectSubclass[class_exact:Point] = GuardType v16
@@ -431,9 +432,9 @@ if someone redefines Point#x.]
 </section>
 </section>
 <section>
-<section id="slide-org44e3964">
-<h2 id="org44e3964">On five lines, a tie</h2>
-<pre class="example" id="org1a131b1">
+<section id="slide-org872a082">
+<h2 id="org872a082">On five lines, a tie</h2>
+<pre class="example" id="org8567773">
 YJIT                                         ZJIT
 # Insn: 0028 getlocal_WC_0 (stack_size: 2)   v95:Fixnum = FixnumSub v93, v94
 # Insn: 0030 opt_mult (stack_size: 3)        ...
@@ -468,10 +469,10 @@ ZJIT exists, we need something every Ruby codebase is full of.
 </section>
 </section>
 <section>
-<section id="slide-org0e450af" class="diagram">
-<h2 id="org0e450af">The plateau</h2>
+<section id="slide-org458e431" class="diagram">
+<h2 id="org458e431">The plateau</h2>
 
-<div id="org74b8206" class="figure">
+<div id="org8c4f546" class="figure">
 <p><img src="img/out/plateau.svg" alt="Swim times flatten once straight legs are fast; in Ruby, straight code is a tie and the time left is at method calls, which ZJIT can copy in" class="org-svg" />
 </p>
 </div>
@@ -505,8 +506,8 @@ Let's add one turn to our five lines.
 </section>
 </section>
 <section>
-<section id="slide-orga7a891d">
-<h2 id="orga7a891d">One more call</h2>
+<section id="slide-orga3283e8">
+<h2 id="orga3283e8">One more call</h2>
 <div class="org-src-container">
 
 <pre id="distance-v2"><code class="ruby" >def sq(n) = n * n
@@ -529,10 +530,10 @@ called sq.
 </section>
 </section>
 <section>
-<section id="slide-org8a1f852" class="diagram">
-<h2 id="org8a1f852">One more call is one more buoy</h2>
+<section id="slide-orgd82aae8" class="diagram">
+<h2 id="orgd82aae8">One more call is one more buoy</h2>
 
-<div id="orgbe4b3f8" class="figure">
+<div id="orgfa970c3" class="figure">
 <p><img src="img/out/turn-buoy.svg" alt="One more call is one more turn buoy" class="org-svg" />
 </p>
 </div>
@@ -549,9 +550,9 @@ into distance. That's called inlining.
 </section>
 </section>
 <section>
-<section id="slide-org76dd803">
-<h2 id="org76dd803">At the turn buoy</h2>
-<pre class="example" id="org8ab3e91">
+<section id="slide-org0e584e2">
+<h2 id="org0e584e2">At the turn buoy</h2>
+<pre class="example" id="org8231d33">
 YJIT                                     ZJIT
 # call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
 # push callee control frame              ...
@@ -611,10 +612,10 @@ is cheaper than a call, not free.]
 </section>
 </section>
 <section>
-<section id="slide-org425d5cc" class="diagram">
-<h2 id="org425d5cc">Why it's a ceiling</h2>
+<section id="slide-org01f761e" class="diagram">
+<h2 id="org01f761e">Why it's a ceiling</h2>
 
-<div id="orgbc1b0a2" class="figure">
+<div id="orgfbe221f" class="figure">
 <p><img src="img/out/ceiling.svg" alt="YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it" class="org-svg" />
 </p>
 </div>
@@ -657,10 +658,10 @@ more code at once to the optimizer".]
 </section>
 </section>
 <section>
-<section id="slide-org3c399cf" class="diagram">
-<h2 id="org3c399cf">The 2-beat kick</h2>
+<section id="slide-orgc46b404" class="diagram">
+<h2 id="orgc46b404">The 2-beat kick</h2>
 
-<div id="org1d66f5d" class="figure">
+<div id="org4a8fd45" class="figure">
 <p><img src="img/out/two-beat-kick.svg" alt="The 2-beat kick is timed to the whole stroke" class="org-svg" />
 </p>
 </div>
@@ -680,8 +681,8 @@ together.
 </section>
 </section>
 <section>
-<section id="slide-orgb2d1858">
-<h2 id="orgb2d1858">So, why build the second one?</h2>
+<section id="slide-org4ee96b3">
+<h2 id="org4ee96b3">So, why build the second one?</h2>
 <ol>
 <li>The next gains need the <b>whole method as one plan</b>. A compiler that works piece by piece never has one.</li>
 <li>A more traditional compiler, so <b>more people can help build it</b>.</li>
@@ -734,9 +735,9 @@ contribute to").]
 </section>
 </section>
 <section>
-<section id="slide-orge8ebf97">
-<h2 id="orge8ebf97">Race day: params</h2>
-<pre class="example" id="orgf1da27c">
+<section id="slide-org2adf29e">
+<h2 id="org2adf29e">Race day: params</h2>
+<pre class="example" id="org655dbd1">
 def [](key)
   super(convert_key(key))
 end
@@ -766,13 +767,13 @@ method calling a small method.
 </section>
 </section>
 <section>
-<section id="slide-orge80d7ed">
-<h2 id="orge80d7ed">params, through both</h2>
+<section id="slide-org02658e5">
+<h2 id="org02658e5">params, through both</h2>
 <p class="cap">
 YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</code>
 </p>
 
-<pre class="example" id="orgb9588e2">
+<pre class="example" id="org5eeb6a4">
 # call to ActiveSupport::HashWithIndifferentAccess#convert_key
 # push callee control frame
 # gen_direct_jmp: existing block
@@ -782,7 +783,7 @@ YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</co
 ZJIT at <code>[]</code>: takes it in stride, <code>convert_key</code> copied in
 </p>
 
-<pre class="example" id="org5cb1fff">
+<pre class="example" id="org0a1b7fd">
 PushInlineFrame :convert_key, v27, num_args=1
 v78:BoolExact = IsA v10, v43
 CondBranch v50, bb8(), bb7()
@@ -819,10 +820,10 @@ convert<sub>key</sub> into it and folds "Symbol <code>=</code> :id" away entirel
 </section>
 </section>
 <section>
-<section id="slide-org5808965" class="diagram">
-<h2 id="org5808965">The feed stop</h2>
+<section id="slide-orge3e61df" class="diagram">
+<h2 id="orge3e61df">The feed stop</h2>
 
-<div id="orgb4c3588" class="figure">
+<div id="org17362e5" class="figure">
 <p><img src="img/out/feed-stop.svg" alt="A feed stop: a better stroke doesn't make it shorter" class="org-svg" />
 </p>
 </div>
@@ -838,8 +839,8 @@ garbage collection. A JIT speeds up the swim, not the stop at the boat.
 </section>
 </section>
 <section>
-<section id="slide-org76871f5">
-<h2 id="org76871f5">A glimpse: seven everyday lines</h2>
+<section id="slide-orge22915b">
+<h2 id="orge22915b">A glimpse: seven everyday lines</h2>
 <p class="cap">
 Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
 </p>
@@ -934,8 +935,8 @@ counted calls. We didn't time them.
 </section>
 </section>
 <section>
-<section id="slide-org66a3de5">
-<h2 id="org66a3de5">Calm water, choppy water</h2>
+<section id="slide-org89ba5de">
+<h2 id="org89ba5de">Calm water, choppy water</h2>
 <div class="org-src-container">
 
 <pre><code class="ruby" >def double(x) = x + x   # called with Integers only, or with five types
@@ -946,7 +947,7 @@ counted calls. We didn't time them.
 Calm water, only Integers arrive. ZJIT: spliced in, one check, one add.
 </p>
 
-<pre class="example" id="orgae08f5e">
+<pre class="example" id="orgd1daa28">
 v44:Fixnum = GuardType v10, Fixnum recompile
 v46:Fixnum = FixnumAdd v44, v44
 </pre>
@@ -955,7 +956,7 @@ v46:Fixnum = FixnumAdd v44, v44
 Choppy water, five types arrive at the same spot. YJIT, sighting often, keeps a fast add for whole numbers; ZJIT's plan makes every case a call.
 </p>
 
-<pre class="example" id="orgb0a3c96">
+<pre class="example" id="org6672c05">
 YJIT                        ZJIT
 # guard arg0 fixnum         CondBranchHasType v10, Fixnum, bb12(), bb13()
 # call to Float#+           v79:BasicObject = CCallWithFrame v47, :Integer#+, v10
@@ -994,8 +995,8 @@ still saves the call to double itself. That's this build, today.
 </section>
 </section>
 <section>
-<section id="slide-orgd850566">
-<h2 id="orgd850566">Measured: the ZJIT team's results, and ours</h2>
+<section id="slide-org627ca82">
+<h2 id="org627ca82">Measured: the ZJIT team's results, and ours</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -1091,8 +1092,8 @@ hwia-yjit-stats and hwia-zjit-stats.]
 </section>
 </section>
 <section>
-<section id="slide-org6e4ac66">
-<h2 id="org6e4ac66">Read your own code</h2>
+<section id="slide-org174c5e7">
+<h2 id="org174c5e7">Read your own code</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'
@@ -1126,8 +1127,8 @@ is out of the compiler's reach.
 </section>
 </section>
 <section>
-<section id="slide-orga5bf38d">
-<h2 id="orga5bf38d">What it means for Ruby</h2>
+<section id="slide-org277661e">
+<h2 id="org277661e">What it means for Ruby</h2>
 <p>
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 whole method at once, so it can see through small method calls and pay
@@ -1159,8 +1160,8 @@ it with &#x2013;zjit.
 </section>
 </section>
 <section>
-<section id="slide-org5e05f9d">
-<h2 id="org5e05f9d">Head down</h2>
+<section id="slide-org72c8c9a">
+<h2 id="org72c8c9a">Head down</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -1194,8 +1195,8 @@ show them. Thank you.
 </section>
 </section>
 <section>
-<section id="slide-org83881e0">
-<h2 id="org83881e0">Sources</h2>
+<section id="slide-orgd942e97">
+<h2 id="orgd942e97">Sources</h2>
 <div class="cap" style="text-align:left;font-size:0.5em;line-height:1.5">
 <p><b>The ZJIT team, Rails at Scale</b></p>
 <ul>
