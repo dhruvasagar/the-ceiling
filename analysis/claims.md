@@ -16,10 +16,10 @@ search for the quoted text.
 | Claim (slide) | Kind | Evidence |
 |---|---|---|
 | The interpreter checks the operand types of `opt_minus` every time it runs, with a fast path for plain numbers (*The bytecode*) | stated | `vm_opt_minus` checks `FIXNUM_2_P` before its fast path, `vm_insnhelper.c:7094` [12]; the instruction in `yarv-distance.txt` |
-| YJIT compiles a small piece, runs it, then compiles the next piece when execution reaches it (*YJIT: compile as you go*) | shown + stated | `defer_compilation`, `yjit-distance.txt:122`; "lazily compiles code using a Basic Block Versioning (BBV) architecture" [8] |
-| At `a.x`, YJIT guards object, class and shape, then reads `@x` directly (*YJIT: compile as you go*) | shown | `# call to Point#x` and the guards after it, `yjit-distance.txt:412` |
+| YJIT compiles a small piece, runs it, then compiles the next piece when execution reaches it (*YJIT: compile as you go*) | shown + stated | `defer_compilation`, `yjit-distance.txt:122` (*YJIT: in its own words*); "lazily compiles code using a Basic Block Versioning (BBV) architecture" [8] |
+| At `a.x`, YJIT guards object, class and shape, then reads `@x` directly (*YJIT: in its own words*) | shown | `# call to Point#x` and the guards after it, `yjit-distance.txt:412` |
 | ZJIT records types in the interpreter, then compiles the whole method from that profile (*ZJIT: watch, then plan*) | stated | "reads historical type information from the profiled interpreter", "compiles one entire method at a time" [1]; "uses profile information from the interpreter" [7] |
-| ZJIT's IR names every value once (SSA) (*ZJIT: the IR on one slide*) | stated | HIR glossary: "graph representation in static single-assignment (SSA) form" [7] |
+| ZJIT's IR names every value once (SSA) (*ZJIT: in its own words*) | stated | HIR glossary: "graph representation in static single-assignment (SSA) form" [7] |
 | Both compile `distance` during call 30; YJIT logs 25 compile events, ZJIT one; none on calls 31 to 40 (analysis E0; no longer on a slide) | shown | `how-yjit.txt` (first event at :40, all events follow `call 30`), `how-zjit.txt:33` |
 | YJIT raises its threshold to 120 calls once a process has 40,000 ISEQs (analysis) | stated | `doc/jit/yjit.md` line 200 [12] |
 
@@ -29,7 +29,7 @@ search for the quoted text.
 |---|---|---|
 | Neither compiler type-checks `dx` again at `dx * dx` (*On five lines, a tie*) | shown | YJIT: `# Insn: 0030 opt_mult` with no guard before the next instruction, `yjit-distance.txt:1428`; ZJIT: `FixnumMult v95, v95`, `zjit-distance.txt:65` |
 | ZJIT doesn't re-check `a` and `b` before reading `@y`; YJIT does (*On five lines, a tie*) | shown | ZJIT: `LoadField v79, :@y` with no new guard, `zjit-distance.txt:57`; YJIT: `# call to Point#y` followed by `guard known class` / `guard shape`, `yjit-distance.txt:918` |
-| Both call `Math.sqrt` in C (*ZJIT: the IR on one slide*) | shown | ZJIT: `CCallWithFrame v54, :Math.sqrt`, `zjit-distance.txt`; YJIT: `call to Module#sqrt`, `yjit-distance.txt:1651` |
+| Both call `Math.sqrt` in C (*ZJIT: in its own words*) | shown | ZJIT: `CCallWithFrame v54, :Math.sqrt`, `zjit-distance.txt`; YJIT: `call to Module#sqrt`, `yjit-distance.txt:1651` |
 
 ## The turn: `sq`
 

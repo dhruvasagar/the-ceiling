@@ -43,7 +43,7 @@ is texture: long-distance swimming is about efficiency, not power, and so
 is a JIT.
 
 Cut order if long: (1) "The 2-beat kick" (say its one line on the quote
-slide); (2) the YJIT listing on "YJIT: compile as you go". Never cut "On five lines, a tie", "At
+slide); (2) "YJIT: in its own words". Never cut "On five lines, a tie", "At
 the turn buoy" or "Why it's a ceiling": they are the argument.
 
 * Every time you lift your head
@@ -184,7 +184,7 @@ Ruby has two of them, and they look in different ways.
 
 * YJIT: compile as you go
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:15
 :END:
 
 - Once a method is warm, compile *a few instructions at a time*, and run them
@@ -194,6 +194,25 @@ Ruby has two of them, and they look in different ways.
 #+attr_html: :class cap
 /In the water: sighting as you swim, deciding stretch by stretch./
 
+#+begin_notes
+YJIT compiles as it goes. Once a method is warm, it compiles a few
+instructions, runs them, looks at what really turned up, then compiles the
+next few for exactly that. Sighting as you swim.
+
+[Depth: lazy basic block versioning.]
+#+end_notes
+
+* YJIT: in its own words
+:PROPERTIES:
+:DURATION: 0:45
+:END:
+
+#+attr_html: :class cap
+YJIT's own comments from its dump, machine code removed: what it decided at =a.x=, one piece at a time.
+
+#+begin_export html
+<div class="ir-grid"><div>
+#+end_export
 # capture: yjit-distance.txt
 #+begin_example
 # Insn: 0002 opt_send_without_block (stack_size: 1)
@@ -205,23 +224,40 @@ Ruby has two of them, and they look in different ways.
 # Insn: 0004 getlocal_WC_0 (stack_size: 1)
 # defer_compilation
 #+end_example
+#+begin_export html
+</div>
+<table class="legend">
+<tr><td><code># Insn: 0002 …</code></td><td>the bytecode being compiled: <code>a.x</code></td></tr>
+<tr><td><code># call to Point#x</code></td><td>where the call goes: an <code>attr_reader</code></td></tr>
+<tr><td><code>guard not immediate</code></td><td>an object, not a small value? a sight</td></tr>
+<tr><td><code>guard known class</code></td><td>is it a <code>Point</code>? a sight</td></tr>
+<tr><td><code>guard shape</code></td><td>same layout as before? a sight</td></tr>
+<tr><td><code># Block:</code></td><td>a new piece starts</td></tr>
+<tr><td><code>defer_compilation</code></td><td>stop; compile the next piece when we get here</td></tr>
+</table></div>
+#+end_export
+
+#+attr_html: :class cap
+All three sights pass, so YJIT reads =@x= straight out of the object: no call.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --yjit --yjit-dump-disasm=
 
 #+begin_notes
-YJIT compiles as it goes. Each piece is a few bytecode instructions, a
-straight run with no branches; every "Block" line here starts one.
+This is YJIT's own commentary. It prints these comments between the
+machine code it writes; I've taken the machine code out.
 
-At a.x it checks: a real object, a Point, laid out as before. Then it
-reads @x directly.
+Insn 0002 is a.x from the bytecode. YJIT sees it's a call to Point#x, an
+attribute reader. Three sights: a real object, a Point, laid out as
+before. Then it reads @x directly.
 
-"defer_compilation" means: stop here, let the code run, and compile the
-next piece when we get there, for whatever value is really there. It
-only compiles code that runs, for values that really turn up.
+Block starts the next piece. defer_compilation: stop here, let the code
+run, and compile the next piece when we get there, for whatever b really
+is.
 
-[Depth: lazy basic block versioning. "Shape" is an object's
-instance-variable layout.]
+[Depth: stack_size is how many values sit on the VM stack. Between "guard
+shape" and "Block" the dump has machine code and housekeeping, trimmed.
+"Shape" is an object's instance-variable layout.]
 #+end_notes
 
 * ZJIT: watch, then plan
@@ -245,13 +281,13 @@ representation, improves the plan, and compiles it in one go. Like
 watching a few laps, then planning the whole course.
 #+end_notes
 
-* ZJIT: the IR on one slide
+* ZJIT: in its own words
 :PROPERTIES:
 :DURATION: 1:00
 :END:
 
 #+attr_html: :class cap
-The *IR* (intermediate representation) is ZJIT's plan for the whole method: one line per step, and every value gets a name, set exactly once.
+ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
 
 #+begin_export html
 <div class="ir-grid"><div>
@@ -286,7 +322,7 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
 #+end_export
 
 #+attr_html: :class cap
-=v95= is =dx=: made once, then used for =dx * dx= with no more type checks.
+Every value gets a name, set once: =v95= is =dx=, then used for =dx * dx= with no more type checks.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --zjit --zjit-dump-hir=
@@ -390,7 +426,7 @@ called sq.
 
 * One more call is one more buoy
 :PROPERTIES:
-:DURATION: 0:45
+:DURATION: 0:30
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 

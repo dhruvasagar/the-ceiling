@@ -21,29 +21,30 @@ STORY beat (30 s).
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:00 | 1:10 | -0:10 | live OVER  |
 | 5 | 3:00 | Learning to sight | 1:00 | 0:57 | 0:03 | STORY  |
-| 6 | 4:00 | YJIT: compile as you go | 0:45 | 0:46 | -0:01 |  |
-| 7 | 4:45 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
-| 8 | 5:15 | ZJIT: the IR on one slide | 1:00 | 0:59 | 0:01 |  |
-| 9 | 6:15 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
-| 10 | 7:00 | The plateau | 1:15 | 1:12 | 0:03 | STORY  |
-| 11 | 8:15 | One more call | 0:30 | 0:17 | 0:13 |  |
-| 12 | 8:45 | One more call is one more buoy | 0:45 | 0:20 | 0:25 | room  |
-| 13 | 9:30 | At the turn buoy | 1:15 | 1:15 | -0:00 |  |
-| 14 | 10:45 | Why it's a ceiling | 1:00 | 1:06 | -0:06 | OVER  |
-| 15 | 11:45 | The 2-beat kick | 0:30 | 0:37 | -0:07 | STORY OVER  |
-| 16 | 12:15 | So, why build the second one? | 1:00 | 1:01 | -0:01 |  |
-| 17 | 13:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
-| 18 | 13:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
-| 19 | 14:30 | The feed stop | 0:30 | 0:21 | 0:09 |  |
-| 20 | 15:00 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
-| 21 | 15:45 | Calm water, choppy water | 1:15 | 1:12 | 0:03 |  |
-| 22 | 17:00 | Measured: the ZJIT team's results, and ours | 0:45 | 0:47 | -0:02 |  |
-| 23 | 17:45 | Read your own code | 0:30 | 0:29 | 0:01 |  |
-| 24 | 18:15 | What it means for Ruby | 0:45 | 0:30 | 0:15 |  |
-| 25 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
-| 26 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
+| 6 | 4:00 | YJIT: compile as you go | 0:15 | 0:16 | -0:01 |  |
+| 7 | 4:15 | YJIT: in its own words | 0:45 | 0:47 | -0:02 |  |
+| 8 | 5:00 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
+| 9 | 5:30 | ZJIT: in its own words | 1:00 | 0:59 | 0:01 |  |
+| 10 | 6:30 | On five lines, a tie | 0:45 | 0:43 | 0:02 |  |
+| 11 | 7:15 | The plateau | 1:15 | 1:12 | 0:03 | STORY  |
+| 12 | 8:30 | One more call | 0:30 | 0:17 | 0:13 |  |
+| 13 | 9:00 | One more call is one more buoy | 0:30 | 0:20 | 0:10 |  |
+| 14 | 9:30 | At the turn buoy | 1:15 | 1:15 | -0:00 |  |
+| 15 | 10:45 | Why it's a ceiling | 1:00 | 1:06 | -0:06 | OVER  |
+| 16 | 11:45 | The 2-beat kick | 0:30 | 0:37 | -0:07 | STORY OVER  |
+| 17 | 12:15 | So, why build the second one? | 1:00 | 1:01 | -0:01 |  |
+| 18 | 13:15 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 19 | 13:45 | params, through both | 0:45 | 0:44 | 0:01 |  |
+| 20 | 14:30 | The feed stop | 0:30 | 0:21 | 0:09 |  |
+| 21 | 15:00 | A glimpse: seven everyday lines | 0:45 | 0:31 | 0:14 |  |
+| 22 | 15:45 | Calm water, choppy water | 1:15 | 1:12 | 0:03 |  |
+| 23 | 17:00 | Measured: the ZJIT team's results, and ours | 0:45 | 0:47 | -0:02 |  |
+| 24 | 17:45 | Read your own code | 0:30 | 0:29 | 0:01 |  |
+| 25 | 18:15 | What it means for Ruby | 0:45 | 0:30 | 0:15 |  |
+| 26 | 19:00 | Head down | 0:45 | 0:46 | -0:01 | STORY  |
+| 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *18:49* | *0:56* | |
+|   |        | *Total* | *19:45* | *19:06* | *0:39* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -176,13 +177,29 @@ Ruby has two of them, and they look in different ways.
 
 /Next: YJIT: compile as you go/
 
-** 6. YJIT: compile as you go  (4:00, 0:45)
+** 6. YJIT: compile as you go  (4:00, 0:15)
 
 /On screen:/
 - Once a method is warm, compile *a few instructions at a time*, and run them
 - Look at the values that really turned up
 - Compile the next few for exactly those
 - /In the water: sighting as you swim, deciding stretch by stretch./
+
+/Say:/
+
+YJIT compiles as it goes. Once a method is warm, it compiles a few
+instructions, runs them, looks at what really turned up, then compiles the
+next few for exactly that. Sighting as you swim.
+
+[Depth: lazy basic block versioning.]
+
+/Next: YJIT: in its own words/
+
+** 7. YJIT: in its own words  (4:15, 0:45)
+
+/On screen:/
+- YJIT's own comments from its dump, machine code removed: what it decided at ~a.x~, one piece at a time.
+- 
 - listing (captures/yjit-distance.txt):
 #+begin_example
 # Insn: 0002 opt_send_without_block (stack_size: 1)
@@ -194,26 +211,39 @@ Ruby has two of them, and they look in different ways.
 # Insn: 0004 getlocal_WC_0 (stack_size: 1)
 # defer_compilation
 #+end_example
+- 
+- 
+- # Insn: 0002 …the bytecode being compiled: a.x
+- # call to Point#xwhere the call goes: an attr_reader
+- guard not immediatean object, not a small value? a sight
+- guard known classis it a Point? a sight
+- guard shapesame layout as before? a sight
+- # Block:a new piece starts
+- defer_compilationstop; compile the next piece when we get here
+- 
+- All three sights pass, so YJIT reads ~@x~ straight out of the object: no call.
 - Ruby 4.1.0-preview1 · ~ruby --yjit --yjit-dump-disasm~
 
 /Say:/
 
-YJIT compiles as it goes. Each piece is a few bytecode instructions, a
-straight run with no branches; every "Block" line here starts one.
+This is YJIT's own commentary. It prints these comments between the
+machine code it writes; I've taken the machine code out.
 
-At a.x it checks: a real object, a Point, laid out as before. Then it
-reads @x directly.
+Insn 0002 is a.x from the bytecode. YJIT sees it's a call to Point#x, an
+attribute reader. Three sights: a real object, a Point, laid out as
+before. Then it reads @x directly.
 
-"defer_compilation" means: stop here, let the code run, and compile the
-next piece when we get there, for whatever value is really there. It
-only compiles code that runs, for values that really turn up.
+Block starts the next piece. defer_compilation: stop here, let the code
+run, and compile the next piece when we get there, for whatever b really
+is.
 
-[Depth: lazy basic block versioning. "Shape" is an object's
-instance-variable layout.]
+[Depth: stack_size is how many values sit on the VM stack. Between "guard
+shape" and "Block" the dump has machine code and housekeeping, trimmed.
+"Shape" is an object's instance-variable layout.]
 
 /Next: ZJIT: watch, then plan/
 
-** 7. ZJIT: watch, then plan  (4:45, 0:30)
+** 8. ZJIT: watch, then plan  (5:00, 0:30)
 
 /On screen:/
 - While the interpreter runs the method, record which types turn up: a *profile*
@@ -230,12 +260,12 @@ Then it turns the whole method into a plan, its intermediate
 representation, improves the plan, and compiles it in one go. Like
 watching a few laps, then planning the whole course.
 
-/Next: ZJIT: the IR on one slide/
+/Next: ZJIT: in its own words/
 
-** 8. ZJIT: the IR on one slide  (5:15, 1:00)
+** 9. ZJIT: in its own words  (5:30, 1:00)
 
 /On screen:/
-- The *IR* (intermediate representation) is ZJIT's plan for the whole method: one line per step, and every value gets a name, set exactly once.
+- ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
 - 
 - listing (captures/zjit-distance.txt):
 #+begin_example
@@ -263,7 +293,7 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
 - FixnumSub, FixnumMultwhole-number maths
 - CCallWithFramecall into C (Math.sqrt)
 - 
-- ~v95~ is ~dx~: made once, then used for ~dx * dx~ with no more type checks.
+- Every value gets a name, set once: ~v95~ is ~dx~, then used for ~dx * dx~ with no more type checks.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 
 /Say:/
@@ -287,7 +317,7 @@ if someone redefines Point#x.]
 
 /Next: On five lines, a tie/
 
-** 9. On five lines, a tie  (6:15, 0:45)
+** 10. On five lines, a tie  (6:30, 0:45)
 
 /On screen:/
 - listing (captures/yjit-distance.txt, zjit-distance.txt):
@@ -313,7 +343,7 @@ ZJIT exists, we need something every Ruby codebase is full of.
 
 /Next: The plateau/
 
-** 10. The plateau  (7:00, 1:15)
+** 11. The plateau  (7:15, 1:15)
 
 /On screen:/
 - diagram img/out/plateau.svg: Swim times flatten once straight legs are fast; in Ruby, straight code is a tie and the time left is at method calls, which ZJIT can copy in
@@ -338,7 +368,7 @@ Let's add one turn to our five lines.
 
 /Next: One more call/
 
-** 11. One more call  (8:15, 0:30)
+** 12. One more call  (8:30, 0:30)
 
 /On screen:/
 - code:
@@ -359,7 +389,7 @@ called sq.
 
 /Next: One more call is one more buoy/
 
-** 12. One more call is one more buoy  (8:45, 0:45)
+** 13. One more call is one more buoy  (9:00, 0:30)
 
 /On screen:/
 - diagram img/out/turn-buoy.svg: One more call is one more turn buoy
@@ -373,7 +403,7 @@ into distance. That's called inlining.
 
 /Next: At the turn buoy/
 
-** 13. At the turn buoy  (9:30, 1:15)
+** 14. At the turn buoy  (9:30, 1:15)
 
 /On screen:/
 - listing (captures/yjit-sq.txt, zjit-sq.txt):
@@ -420,7 +450,7 @@ is cheaper than a call, not free.]
 
 /Next: Why it's a ceiling/
 
-** 14. Why it's a ceiling  (10:45, 1:00)
+** 15. Why it's a ceiling  (10:45, 1:00)
 
 /On screen:/
 - diagram img/out/ceiling.svg: YJIT compiles pieces as it goes; ZJIT builds one plan for the whole method and can rewrite it
@@ -452,7 +482,7 @@ more code at once to the optimizer".]
 
 /Next: The 2-beat kick/
 
-** 15. The 2-beat kick  (11:45, 0:30)
+** 16. The 2-beat kick  (11:45, 0:30)
 
 /On screen:/
 - diagram img/out/two-beat-kick.svg: The 2-beat kick is timed to the whole stroke
@@ -467,7 +497,7 @@ together.
 
 /Next: So, why build the second one?/
 
-** 16. So, why build the second one?  (12:15, 1:00)
+** 17. So, why build the second one?  (12:15, 1:00)
 
 /On screen:/
 - 1. The next gains need the *whole method as one plan*. A compiler that works piece by piece never has one.
@@ -501,7 +531,7 @@ contribute to").]
 
 /Next: Race day: params/
 
-** 17. Race day: params  (13:15, 0:30)
+** 18. Race day: params  (13:15, 0:30)
 
 /On screen:/
 - listing (captures/hwia-source.txt):
@@ -526,7 +556,7 @@ method calling a small method.
 
 /Next: params, through both/
 
-** 18. params, through both  (13:45, 0:45)
+** 19. params, through both  (13:45, 0:45)
 
 /On screen:/
 - YJIT at ~[]~: stops at the turn, a real call to ~convert_key~
@@ -563,7 +593,7 @@ convert_key into it and folds "Symbol === :id" away entirely.]
 
 /Next: The feed stop/
 
-** 19. The feed stop  (14:30, 0:30)
+** 20. The feed stop  (14:30, 0:30)
 
 /On screen:/
 - diagram img/out/feed-stop.svg: A feed stop: a better stroke doesn't make it shorter
@@ -576,7 +606,7 @@ garbage collection. A JIT speeds up the swim, not the stop at the boat.
 
 /Next: A glimpse: seven everyday lines/
 
-** 20. A glimpse: seven everyday lines  (15:00, 0:45)
+** 21. A glimpse: seven everyday lines  (15:00, 0:45)
 
 /On screen:/
 - Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
@@ -607,7 +637,7 @@ counted calls. We didn't time them.
 
 /Next: Calm water, choppy water/
 
-** 21. Calm water, choppy water  (15:45, 1:15)
+** 22. Calm water, choppy water  (15:45, 1:15)
 
 /On screen:/
 - code:
@@ -649,7 +679,7 @@ still saves the call to double itself. That's this build, today.
 
 /Next: Measured: the ZJIT team's results, and ours/
 
-** 22. Measured: the ZJIT team's results, and ours  (17:00, 0:45)
+** 23. Measured: the ZJIT team's results, and ours  (17:00, 0:45)
 
 /On screen:/
 
@@ -686,7 +716,7 @@ hwia-yjit-stats and hwia-zjit-stats.]
 
 /Next: Read your own code/
 
-** 23. Read your own code  (17:45, 0:30)
+** 24. Read your own code  (17:45, 0:30)
 
 /On screen:/
 - code:
@@ -710,7 +740,7 @@ is out of the compiler's reach.
 
 /Next: What it means for Ruby/
 
-** 24. What it means for Ruby  (18:15, 0:45)
+** 25. What it means for Ruby  (18:15, 0:45)
 
 /On screen:/
 - YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
@@ -733,7 +763,7 @@ it with --zjit.
 
 /Next: Head down/
 
-** 25. Head down  (19:00, 0:45)
+** 26. Head down  (19:00, 0:45)
 
 /On screen:/
 - /"Every time you lift your head, you slow down."/
@@ -754,7 +784,7 @@ show them. Thank you.
 
 /Next: Sources/
 
-** 26. Sources  (19:45, 0:00)
+** 27. Sources  (19:45, 0:00)
 
 /On screen:/
 - 
