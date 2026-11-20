@@ -145,6 +145,9 @@ What the interpreter actually runs. Steps =0000=-=0010= are the first line, =dx 
 0008 opt_minus              <calldata!mid:-, argc:1, ARGS_SIMPLE>
 0010 setlocal_WC_0          dx@2
  ...
+0022 setlocal_WC_0          dy@3
+ ...
+0038 opt_plus               <calldata!mid:+, argc:1, ARGS_SIMPLE>
 0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>
 0042 leave
 #+end_example
@@ -156,9 +159,10 @@ What the interpreter actually runs. Steps =0000=-=0010= are the first line, =dx 
 <li data-l="4"><code>b.x</code></li>
 <li data-l="5">minus: whole numbers? checked every time</li>
 <li data-l="6">store it in <code>dx</code></li>
-<li data-l="7">the same for <code>dy</code>, then <code>dx * dx + dy * dy</code></li>
-<li data-l="8"><code>Math.sqrt(...)</code></li>
-<li data-l="9">return</li>
+<li data-l="8">the same six steps for <code>dy</code></li>
+<li data-l="10"><code>dx * dx + dy * dy</code></li>
+<li data-l="11"><code>Math.sqrt(...)</code></li>
+<li data-l="12">return</li>
 </ol>
 #+end_export
 

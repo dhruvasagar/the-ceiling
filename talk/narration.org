@@ -139,7 +139,10 @@ ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).di
 0006 opt_send_without_block <calldata!mid:x, argc:0, ARGS_SIMPLE>     <- b.x
 0008 opt_minus              <calldata!mid:-, argc:1, ARGS_SIMPLE>     <- minus: whole numbers? checked every time
 0010 setlocal_WC_0          dx@2                                      <- store it in dx
- ...                                                                  <- the same for dy, then dx * dx + dy * dy
+ ...
+0022 setlocal_WC_0          dy@3                                      <- the same six steps for dy
+ ...
+0038 opt_plus               <calldata!mid:+, argc:1, ARGS_SIMPLE>     <- dx * dx + dy * dy
 0040 opt_send_without_block <calldata!mid:sqrt, argc:1, ARGS_SIMPLE>  <- Math.sqrt(...)
 0042 leave                                                            <- return
 #+end_example
