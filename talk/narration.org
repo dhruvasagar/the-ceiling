@@ -218,8 +218,8 @@ next few for exactly that. Sighting as you swim.
 # Block: distance@distance.rb:7                      <- a block: a stretch of compiled code
 # Insn: 0002 opt_send_without_block (stack_size: 1)  <- step 0002 from the bytecode: a.x
 # call to Point#x                                    <- Point#x is an attr_reader: no Ruby code to run
-# guard not immediate                                <- guard (a check) 1: an object, not a packed small value (7, :x, nil)?
-0x16bbc4120: tst x1, #7                              <- test the low 3 bits
+# guard not immediate                                <- guard (a check) 1: an object, not a packed small value (42, :x, nil)?
+0x16bbc4120: tst x1, #7                              <- test the low 3 bits (7 = 0b111)
 0x16bbc4124: b.ne #0x16bbc6284                       <- any set? back to YJIT
  ...
 # guard known class                                  <- guard 2: is its class Point?

@@ -272,8 +272,8 @@ YJIT's dump, trimmed: its comments (=#=), and the arm64 machine code it wrote un
 <li data-l="1">a block: a stretch of compiled code</li>
 <li data-l="2">step <code>0002</code> from the bytecode: <code>a.x</code></li>
 <li data-l="3"><code>Point#x</code> is an <code>attr_reader</code>: no Ruby code to run</li>
-<li data-l="4">guard (a check) 1: an object, not a packed small value (<code>7</code>, <code>:x</code>, <code>nil</code>)?</li>
-<li data-l="5">test the low 3 bits</li>
+<li data-l="4">guard (a check) 1: an object, not a packed small value (<code>42</code>, <code>:x</code>, <code>nil</code>)?</li>
+<li data-l="5">test the low 3 bits (7 = <code>0b111</code>)</li>
 <li data-l="6">any set? back to YJIT</li>
 <li data-l="8">guard 2: is its class <code>Point</code>?</li>
 <li data-l="9">its class pointer vs <code>Point</code>'s address</li>
