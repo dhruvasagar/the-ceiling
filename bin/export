@@ -2,6 +2,7 @@
 # Export talk/the-ceiling.org to talk/the-ceiling.html (reveal.js).
 # Uses a clean Emacs (-Q, your init is not loaded) and installs
 # org-re-reveal from MELPA into .emacs-deps/ (git-ignored) on first run.
+unset CDPATH  # a CDPATH makes cd print the directory, polluting output
 cd "$(dirname "$0")/.." || exit 2
 bin/render-diagrams || exit 1
 exec emacs --batch -Q --eval '

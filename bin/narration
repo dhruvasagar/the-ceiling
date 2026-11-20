@@ -10,6 +10,7 @@
 #   + 20 s for the live demo
 #   + 30 s for each [STORY] beat still to be written (a placeholder budget)
 #   + the quote, read aloud
+unset CDPATH  # a CDPATH makes cd print the directory, polluting output
 cd "$(dirname "$0")/.." || exit 2
 out=talk/narration.org
 [ "${1:-}" = "-" ] && out=/dev/stdout

@@ -13,6 +13,7 @@
 # A capture that fails (wrong Ruby, Ruby error, empty output) never
 # replaces the checked-in file: the old one is kept and the script exits 1.
 set -u
+unset CDPATH  # a CDPATH makes cd print the directory, polluting output
 cd "$(dirname "$0")/.." || exit 2
 ROOT=$(pwd)
 export PATH="$HOME/.asdf/shims:$PATH"

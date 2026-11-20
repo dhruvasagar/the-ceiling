@@ -2,6 +2,7 @@
 # Integrity checks for the talk repo. Run from anywhere: bin/check [name...]
 # Prints "ok <name>" or "FAIL <name>: <reason>"; exits 1 if anything failed.
 # shellcheck disable=SC2329  # check_* functions are invoked by name below
+unset CDPATH  # a CDPATH makes cd print the directory, polluting output
 cd "$(dirname "$0")/.." || exit 2
 export PATH="$HOME/.asdf/shims:$PATH"
 failed=0
