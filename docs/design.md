@@ -345,7 +345,7 @@ for the analysis, where it shows YJIT carrying the type across the call.
 ## 13. Revision (2026-11-14, night): making the argument land
 
 After an independent review against the brief: the five-line method is
-now presented honestly as a tie (neither compiler re-checks `dx`); a new
+now presented honestly as nearly a tie (neither compiler re-checks `dx`; ZJIT skips re-checking `a` and `b` at `.y`); a new
 "Why it's a ceiling" slide explains the design limit (YJIT never holds a
 whole-method plan to rewrite; ZJIT starts with one), in the team's words;
 the turn-buoy caption leads with "the call disappears"; the gem promise is

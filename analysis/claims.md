@@ -39,9 +39,11 @@ search for the quoted text.
 
 | Claim | Kind | Evidence |
 |---|---|---|
-| At the minus, both check for whole numbers (*On five lines, a tie*) | shown | YJIT: `# guard arg0 fixnum`, `# guard arg1 fixnum` after `# Insn: 0008 opt_minus`, `yjit-distance.txt:746-751`; ZJIT: `GuardType v83, Fixnum`, `GuardType v90, Fixnum` before `FixnumSub`, `zjit-distance.txt:53-55` |
-| Neither compiler type-checks `dx` again at `dx * dx` (*On five lines, a tie*) | shown | YJIT: `# Insn: 0030 opt_mult` with no guard before the next instruction, `yjit-distance.txt:1428`; ZJIT: `FixnumMult v95, v95`, `zjit-distance.txt:65` |
-| ZJIT doesn't re-check `a` and `b` before reading `@y`; YJIT does (*On five lines, a tie*, notes, depth) | shown | ZJIT: `LoadField v79, :@y` with no new guard, `zjit-distance.txt:57`; YJIT: `# call to Point#y` followed by `guard known class` / `guard shape`, `yjit-distance.txt:918` |
+| At the minus, both check for whole numbers (*On five lines, nearly a tie*) | shown | YJIT: `# guard arg0 fixnum`, `# guard arg1 fixnum` after `# Insn: 0008 opt_minus`, `yjit-distance.txt:746-751`; ZJIT: `GuardType v83, Fixnum`, `GuardType v90, Fixnum` before `FixnumSub`, `zjit-distance.txt:53-55` |
+| Neither compiler type-checks `dx` again at `dx * dx` (*On five lines, nearly a tie*) | shown | YJIT: `# Insn: 0030 opt_mult` with no guard before the next instruction, `yjit-distance.txt:1428`; ZJIT: `FixnumMult v95, v95`, `zjit-distance.txt:65` |
+| ZJIT doesn't re-check `a` and `b` before reading `@y`; YJIT does (*On five lines, nearly a tie*, notes, depth) | shown | ZJIT: `LoadField v79, :@y` with no new guard, `zjit-distance.txt:57`; YJIT: `# call to Point#y` followed by `guard known class` / `guard shape`, `yjit-distance.txt:918` |
+| Both do an overflow-checked subtract and multiply, with no type check at `dx * dx` (*On five lines, nearly a tie*) | shown | YJIT: `subs` + `b.vs` `yjit-distance.txt:755-756`, `mul` + overflow compare `:1433-1437`; ZJIT: `FixnumSub` `zjit-distance.txt:55`, `FixnumMult` `:65` |
+| Over the whole of `distance`, YJIT makes 15 checks, ZJIT 8 (*On five lines, nearly a tie*) | shown | YJIT `# guard` comments in the final versions: `a.x` 3 (`:413-431`), `b.x` 3 (`:614-632`), minus 2 (`:747-751`), `a.y` 2 (`:920-930`), `b.y` 2 (`:1082-1092`), minus 2 (`:1212-1216`), `Math` 1 (`:1652`); ZJIT `Guard*` in `zjit-distance.txt`: 2 per receiver, 4 `GuardType … Fixnum` |
 | Both call `Math.sqrt` in C (*ZJIT: in its own words*) | shown | ZJIT: `CCallWithFrame v54, :Math.sqrt`, `zjit-distance.txt`; YJIT: `call to Module#sqrt`, `yjit-distance.txt:1651` |
 
 ## The turn: `sq`
@@ -79,7 +81,7 @@ search for the quoted text.
 
 | Claim (on screen) | Kind | Evidence |
 |---|---|---|
-| Straight code is a tie (points back to *On five lines, a tie*) | shown | `yjit-distance.txt:1428`, `zjit-distance.txt:65` |
+| Straight code is nearly a tie (points back to *On five lines, nearly a tie*) | shown | `yjit-distance.txt:1428`, `zjit-distance.txt:65` |
 | At a call to a small method, YJIT checks the argument, makes a real call, checks the result | shown | `yjit-sq.txt:258` (guard on `n`), `:1645` (call), `:2009` (check at `+`) |
 | ZJIT copies the method in and drops the checks on both sides; a light frame stays | shown | `zjit-sq.txt:86` (`PushInlineFrame`), `FixnumMult v95, v95`, `:94` (unguarded `FixnumAdd`); `hwia-zjit-stats.txt:93` |
 | A design limit: YJIT never sees the whole method | stated | "YJIT compiles one basic block at a time, so it never has the full picture of the function anyway" [15]; "raise the performance ceiling" [2] |

@@ -24,9 +24,9 @@ STORY beat (30 s).
 | 6 | 4:15 | YJIT: compile as you go | 0:15 | 0:16 | -0:01 |  |
 | 7 | 4:30 | YJIT: in its own words | 1:00 | 1:03 | -0:03 |  |
 | 8 | 5:30 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
-| 9 | 6:00 | ZJIT: in its own words | 1:00 | 1:01 | -0:01 |  |
-| 10 | 7:00 | On five lines, a tie | 0:45 | 0:41 | 0:04 |  |
-| 11 | 7:45 | The plateau | 1:15 | 1:14 | 0:01 | STORY  |
+| 9 | 6:00 | ZJIT: in its own words | 1:00 | 1:08 | -0:08 | OVER  |
+| 10 | 7:00 | On five lines, nearly a tie | 0:45 | 0:58 | -0:13 | OVER  |
+| 11 | 7:45 | The plateau | 1:15 | 1:15 | 0:00 | STORY  |
 | 12 | 9:00 | One more call | 0:30 | 0:17 | 0:13 |  |
 | 13 | 9:30 | One more call is one more buoy | 0:30 | 0:20 | 0:10 |  |
 | 14 | 10:00 | At the turn buoy | 1:15 | 1:11 | 0:04 |  |
@@ -44,7 +44,7 @@ STORY beat (30 s).
 | 26 | 19:00 | Head down | 0:45 | 0:51 | -0:06 | STORY OVER  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:22* | *0:23* | |
+|   |        | *Total* | *19:45* | *19:45* | *-0:00* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -213,27 +213,27 @@ next few for exactly that. Sighting as you swim.
 - YJIT's dump, trimmed: its comments (~#~), and the arm64 machine code it wrote under each.
 - listing (captures/yjit-distance.txt):
 #+begin_example
-# Block: distance@distance.rb:7                      <- a new piece starts
+# Block: distance@distance.rb:7                      <- a new piece of machine code starts
 # Insn: 0002 opt_send_without_block (stack_size: 1)  <- step 0002 from the bytecode: a.x
-# call to Point#x                                    <- an attr_reader
-# guard not immediate                                <- sight 1: an object, not a small value?
-0x16bbc4120: tst x1, #7                              <- test it
-0x16bbc4124: b.ne #0x16bbc6284                       <- wrong? jump away
+# call to Point#x                                    <- Point#x is an attr_reader: no Ruby code to run
+# guard not immediate                                <- check 1: an object, not a packed small value (7, :x, nil)?
+0x16bbc4120: tst x1, #7                              <- test the low 3 bits
+0x16bbc4124: b.ne #0x16bbc6284                       <- any set? jump out
  ...
-# guard known class                                  <- sight 2: is it a Point?
-0x16bbc4150: cmp x11, x12                            <- compare its class
-0x16bbc4154: b.ne #0x16bbc62fc                       <- wrong? jump away
-# guard shape                                        <- sight 3: same layout as before?
-0x16bbc416c: cmp w12, w13                            <- compare its shape
-0x16bbc4170: b.ne #0x16bbc6378                       <- wrong? jump away
-0x16bbc4178: ldur x1, [x11, #0x10]                   <- all three passed: read @x straight out. No call
+# guard known class                                  <- check 2: is its class Point?
+0x16bbc4150: cmp x11, x12                            <- its class pointer vs Point's address
+0x16bbc4154: b.ne #0x16bbc62fc                       <- different? jump out
+# guard shape                                        <- check 3: is @x where it was last time?
+0x16bbc416c: cmp w12, w13                            <- its shape (instance-variable layout) vs the one seen before
+0x16bbc4170: b.ne #0x16bbc6378                       <- different? jump out
+0x16bbc4178: ldur x1, [x11, #0x10]                   <- all three passed: load @x, 16 bytes into the object. No call
  ...
 # Block: distance@distance.rb:7                      <- the next piece
 # Insn: 0004 getlocal_WC_0 (stack_size: 1)           <- step 0004: get b
 # defer_compilation                                  <- not compiled yet, so:
-0x16bbc417c: b #0x16bbc63b4                          <- jump to a stub: compile it when we get here
+0x16bbc417c: b #0x16bbc63b4                          <- jump to a stub that compiles it the first time we arrive
 #+end_example
-- Three guards, three sights: each a compare and a jump. All pass, so one load reads ~@x~: no call.
+- A failed check jumps to a stub: YJIT compiles another version for the new type (up to 4), then falls back to the interpreter.
 - Ruby 4.1.0-preview1 · ~ruby --yjit --yjit-dump-disasm~
 
 /Say:/
@@ -242,7 +242,7 @@ This is YJIT's dump. The lines with a hash are its comments; under each is
 the machine code it wrote, for this Mac's arm64 chip.
 
 Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
-call to Point#x, an attribute reader. Then three sights: a real object, a Point, laid out as before.
+call to Point#x, an attribute reader. Then three checks: a real object, a Point, laid out as before.
 Those are the guards. Each is two instructions: compare, and jump away if
 it's wrong. All
 three pass, and one load reads @x straight out of the object. No call.
@@ -251,7 +251,7 @@ Then a new piece, and defer_compilation: just a jump to a stub. The first
 time the code gets there, YJIT compiles the next piece, for whatever b
 really is.
 
-[Depth: each b.ne jumps to a branch stub: if a sight fails, YJIT compiles
+[Depth: each b.ne jumps to a branch stub: if a check fails, YJIT compiles
 another version for what it found, up to a limit (four by default). "Shape"
 is an object's instance-variable layout. Trimmed: register moves and YJIT's
 housekeeping between these lines.]
@@ -283,22 +283,22 @@ watching a few laps, then planning the whole course.
 - ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
 - listing (captures/zjit-distance.txt):
 #+begin_example
-fn distance@distance.rb:7:                                     <- the plan for the whole method
-bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):        <- its inputs: self, a (v16), b
-  v79:ObjectSubclass[class_exact:Point] = GuardType v16        <- sight: is v16, our a, a Point?
-  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)  <- sight: laid out as before?
-  v83:BasicObject = LoadField v79, :@x                         <- read @x directly, no call
+fn distance@distance.rb:7:                                     <- the whole distance method, compiled at once
+bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):        <- block bb3, the body. Inputs: self (v15), a (v16), b (v17)
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16        <- check: is a's class exactly Point? YJIT's checks 1 and 2 in one step
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)  <- check: is its shape (v81) 0x10007a? YJIT's check 3, same number
+  v83:BasicObject = LoadField v79, :@x                         <- load @x from a (now v79): v83 is a.x. No call
   ...
-  v93:Fixnum = GuardType v83, Fixnum                           <- sight: a.x a whole number (Fixnum)?
-  v94:Fixnum = GuardType v90, Fixnum                           <- and b.x?
-  v95:Fixnum = FixnumSub v93, v94                              <- the minus: dx, named v95, set once
+  v93:Fixnum = GuardType v83, Fixnum                           <- check: is a.x a Fixnum (a packed small integer)?
+  v94:Fixnum = GuardType v90, Fixnum                           <- and b.x? (v90, read the same way)
+  v95:Fixnum = FixnumSub v93, v94                              <- the minus, inputs already checked: dx is v95, set once
   ...
-  v118:Fixnum = FixnumMult v95, v95                            <- dx * dx: no new check
+  v118:Fixnum = FixnumMult v95, v95                            <- dx * dx: v95 is already a Fixnum, no type check
   ...
-  v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126      <- call into C: Math.sqrt
-  Return v130                                                  <- return it
+  v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126      <- call Math.sqrt in C (v54 is Math) on v126: dx*dx + dy*dy
+  Return v130                                                  <- return the result
 #+end_example
-- Every value gets a name, set once: ~v95~ is ~dx~, then used for ~dx * dx~ with no more type checks.
+- Each value is named once (~v95~ is ~dx~). A failed check exits to the interpreter; ZJIT can recompile later.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 
 /Say:/
@@ -311,7 +311,8 @@ Read one line and you can read them all. "v95, colon, Fixnum, equals,
 FixnumSub v93, v94": a name, its type, then the operation and its inputs.
 
 Every value gets a name, set exactly once. v16 is a. GuardType: is it a
-Point? GuardBitEquals: laid out as expected? The same checks YJIT made.
+Point? GuardBitEquals: is its shape the one we saw? The same checks YJIT
+made, but if one fails here, ZJIT goes back to the interpreter.
 
 Remember the minus from the bytecode? Here it's FixnumSub, after two
 GuardTypes, and it makes dx, v95. Then dx times dx: FixnumMult v95, v95.
@@ -320,33 +321,39 @@ CCallWithFrame calls into C for Math.sqrt.
 [Depth: "set once" is SSA. Trimmed: PatchPoints, which discard this code
 if someone redefines Point#x.]
 
-/Next: On five lines, a tie/
+/Next: On five lines, nearly a tie/
 
-** 10. On five lines, a tie  (7:00, 0:45)
+** 10. On five lines, nearly a tie  (7:00, 0:45)
 
 /On screen:/
 - listing (captures/yjit-distance.txt, zjit-distance.txt):
 #+begin_example
 YJIT                                      ZJIT
-# Insn: 0008 opt_minus (stack_size: 2)    v93:Fixnum = GuardType v83, Fixnum
-# guard arg0 fixnum                       v94:Fixnum = GuardType v90, Fixnum
-# guard arg1 fixnum                       v95:Fixnum = FixnumSub v93, v94
+# Insn: 0008 opt_minus (stack_size: 2)
+# guard arg0 fixnum                       v93:Fixnum = GuardType v83, Fixnum
+# guard arg1 fixnum                       v94:Fixnum = GuardType v90, Fixnum
+0x16bbc41f4: subs x11, x1, x14            v95:Fixnum = FixnumSub v93, v94
  ...                                      ...
-# Insn: 0030 opt_mult (stack_size: 3)     v118:Fixnum = FixnumMult v95, v95
+# call to Point#y                         v102:BasicObject = LoadField v79, :@y
+# guard known class
+# guard shape
+ ...                                      ...
+# Insn: 0030 opt_mult (stack_size: 3)
+0x16bbc42f4: mul x11, x11, x12            v118:Fixnum = FixnumMult v95, v95
 #+end_example
-- At the minus, both check for whole numbers. At ~dx * dx~, neither checks again: both know ~dx~ is one. Nearly a tie.
+- Same checks at the minus; neither re-checks ~dx~ at ~dx * dx~. At ~a.y~, YJIT checks ~a~ again; ZJIT already knows it. 15 checks vs 8, each one cheap.
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
 
 So who wins on our five lines? Honestly: nearly a tie.
 
-At the minus, both check: two guards each. At dx times dx, neither checks
-again. YJIT carried "dx is a number" forward from the minus, and ZJIT's
-plan knows it too.
+At the minus, both check: two guards each, then the same subtract. At dx
+times dx, neither checks again: both already know dx is a Fixnum.
 
-[Depth: ZJIT is slightly ahead: it doesn't re-check a and b before reading
-y. Small.]
+The one difference is a.y. YJIT checks a's class and shape again; ZJIT
+checked them once, for a.x, and reuses that. Over the whole method, YJIT
+makes 15 checks and ZJIT 8. Each is a compare and a jump, so: close.
 
 On straight-line code like this one, YJIT already gets the wins. To see why
 ZJIT exists, we need something every Ruby codebase is full of.
@@ -364,7 +371,7 @@ ZJIT exists, we need something every Ruby codebase is full of.
 it stopped. When I looked at where the time went, the straight legs were
 fine. I was losing it at the turns." Keep only what's true for you.]
 
-Ruby's plateau looks the same. Straight code is the tie we just saw: YJIT
+Ruby's plateau looks the same. Straight code is nearly the tie we just saw: YJIT
 already got those wins. What's left is at the turns, and in Ruby a turn is
 a method call. We write small methods calling small
 methods.
