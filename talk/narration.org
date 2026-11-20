@@ -21,7 +21,7 @@ STORY beat (30 s).
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:15 | 1:17 | -0:02 | live  |
 | 5 | 3:15 | Learning to sight | 1:00 | 0:57 | 0:03 | STORY  |
-| 6 | 4:15 | YJIT: compile as you go | 0:15 | 0:16 | -0:01 |  |
+| 6 | 4:15 | YJIT: compile as you go | 0:15 | 0:17 | -0:02 |  |
 | 7 | 4:30 | YJIT: in its own words | 1:00 | 1:03 | -0:03 |  |
 | 8 | 5:30 | ZJIT: watch, then plan | 0:30 | 0:25 | 0:05 |  |
 | 9 | 6:00 | ZJIT: in its own words | 1:00 | 1:08 | -0:08 | OVER  |
@@ -44,7 +44,7 @@ STORY beat (30 s).
 | 26 | 19:00 | Head down | 0:45 | 0:51 | -0:06 | STORY OVER  |
 | 27 | 19:45 | Sources | 0:00 | 0:00 | 0:00 |  |
 |---+--------+-------+--------+----------+-------+-------|
-|   |        | *Total* | *19:45* | *19:45* | *-0:00* | |
+|   |        | *Total* | *19:45* | *19:46* | *-0:01* | |
 
 /room/: 20 s or more spare. /OVER/: likely to run over its budget.
 
@@ -54,7 +54,8 @@ STORY beat (30 s).
 
 /On screen:/
 - /"Every time you lift your head, you slow down."/
-- Ruby 4.0 ships *two* just-in-time compilers. Why build the second one?
+- Ruby 4.0 ships *two* just-in-time compilers: *YJIT*, speeding up Rails apps for years, and *ZJIT*, "the next generation of YJIT".
+- We'll follow one five-line method, and one tiny refactor of it, through both.
 
 /Say:/
 
@@ -113,6 +114,7 @@ def distance(a, b)
   Math.sqrt(dx * dx + dy * dy)
 end
 #+end_example
+- The method we'll follow all talk.
 
 /Say:/
 
@@ -192,15 +194,15 @@ first, then plans the whole method.
 ** 6. YJIT: compile as you go  (4:15, 0:15)
 
 /On screen:/
-- Once a method is called often (warm), compile *a few instructions at a time*, and run them
+- Once a method is called often (warm), compile *a block*, a few instructions, and run it
 - Look at the values that really turned up
-- Compile the next few for exactly those
+- Compile the next block for exactly those
 - /In the water: sighting as you swim, deciding stretch by stretch./
 
 /Say:/
 
 YJIT compiles as it goes. Once a method is warm, it compiles a few
-instructions, runs them, looks at what really turned up, then compiles the
+instructions, a block, runs them, looks at what really turned up, then compiles the
 next few for exactly that. Sighting as you swim.
 
 [Depth: lazy basic block versioning.]
@@ -213,27 +215,27 @@ next few for exactly that. Sighting as you swim.
 - YJIT's dump, trimmed: its comments (~#~), and the arm64 machine code it wrote under each.
 - listing (captures/yjit-distance.txt):
 #+begin_example
-# Block: distance@distance.rb:7                      <- a new piece of machine code starts
+# Block: distance@distance.rb:7                      <- a block: a stretch of compiled code
 # Insn: 0002 opt_send_without_block (stack_size: 1)  <- step 0002 from the bytecode: a.x
 # call to Point#x                                    <- Point#x is an attr_reader: no Ruby code to run
-# guard not immediate                                <- check 1: an object, not a packed small value (7, :x, nil)?
+# guard not immediate                                <- guard (a check) 1: an object, not a packed small value (7, :x, nil)?
 0x16bbc4120: tst x1, #7                              <- test the low 3 bits
-0x16bbc4124: b.ne #0x16bbc6284                       <- any set? jump out
+0x16bbc4124: b.ne #0x16bbc6284                       <- any set? back to YJIT
  ...
-# guard known class                                  <- check 2: is its class Point?
+# guard known class                                  <- guard 2: is its class Point?
 0x16bbc4150: cmp x11, x12                            <- its class pointer vs Point's address
-0x16bbc4154: b.ne #0x16bbc62fc                       <- different? jump out
-# guard shape                                        <- check 3: is @x where it was last time?
+0x16bbc4154: b.ne #0x16bbc62fc                       <- different? back to YJIT
+# guard shape                                        <- guard 3: is @x where it was last time?
 0x16bbc416c: cmp w12, w13                            <- its shape (instance-variable layout) vs the one seen before
-0x16bbc4170: b.ne #0x16bbc6378                       <- different? jump out
-0x16bbc4178: ldur x1, [x11, #0x10]                   <- all three passed: load @x, 16 bytes into the object. No call
+0x16bbc4170: b.ne #0x16bbc6378                       <- different? back to YJIT
+0x16bbc4178: ldur x1, [x11, #0x10]                   <- all three guards passed: load @x, 16 bytes into the object. No call
  ...
-# Block: distance@distance.rb:7                      <- the next piece
+# Block: distance@distance.rb:7                      <- the next block
 # Insn: 0004 getlocal_WC_0 (stack_size: 1)           <- step 0004: get b
 # defer_compilation                                  <- not compiled yet, so:
-0x16bbc417c: b #0x16bbc63b4                          <- jump to a stub that compiles it the first time we arrive
+0x16bbc417c: b #0x16bbc63b4                          <- back to YJIT: compile it the first time we get here
 #+end_example
-- A failed check jumps to a stub: YJIT compiles another version for the new type (up to 4), then falls back to the interpreter.
+- A failed guard goes back to YJIT: it compiles another version of the block for what it found (up to 4), then hands over to the interpreter.
 - Ruby 4.1.0-preview1 · ~ruby --yjit --yjit-dump-disasm~
 
 /Say:/
@@ -242,16 +244,16 @@ This is YJIT's dump. The lines with a hash are its comments; under each is
 the machine code it wrote, for this Mac's arm64 chip.
 
 Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
-call to Point#x, an attribute reader. Then three checks: a real object, a Point, laid out as before.
-Those are the guards. Each is two instructions: compare, and jump away if
-it's wrong. All
+call to Point#x, an attribute reader. Then three guards, three checks: a real object, a Point, laid out as before.
+Each is two instructions: compare, and if it's wrong, go back to YJIT. All
 three pass, and one load reads @x straight out of the object. No call.
 
-Then a new piece, and defer_compilation: just a jump to a stub. The first
-time the code gets there, YJIT compiles the next piece, for whatever b
+Then a new block, and defer_compilation: just a jump back to YJIT. The
+first time the code gets there, YJIT compiles the next block, for whatever b
 really is.
 
-[Depth: each b.ne jumps to a branch stub: if a check fails, YJIT compiles
+[Depth: each b.ne jumps to a branch stub, a placeholder that calls YJIT:
+if a guard fails, YJIT compiles
 another version for what it found, up to a limit (four by default). "Shape"
 is an object's instance-variable layout. Trimmed: register moves and YJIT's
 housekeeping between these lines.]
@@ -280,25 +282,25 @@ watching a few laps, then planning the whole course.
 ** 9. ZJIT: in its own words  (6:00, 1:00)
 
 /On screen:/
-- ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
+- ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method. Each line: ~name:type ~ operation inputs~.
 - listing (captures/zjit-distance.txt):
 #+begin_example
 fn distance@distance.rb:7:                                     <- the whole distance method, compiled at once
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):        <- block bb3, the body. Inputs: self (v15), a (v16), b (v17)
-  v79:ObjectSubclass[class_exact:Point] = GuardType v16        <- check: is a's class exactly Point? YJIT's checks 1 and 2 in one step
-  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)  <- check: is its shape (v81) 0x10007a? YJIT's check 3, same number
+  v79:ObjectSubclass[class_exact:Point] = GuardType v16        <- guard: is a's class exactly Point? YJIT's guards 1 and 2 in one step
+  v82:CShape[0x10007a] = GuardBitEquals v81, CShape(0x10007a)  <- guard: is its shape (v81) 0x10007a? YJIT's guard 3, same number
   v83:BasicObject = LoadField v79, :@x                         <- load @x from a (now v79): v83 is a.x. No call
   ...
-  v93:Fixnum = GuardType v83, Fixnum                           <- check: is a.x a Fixnum (a packed small integer)?
+  v93:Fixnum = GuardType v83, Fixnum                           <- guard: is a.x a Fixnum (a packed small integer)?
   v94:Fixnum = GuardType v90, Fixnum                           <- and b.x? (v90, read the same way)
-  v95:Fixnum = FixnumSub v93, v94                              <- the minus, inputs already checked: dx is v95, set once
+  v95:Fixnum = FixnumSub v93, v94                              <- the minus, inputs already guarded: dx is v95, set once
   ...
-  v118:Fixnum = FixnumMult v95, v95                            <- dx * dx: v95 is already a Fixnum, no type check
+  v118:Fixnum = FixnumMult v95, v95                            <- dx * dx: v95 is already a Fixnum, no guard
   ...
   v130:BasicObject = CCallWithFrame v54, :Math.sqrt, v126      <- call Math.sqrt in C (v54 is Math) on v126: dx*dx + dy*dy
   Return v130                                                  <- return the result
 #+end_example
-- Each value is named once (~v95~ is ~dx~). A failed check exits to the interpreter; ZJIT can recompile later.
+- Each value is named once (~v95~ is ~dx~). A failed guard exits to the interpreter; ZJIT can recompile later.
 - Ruby 4.1.0-preview1 · ~ruby --zjit --zjit-dump-hir~
 
 /Say:/
@@ -311,7 +313,7 @@ Read one line and you can read them all. "v95, colon, Fixnum, equals,
 FixnumSub v93, v94": a name, its type, then the operation and its inputs.
 
 Every value gets a name, set exactly once. v16 is a. GuardType: is it a
-Point? GuardBitEquals: is its shape the one we saw? The same checks YJIT
+Point? GuardBitEquals: is its shape the one we saw? The same guards YJIT
 made, but if one fails here, ZJIT goes back to the interpreter.
 
 Remember the minus from the bytecode? Here it's FixnumSub, after two
@@ -398,6 +400,7 @@ def distance(a, b)
   Math.sqrt(sq(dx) + sq(dy))
 end
 #+end_example
+- The smallest refactor: ~n * n~ pulled out into ~sq~. One more call.
 
 /Say:/
 
@@ -426,20 +429,20 @@ into distance. That's called inlining.
 - listing (captures/yjit-sq.txt, zjit-sq.txt):
 #+begin_example
 YJIT                                     ZJIT
-# call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
-# push callee control frame              ...
-# gen_direct_jmp: existing block         PushInlineFrame :sq, v116, num_args=1
- ...                                     v169:Fixnum = FixnumMult v95, v95
-# Block: sq@distance_sq.rb:6             PopInlineFrame
-# Insn: 0004 opt_mult (stack_size: 2)
+# call to Object#sq                      PushInlineFrame :sq, v116, num_args=1
+# push callee control frame
+# gen_direct_jmp: existing block
+ ...
+# Block: sq@distance_sq.rb:6
+# Insn: 0004 opt_mult (stack_size: 2)    v169:Fixnum = FixnumMult v95, v95
 # guard arg0 fixnum
 # guard arg1 fixnum
-# pop stack frame
+# pop stack frame                        PopInlineFrame
  ...                                     ...
 # Insn: 0036 opt_plus (stack_size: 3)    v125:Fixnum = FixnumAdd v169, v173
 # guard arg0 fixnum
 #+end_example
-- YJIT: a real call into a general ~sq~, and a check again when it returns. ZJIT: ~sq~ spliced in. No jump, no check on ~n~, and it knows the result is a number.
+- YJIT: a real call (push a frame, jump, pop, return). ~sq~ serves every caller, so it checks ~n~; at ~+~ it checks again. ZJIT: ~sq~ copied in, a light frame stays. No jump, no check on ~n~, none at ~+~.
 - Ruby 4.1.0-preview1 · default settings
 
 /Say:/
@@ -564,7 +567,7 @@ def convert_key(key)
   Symbol === key ? key.name : key
 end
 #+end_example
-- ~HashWithIndifferentAccess~: what Rails ~params~ is built on.
+- ~HashWithIndifferentAccess~: what Rails ~params~ is built on. ~[]~ calls ~convert_key~: a small method calling a small method.
 - activesupport 8.1.4.1
 
 /Say:/
@@ -582,19 +585,19 @@ method calling a small method.
 - YJIT at ~[]~: stops at the turn, a real call to ~convert_key~
 - listing (captures/hwia-yjit-disasm.txt):
 #+begin_example
-# call to ActiveSupport::HashWithIndifferentAccess#convert_key
-# push callee control frame
-# gen_direct_jmp: existing block
+# call to ActiveSupport::HashWithIndifferentAccess#convert_key  <- a real call to convert_key, like sq
+# push callee control frame                                     <- set up its frame
+# gen_direct_jmp: existing block                                <- jump to its code
 #+end_example
 - ZJIT at ~[]~: takes it in stride, ~convert_key~ copied in
 - listing (captures/hwia-zjit-hir.txt):
 #+begin_example
-PushInlineFrame :convert_key, v27, num_args=1
-v78:BoolExact = IsA v10, v43
-CondBranch v50, bb8(), bb7()
+PushInlineFrame :convert_key, v27, num_args=1        <- convert_key copied in
+v78:BoolExact = IsA v10, v43                         <- Symbol === key: a plain type test
+CondBranch v50, bb8(), bb7()                         <- Symbol? take key.name; else keep key
  ...
-PopInlineFrame
-v35:BasicObject = CCallWithFrame v27, :Hash#[], v71
+PopInlineFrame                                       <- end of the copy
+v35:BasicObject = CCallWithFrame v27, :Hash#[], v71  <- Hash#[] in C: both compilers call it
 #+end_example
 - Ruby 4.1.0-preview1 · default settings
 
@@ -667,7 +670,7 @@ def double(x) = x + x   # called with Integers only, or with five types
 - listing (captures/zjit-choppy.txt):
 #+begin_example
 PushInlineFrame :double, v23, num_args=1               <- double copied in: no call
-CondBranchHasType v10, ArrayExact, bb8(), bb9()        <- sight: an Array?
+CondBranchHasType v10, ArrayExact, bb8(), bb9()        <- check: an Array?
 v72:BasicObject = CCallWithFrame v37, :Array#+, v10    <- yes: call Array's + directly
  ...                                                   <- the same for Rational
 CondBranchHasType v10, Fixnum, bb12(), bb13()          <- a whole number?
@@ -767,6 +770,8 @@ is out of the compiler's reach.
 - YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 - whole method at once, so it can see through small method calls and pay
 - less for them. That's the ceiling the ZJIT team set out to raise.
+- For you: small, clear methods are exactly what inlining is for
+- Ruby 4.1, in a few weeks: try ~--zjit~
 
 /Say:/
 

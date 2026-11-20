@@ -53,7 +53,9 @@ the turn buoy" or "Why it's a ceiling": they are the argument.
 
 /"Every time you lift your head, you slow down."/
 
-Ruby 4.0 ships *two* just-in-time compilers. Why build the second one?
+Ruby 4.0 ships *two* just-in-time compilers: *YJIT*, speeding up Rails apps for years, and *ZJIT*, "the next generation of YJIT".
+
+We'll follow one five-line method, and one tiny refactor of it, through both.
 
 #+begin_notes
 [STORY: learning long-distance open water. Suggested shape: "When I started
@@ -115,6 +117,9 @@ def distance(a, b)
   Math.sqrt(dx * dx + dy * dy)
 end
 #+end_src
+
+#+attr_html: :class cap
+The method we'll follow all talk.
 
 #+begin_notes
 Here's the method we'll follow all talk: the distance between two points.
@@ -217,16 +222,16 @@ first, then plans the whole method.
 :DURATION: 0:15
 :END:
 
-- Once a method is called often (warm), compile *a few instructions at a time*, and run them
+- Once a method is called often (warm), compile *a block*, a few instructions, and run it
 - Look at the values that really turned up
-- Compile the next few for exactly those
+- Compile the next block for exactly those
 
 #+attr_html: :class cap
 /In the water: sighting as you swim, deciding stretch by stretch./
 
 #+begin_notes
 YJIT compiles as it goes. Once a method is warm, it compiles a few
-instructions, runs them, looks at what really turned up, then compiles the
+instructions, a block, runs them, looks at what really turned up, then compiles the
 next few for exactly that. Sighting as you swim.
 
 [Depth: lazy basic block versioning.]
@@ -264,28 +269,28 @@ YJIT's dump, trimmed: its comments (=#=), and the arm64 machine code it wrote un
 #+end_example
 #+begin_export html
 <ol class="ann-notes">
-<li data-l="1">a new piece of machine code starts</li>
+<li data-l="1">a block: a stretch of compiled code</li>
 <li data-l="2">step <code>0002</code> from the bytecode: <code>a.x</code></li>
 <li data-l="3"><code>Point#x</code> is an <code>attr_reader</code>: no Ruby code to run</li>
-<li data-l="4">check 1: an object, not a packed small value (<code>7</code>, <code>:x</code>, <code>nil</code>)?</li>
+<li data-l="4">guard (a check) 1: an object, not a packed small value (<code>7</code>, <code>:x</code>, <code>nil</code>)?</li>
 <li data-l="5">test the low 3 bits</li>
-<li data-l="6">any set? jump out</li>
-<li data-l="8">check 2: is its class <code>Point</code>?</li>
+<li data-l="6">any set? back to YJIT</li>
+<li data-l="8">guard 2: is its class <code>Point</code>?</li>
 <li data-l="9">its class pointer vs <code>Point</code>'s address</li>
-<li data-l="10">different? jump out</li>
-<li data-l="11">check 3: is <code>@x</code> where it was last time?</li>
+<li data-l="10">different? back to YJIT</li>
+<li data-l="11">guard 3: is <code>@x</code> where it was last time?</li>
 <li data-l="12">its shape (instance-variable layout) vs the one seen before</li>
-<li data-l="13">different? jump out</li>
-<li data-l="14">all three passed: load <code>@x</code>, 16 bytes into the object. No call</li>
-<li data-l="16">the next piece</li>
+<li data-l="13">different? back to YJIT</li>
+<li data-l="14">all three guards passed: load <code>@x</code>, 16 bytes into the object. No call</li>
+<li data-l="16">the next block</li>
 <li data-l="17">step <code>0004</code>: get <code>b</code></li>
 <li data-l="18">not compiled yet, so:</li>
-<li data-l="19">jump to a stub that compiles it the first time we arrive</li>
+<li data-l="19">back to YJIT: compile it the first time we get here</li>
 </ol>
 #+end_export
 
 #+attr_html: :class cap
-A failed check jumps to a stub: YJIT compiles another version for the new type (up to 4), then falls back to the interpreter.
+A failed guard goes back to YJIT: it compiles another version of the block for what it found (up to 4), then hands over to the interpreter.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --yjit --yjit-dump-disasm=
@@ -295,16 +300,16 @@ This is YJIT's dump. The lines with a hash are its comments; under each is
 the machine code it wrote, for this Mac's arm64 chip.
 
 Insn 0002: that's step 0002 from the bytecode, a.x. YJIT sees it's a
-call to Point#x, an attribute reader. Then three checks: a real object, a Point, laid out as before.
-Those are the guards. Each is two instructions: compare, and jump away if
-it's wrong. All
+call to Point#x, an attribute reader. Then three guards, three checks: a real object, a Point, laid out as before.
+Each is two instructions: compare, and if it's wrong, go back to YJIT. All
 three pass, and one load reads @x straight out of the object. No call.
 
-Then a new piece, and defer_compilation: just a jump to a stub. The first
-time the code gets there, YJIT compiles the next piece, for whatever b
+Then a new block, and defer_compilation: just a jump back to YJIT. The
+first time the code gets there, YJIT compiles the next block, for whatever b
 really is.
 
-[Depth: each b.ne jumps to a branch stub: if a check fails, YJIT compiles
+[Depth: each b.ne jumps to a branch stub, a placeholder that calls YJIT:
+if a guard fails, YJIT compiles
 another version for what it found, up to a limit (four by default). "Shape"
 is an object's instance-variable layout. Trimmed: register moves and YJIT's
 housekeeping between these lines.]
@@ -337,7 +342,7 @@ watching a few laps, then planning the whole course.
 :END:
 
 #+attr_html: :class cap
-ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method.
+ZJIT's own dump, trimmed: its *IR* (intermediate representation), the plan for the whole method. Each line: =name:type = operation inputs=.
 
 # capture: zjit-distance.txt
 #+begin_example
@@ -360,20 +365,20 @@ bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
 <ol class="ann-notes">
 <li data-l="1">the whole <code>distance</code> method, compiled at once</li>
 <li data-l="2">block <code>bb3</code>, the body. Inputs: <code>self</code> (<code>v15</code>), <code>a</code> (<code>v16</code>), <code>b</code> (<code>v17</code>)</li>
-<li data-l="3">check: is <code>a</code>'s class exactly <code>Point</code>? YJIT's checks 1 and 2 in one step</li>
-<li data-l="4">check: is its shape (<code>v81</code>) <code>0x10007a</code>? YJIT's check 3, same number</li>
+<li data-l="3">guard: is <code>a</code>'s class exactly <code>Point</code>? YJIT's guards 1 and 2 in one step</li>
+<li data-l="4">guard: is its shape (<code>v81</code>) <code>0x10007a</code>? YJIT's guard 3, same number</li>
 <li data-l="5">load <code>@x</code> from <code>a</code> (now <code>v79</code>): <code>v83</code> is <code>a.x</code>. No call</li>
-<li data-l="7">check: is <code>a.x</code> a Fixnum (a packed small integer)?</li>
+<li data-l="7">guard: is <code>a.x</code> a Fixnum (a packed small integer)?</li>
 <li data-l="8">and <code>b.x</code>? (<code>v90</code>, read the same way)</li>
-<li data-l="9">the minus, inputs already checked: <code>dx</code> is <code>v95</code>, set once</li>
-<li data-l="11"><code>dx * dx</code>: <code>v95</code> is already a Fixnum, no type check</li>
+<li data-l="9">the minus, inputs already guarded: <code>dx</code> is <code>v95</code>, set once</li>
+<li data-l="11"><code>dx * dx</code>: <code>v95</code> is already a Fixnum, no guard</li>
 <li data-l="13">call <code>Math.sqrt</code> in C (<code>v54</code> is <code>Math</code>) on <code>v126</code>: <code>dx*dx + dy*dy</code></li>
 <li data-l="14">return the result</li>
 </ol>
 #+end_export
 
 #+attr_html: :class cap
-Each value is named once (=v95= is =dx=). A failed check exits to the interpreter; ZJIT can recompile later.
+Each value is named once (=v95= is =dx=). A failed guard exits to the interpreter; ZJIT can recompile later.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · =ruby --zjit --zjit-dump-hir=
@@ -387,7 +392,7 @@ Read one line and you can read them all. "v95, colon, Fixnum, equals,
 FixnumSub v93, v94": a name, its type, then the operation and its inputs.
 
 Every value gets a name, set exactly once. v16 is a. GuardType: is it a
-Point? GuardBitEquals: is its shape the one we saw? The same checks YJIT
+Point? GuardBitEquals: is its shape the one we saw? The same guards YJIT
 made, but if one fails here, ZJIT goes back to the interpreter.
 
 Remember the minus from the bytecode? Here it's FixnumSub, after two
@@ -482,6 +487,9 @@ def distance(a, b)
 end
 #+end_src
 
+#+attr_html: :class cap
+The smallest refactor: =n * n= pulled out into =sq=. One more call.
+
 #+begin_notes
 The smallest refactor you'd ever make: pull n times n into a helper
 called sq.
@@ -511,22 +519,22 @@ into distance. That's called inlining.
 # capture: yjit-sq.txt, zjit-sq.txt
 #+begin_example
 YJIT                                     ZJIT
-# call to Object#sq                      v95:Fixnum = FixnumSub v93, v94
-# push callee control frame              ...
-# gen_direct_jmp: existing block         PushInlineFrame :sq, v116, num_args=1
- ...                                     v169:Fixnum = FixnumMult v95, v95
-# Block: sq@distance_sq.rb:6             PopInlineFrame
-# Insn: 0004 opt_mult (stack_size: 2)
+# call to Object#sq                      PushInlineFrame :sq, v116, num_args=1
+# push callee control frame
+# gen_direct_jmp: existing block
+ ...
+# Block: sq@distance_sq.rb:6
+# Insn: 0004 opt_mult (stack_size: 2)    v169:Fixnum = FixnumMult v95, v95
 # guard arg0 fixnum
 # guard arg1 fixnum
-# pop stack frame
+# pop stack frame                        PopInlineFrame
  ...                                     ...
 # Insn: 0036 opt_plus (stack_size: 3)    v125:Fixnum = FixnumAdd v169, v173
 # guard arg0 fixnum
 #+end_example
 
 #+attr_html: :class cap
-YJIT: a real call into a general =sq=, and a check again when it returns. ZJIT: =sq= spliced in. No jump, no check on =n=, and it knows the result is a number.
+YJIT: a real call (push a frame, jump, pop, return). =sq= serves every caller, so it checks =n=; at =+= it checks again. ZJIT: =sq= copied in, a light frame stays. No jump, no check on =n=, none at =+=.
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · default settings
@@ -666,7 +674,7 @@ end
 #+end_example
 
 #+attr_html: :class cap
-=HashWithIndifferentAccess=: what Rails =params= is built on.
+=HashWithIndifferentAccess=: what Rails =params= is built on. =[]= calls =convert_key=: a small method calling a small method.
 
 #+attr_html: :class ver
 activesupport 8.1.4.1
@@ -692,6 +700,13 @@ YJIT at =[]=: stops at the turn, a real call to =convert_key=
 # push callee control frame
 # gen_direct_jmp: existing block
 #+end_example
+#+begin_export html
+<ol class="ann-notes">
+<li data-l="1">a real call to <code>convert_key</code>, like <code>sq</code></li>
+<li data-l="2">set up its frame</li>
+<li data-l="3">jump to its code</li>
+</ol>
+#+end_export
 
 #+attr_html: :class cap
 ZJIT at =[]=: takes it in stride, =convert_key= copied in
@@ -705,6 +720,15 @@ CondBranch v50, bb8(), bb7()
 PopInlineFrame
 v35:BasicObject = CCallWithFrame v27, :Hash#[], v71
 #+end_example
+#+begin_export html
+<ol class="ann-notes">
+<li data-l="1"><code>convert_key</code> copied in</li>
+<li data-l="2"><code>Symbol === key</code>: a plain type test</li>
+<li data-l="3">Symbol? take <code>key.name</code>; else keep <code>key</code></li>
+<li data-l="5">end of the copy</li>
+<li data-l="6"><code>Hash#[]</code> in C: both compilers call it</li>
+</ol>
+#+end_export
 
 #+attr_html: :class ver
 Ruby 4.1.0-preview1 · default settings
@@ -798,7 +822,7 @@ v60:BasicObject = Send v10, :+, v10
 #+begin_export html
 <ol class="ann-notes">
 <li data-l="1"><code>double</code> copied in: no call</li>
-<li data-l="2">sight: an Array?</li>
+<li data-l="2">check: an Array?</li>
 <li data-l="3">yes: call Array's <code>+</code> directly</li>
 <li data-l="4">the same for Rational</li>
 <li data-l="5">a whole number?</li>
@@ -906,6 +930,9 @@ is out of the compiler's reach.
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 whole method at once, so it can see through small method calls and pay
 less for them. That's the ceiling the ZJIT team set out to raise.
+
+- For you: small, clear methods are exactly what inlining is for
+- Ruby 4.1, in a few weeks: try =--zjit=
 
 #+begin_notes
 [Read the slide.]
