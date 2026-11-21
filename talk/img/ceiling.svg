@@ -8,7 +8,7 @@
   <!-- YJIT panel -->
   <rect x="60" y="180" width="700" height="530" rx="18" fill="#fbf4e3" stroke="#c48a00" stroke-width="3"/>
   <text x="90" y="232" font-size="40" font-weight="700" fill="#7a5a00">YJIT: compile as you go</text>
-  <text x="90" y="272" font-size="28" fill="#4a5a6a">each piece is machine code (dark) once reached</text>
+  <text x="90" y="272" font-size="28" fill="#4a5a6a">each block is machine code (dark) once reached</text>
   <text x="90" y="335" font-size="30" fill="#1b2733">distance</text>
   <g fill="#1e1f29" stroke="#c48a00" stroke-width="3">
     <rect x="240" y="305" width="90" height="46" rx="6"/><rect x="350" y="305" width="90" height="46" rx="6"/>
@@ -44,6 +44,6 @@
   <text x="870" y="640" font-size="30" fill="#1b2733">Both sides are in the plan,</text>
   <text x="870" y="680" font-size="30" font-weight="700" fill="#1f6a2c">still open to change.</text>
 
-  <text x="80" y="790" font-size="42" fill="#1b2733">Better pieces can't take out the call. YJIT's limit is <tspan font-weight="700">what it sees at once: a piece</tspan>.</text>
+  <text x="80" y="790" font-size="42" fill="#1b2733">Better blocks can't take out the call. YJIT's limit is <tspan font-weight="700">what it sees at once: a block</tspan>.</text>
   <text x="80" y="850" font-size="34" fill="#4a5a6a">That's the ceiling. ZJIT raises it by compiling "one entire method at a time" (ZJIT team).</text>
 </svg>

@@ -13,7 +13,6 @@
   <path d="M740 280 A60 60 0 0 1 860 280 H1335" stroke="#c48a00" stroke-width="8" stroke-dasharray="22 14" fill="none"/>
   <g transform="translate(712,262)"><circle r="30" fill="#f2c9a1" stroke="#b23a3a" stroke-width="4"/><path d="M-30 -2 A30 30 0 0 1 30 -2 Z" fill="#e4572e" stroke="#b23a3a" stroke-width="4"/><rect x="-31" y="-2" width="62" height="13" rx="6" fill="#1b2733"/><rect x="-22" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/><rect x="5" y="0" width="17" height="9" rx="4" fill="#5fb3e6"/></g>
   <text x="665" y="240" font-size="30" font-weight="700" fill="#b23a3a" text-anchor="end">stop</text>
-  <text x="200" y="430" font-size="30" fill="#4a5a6a">In code: save the frame, jump to sq, check n, jump back, check the result.</text>
 
   <!-- divider -->
   <path d="M80 470 H1520" stroke="#9cc7e6" stroke-width="3"/>
@@ -27,7 +26,6 @@
   <path d="M265 630 H740 A60 60 0 0 1 860 630 H1335" stroke="#2e8b3e" stroke-width="9" fill="none"/>
   <g transform="translate(1010,630)"><path d="M-26 0 A26 26 0 0 1 26 0 Z" fill="#e4572e" stroke="#1b2733" stroke-width="4"/></g>
   <text x="1010" y="590" font-size="28" fill="#1f6a2c" text-anchor="middle">head down</text>
-  <text x="200" y="780" font-size="30" fill="#4a5a6a">In code: sq's n * n copied into distance. No jump, no re-checks; a light frame stays.</text>
 
   <text x="80" y="860" font-size="40" fill="#1b2733">Both still make the turn. ZJIT doesn't stop for it: that's <tspan font-weight="700">inlining</tspan>.</text>
 </svg>

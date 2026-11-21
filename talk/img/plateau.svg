@@ -30,13 +30,12 @@
 
   <rect x="820" y="325" width="710" height="375" rx="14" fill="#ffffff" stroke="#e8a0a0" stroke-width="3"/>
   <text x="845" y="380" font-size="32" font-weight="700" fill="#b23a3a">The time left: calls that do work</text>
-  <text x="845" y="450" font-size="28" font-weight="700" fill="#1b2733">YJIT, one piece at a time:</text>
+  <text x="845" y="450" font-size="28" font-weight="700" fill="#1b2733">YJIT, one block at a time:</text>
   <text x="845" y="492" font-size="28" fill="#1b2733">check the argument, make a real call,</text>
   <text x="845" y="530" font-size="28" fill="#1b2733">check the result</text>
   <text x="845" y="595" font-size="28" font-weight="700" fill="#1b2733">ZJIT, the whole method as one plan:</text>
   <text x="845" y="637" font-size="28" fill="#1b2733">copy the method in, drop the checks on both sides</text>
   <text x="845" y="678" font-size="24" fill="#4a5a6a">(a light frame stays; more on the next slides)</text>
 
-  <text x="80" y="800" font-size="40" fill="#1b2733">A design limit, not YJIT standing still: it never sees the whole</text>
-  <text x="80" y="852" font-size="40" fill="#1b2733">method, so a call doing real work stays a call. ZJIT plans it all.</text>
+  <text x="80" y="826" font-size="40" fill="#1b2733">Next: add one small call, and watch both compilers take it.</text>
 </svg>

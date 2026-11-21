@@ -213,7 +213,7 @@ per stretch, a guard, "is this still a number?", then fast machine code.
 If it fails: YJIT compiles another version; ZJIT hands back to the
 interpreter.
 
-Ruby has two. YJIT decides one piece at a time, as it swims. ZJIT watches
+Ruby has two. YJIT decides one block at a time, as it swims. ZJIT watches
 first, then plans the whole method.
 #+end_notes
 
@@ -464,11 +464,10 @@ a method call. We write small methods calling small
 methods.
 
 YJIT folds in trivial calls, like that attribute reader. But at a call
-to a method that does work, it checks, calls, checks again. ZJIT plans the whole method, so it can copy the small method
-in and drop those checks.
-A design limit, not YJIT standing still.
+to a method that does work, it checks, calls, checks again. ZJIT can copy
+the small method in and drop those checks.
 
-Let's add one turn to our five lines.
+Let's add one turn to our five lines, and watch both compilers take it.
 #+end_notes
 
 * One more call
@@ -566,7 +565,7 @@ is cheaper than a call, not free.]
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
-#+attr_html: :alt Taking out a call means changing both sides at once; YJIT's pieces are already machine code, ZJIT's whole-method plan is still open to change
+#+attr_html: :alt Taking out a call means changing both sides at once; YJIT's blocks are already machine code, ZJIT's whole-method plan is still open to change
 [[file:img/out/ceiling.svg]]
 
 #+begin_notes
@@ -576,15 +575,17 @@ checks between them.
 
 YJIT writes machine code as it goes. By the time it reaches the call,
 distance is already machine code, and sq was compiled on its own. No plan
-left to change, so the call stays. Trivial ones, like the attribute
-reader, it can fold in; a method doing real work stays a call.
+left to change, so the call stays.
 
 ZJIT plans the whole method first. Both sides are in the plan, still open
 to change: copy sq in, drop the checks, then write machine code.
 
-So better pieces can't get you there. YJIT's limit is what it sees at
-once: one piece. That's the ceiling, and ZJIT raises it by compiling, in the team's
-words, one entire method at a time.
+So better blocks can't get you there. YJIT's limit is what it sees at
+once: one block. A design limit, not YJIT standing still. That's the
+ceiling, and ZJIT raises it by compiling, in the team's words, one entire
+method at a time.
+
+If that sounds abstract: I hit the same ceiling in the water.
 
 [If asked "doesn't YJIT have an IR?": yes, a low-level one inside its code
 generator (yjit/src/backend/ir.rs). What it doesn't build is a plan of a
@@ -601,15 +602,20 @@ more code at once to the optimizer".]
 :REVEAL_EXTRA_ATTR: class="diagram"
 :END:
 
-#+attr_html: :alt The 2-beat kick is timed to the whole stroke
+#+attr_html: :alt Improving one kick at a time keeps all six; seeing the whole stroke lets you drop four. YJIT improves each block and the call stays; ZJIT sees the whole method and drops it
 [[file:img/out/two-beat-kick.svg]]
 
 #+begin_notes
-[STORY, short: the 2-beat kick. "Fewer kicks, timed to the whole stroke.
-I couldn't get there one kick at a time."]
+[STORY: your 2-beat kick, in your own words. The lines below are its
+bones; keep only what's true for you.]
 
-ZJIT does the same with calls and checks: it sees the caller and sq
-together.
+The goal is the same speed for less effort. I kicked six times a stroke
+and made each kick stronger: still six kicks of effort. Only when I looked
+at the kicks against my arms, the whole stroke, could I drop four.
+
+Same for compilers. YJIT makes each block faster; the call between blocks
+stays. ZJIT sees the whole method, so it can drop the call. The ZJIT team's
+word for that is the compilation unit.
 #+end_notes
 
 * So, why build the second one?
@@ -617,7 +623,7 @@ together.
 :DURATION: 1:00
 :END:
 
-1. The next gains need the *whole method as one plan*. A compiler that works piece by piece never has one.
+1. The next gains need the *whole method as one plan*. A compiler that works block by block never has one.
 2. A more traditional compiler, so *more people can help build it*.
 
 #+begin_quote
@@ -638,7 +644,7 @@ together.
 Back to the question I started with: why build a second one?
 
 Because the next gains, like seeing through that call, need the whole
-method as one plan, and a compiler that works piece by piece never has
+method as one plan, and a compiler that works block by block never has
 one. And a traditional compiler is a shape many compiler engineers
 already know, so more people can help build it. In their words:
 
