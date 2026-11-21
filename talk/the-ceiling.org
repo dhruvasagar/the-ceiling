@@ -46,7 +46,7 @@ Cut order if long: (1) "The 2-beat kick" (say its one line on the quote
 slide); (2) "YJIT: in its own words". Never cut "On five lines, nearly a tie", "At
 the turn buoy" or "Why it's a ceiling": they are the argument.
 
-* Every time you lift your head
+* Faster by wasting less effort
 :PROPERTIES:
 :DURATION: 1:15
 :END:
@@ -663,7 +663,7 @@ traditional “textbook” compiler so it is easy for the community to
 contribute to").]
 #+end_notes
 
-* Race day: params
+* Race day: Rails params
 :PROPERTIES:
 :DURATION: 0:30
 :END:
@@ -680,10 +680,10 @@ end
 #+end_example
 
 #+attr_html: :class cap
-=HashWithIndifferentAccess=: what Rails =params= is built on. =[]= calls =convert_key=: a small method calling a small method.
+Toy code flatters compilers; this is real. Every =params[:id]= calls =convert_key=, just like =distance= calling =sq=.
 
 #+attr_html: :class ver
-activesupport 8.1.4.1
+=HashWithIndifferentAccess=, what =params= is built on · activesupport 8.1.4.1
 
 #+begin_notes
 Toy methods flatter compilers. Here's one you run right now:

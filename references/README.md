@@ -150,7 +150,7 @@ https://github.com/ruby/ruby/blob/master/doc/jit/yjit.md
 [13] Rails core team. `actionpack/lib/action_controller/metal/strong_parameters.rb`,
 Rails v8.1.1, line 294: `@parameters = parameters.with_indifferent_access`.
 Rails `params` is built on `HashWithIndifferentAccess`. (talk: *Race day:
-params*)
+Rails params*)
 https://github.com/rails/rails/blob/v8.1.1/actionpack/lib/action_controller/metal/strong_parameters.rb
 
 ## Research behind YJIT

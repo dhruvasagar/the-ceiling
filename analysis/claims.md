@@ -104,8 +104,8 @@ search for the quoted text.
 
 | Claim | Kind | Evidence |
 |---|---|---|
-| Rails `params` is built on `HashWithIndifferentAccess` (*Race day: params*) | stated | `@parameters = parameters.with_indifferent_access`, Rails `strong_parameters.rb:294` [13] |
-| The method source (*Race day: params*) | shown | `hwia-source.txt` (activesupport 8.1.4.1) |
+| Rails `params` is built on `HashWithIndifferentAccess` (*Race day: Rails params*) | stated | `@parameters = parameters.with_indifferent_access`, Rails `strong_parameters.rb:294` [13] |
+| The method source (*Race day: Rails params*) | shown | `hwia-source.txt` (activesupport 8.1.4.1) |
 | YJIT calls `convert_key` with a real call (*params, through both*) | shown | `hwia-yjit-disasm.txt:63247` |
 | ZJIT inlines `convert_key` and turns `Symbol === key` into a type test and branch | shown | `PushInlineFrame :convert_key` `hwia-zjit-hir.txt:3980`; `IsA v10, v43` `:3985` |
 | Both compile `super` as a call to `Hash#[]` in C | shown | ZJIT: `CCallWithFrame v27, :Hash#[]` `hwia-zjit-hir.txt:4005`; YJIT: `# call C function` after `invokesuper` `hwia-yjit-disasm.txt:63436` |

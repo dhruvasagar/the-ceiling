@@ -16,7 +16,7 @@ STORY beat (30 s).
 
 | # | Starts | Slide | Budget | Estimate | Spare | Notes |
 |---+--------+-------+--------+----------+-------+-------|
-| 1 | 0:00 | Every time you lift your head | 1:15 | 1:24 | -0:09 | STORY OVER  |
+| 1 | 0:00 | Faster by wasting less effort | 1:15 | 1:24 | -0:09 | STORY OVER  |
 | 2 | 1:15 | Ruby swims with its head up | 0:15 | 0:14 | 0:01 |  |
 | 3 | 1:30 | Our five lines | 0:30 | 0:32 | -0:02 |  |
 | 4 | 2:00 | The bytecode | 1:15 | 1:17 | -0:02 | live  |
@@ -33,7 +33,7 @@ STORY beat (30 s).
 | 15 | 11:15 | Why it's a ceiling | 1:00 | 1:06 | -0:06 | OVER  |
 | 16 | 12:15 | The 2-beat kick | 0:30 | 1:05 | -0:35 | STORY OVER  |
 | 17 | 12:45 | So, why build the second one? | 1:00 | 0:56 | 0:04 |  |
-| 18 | 13:45 | Race day: params | 0:30 | 0:29 | 0:01 |  |
+| 18 | 13:45 | Race day: Rails params | 0:30 | 0:29 | 0:01 |  |
 | 19 | 14:15 | params, through both | 0:45 | 0:44 | 0:01 |  |
 | 20 | 15:00 | The feed stop | 0:30 | 0:21 | 0:09 |  |
 | 21 | 15:30 | A glimpse: seven everyday lines | 0:30 | 0:26 | 0:04 |  |
@@ -50,7 +50,7 @@ STORY beat (30 s).
 
 * Narration
 
-** 1. Every time you lift your head  (0:00, 1:15)
+** 1. Faster by wasting less effort  (0:00, 1:15)
 
 /On screen:/
 - /"Every time you lift your head, you slow down."/
@@ -558,9 +558,9 @@ side-exit into the interpreter"); merge post 2025-05-14 ("a more
 traditional “textbook” compiler so it is easy for the community to
 contribute to").]
 
-/Next: Race day: params/
+/Next: Race day: Rails params/
 
-** 18. Race day: params  (13:45, 0:30)
+** 18. Race day: Rails params  (13:45, 0:30)
 
 /On screen:/
 - listing (captures/hwia-source.txt):
@@ -573,8 +573,8 @@ def convert_key(key)
   Symbol === key ? key.name : key
 end
 #+end_example
-- ~HashWithIndifferentAccess~: what Rails ~params~ is built on. ~[]~ calls ~convert_key~: a small method calling a small method.
-- activesupport 8.1.4.1
+- Toy code flatters compilers; this is real. Every ~params[:id]~ calls ~convert_key~, just like ~distance~ calling ~sq~.
+- ~HashWithIndifferentAccess~, what ~params~ is built on · activesupport 8.1.4.1
 
 /Say:/
 
