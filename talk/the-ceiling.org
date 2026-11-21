@@ -54,9 +54,31 @@ Cut order if long: (1) "The 2-beat kick" (say its one line on the quote
 slide); (2) "YJIT: in its own words". Never cut "On five lines, nearly a tie", "At
 the turn buoy" or "Why it's a ceiling": they are the argument.
 
+* Hi, I'm Dhruva
+:PROPERTIES:
+:DURATION: 0:15
+:END:
+
+#+begin_export html
+<div style="display:flex;align-items:center;justify-content:center;gap:70px;margin-top:30px">
+<img src="img/avatar.png" alt="Dhruva Sagar's avatar" style="width:320px;height:320px;border-radius:50%;margin:0">
+<div style="text-align:left">
+<p style="font-size:1.4em;font-weight:700;margin:0 0 8px;color:#2a6fdb">@dhruvasagar</p>
+<p style="font-size:0.65em;margin:0 0 30px;color:#4a5a6a">on Twitter / X, GitHub, and everywhere else</p>
+<p style="font-size:0.8em;margin:0 0 22px;font-style:italic">Swims long distances. Writes code that sometimes does too.</p>
+<p style="font-size:0.75em;margin:0">Fifteen years of Ruby.<br>I write Rust, which both JITs are written in.</p>
+</div>
+</div>
+#+end_export
+
+#+begin_notes
+[Bio, one line: fifteen years of Ruby; I write Rust, which both are
+written in.]
+#+end_notes
+
 * Faster by wasting less effort
 :PROPERTIES:
-:DURATION: 1:15
+:DURATION: 1:00
 :END:
 
 /"Every time you lift your head, you slow down."/
@@ -83,9 +105,6 @@ So why build a second one? We'll follow one five-line method, and one
 tiny refactor of it, through both. By the end you'll see the exact line
 where one compiler has to stop and the other doesn't. And next time someone says "Ruby is slow",
 you'll have a better question to ask.
-
-[Bio, one line: fifteen years of Ruby; I write Rust, which both are
-written in.]
 #+end_notes
 
 * Ruby swims with its head up

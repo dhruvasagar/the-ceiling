@@ -20,8 +20,30 @@
 <h1>The Ceiling: Why Ruby 4.0 Needed a Second Compiler</h1><p>Dhruva Sagar · RubyConf 2026</p><p style="font-size:0.6em;color:#6a7a8a">Ruby 4.0 ships two JIT compilers. Why build the second one?</p>
 </section>
 <section>
-<section id="slide-orga709276" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orga709276">Faster by wasting less effort</h2>
+<section id="slide-org63221b4" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org63221b4">Hi, I'm Dhruva</h2>
+<div style="display:flex;align-items:center;justify-content:center;gap:70px;margin-top:30px">
+<img src="img/avatar.png" alt="Dhruva Sagar's avatar" style="width:320px;height:320px;border-radius:50%;margin:0">
+<div style="text-align:left">
+<p style="font-size:1.4em;font-weight:700;margin:0 0 8px;color:#2a6fdb">@dhruvasagar</p>
+<p style="font-size:0.65em;margin:0 0 30px;color:#4a5a6a">on Twitter / X, GitHub, and everywhere else</p>
+<p style="font-size:0.8em;margin:0 0 22px;font-style:italic">Swims long distances. Writes code that sometimes does too.</p>
+<p style="font-size:0.75em;margin:0">Fifteen years of Ruby.<br>I write Rust, which both JITs are written in.</p>
+</div>
+</div>
+
+<aside class="notes">
+<p>
+[Bio, one line: fifteen years of Ruby; I write Rust, which both are
+written in.]
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org3ab6cd4" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org3ab6cd4">Faster by wasting less effort</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -61,19 +83,14 @@ where one compiler has to stop and the other doesn't. And next time someone says
 you'll have a better question to ask.
 </p>
 
-<p>
-[Bio, one line: fifteen years of Ruby; I write Rust, which both are
-written in.]
-</p>
-
 </aside>
 </section>
 </section>
 <section>
-<section id="slide-org88ec72a" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="org88ec72a">Ruby swims with its head up</h2>
+<section id="slide-orgb542da3" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="orgb542da3">Ruby swims with its head up</h2>
 
-<div id="org7a87618" class="figure">
+<div id="org8156d20" class="figure">
 <p><img src="img/out/head-up.svg" alt="The beginner swimmer lifts their head every stroke" class="org-svg" />
 </p>
 </div>
@@ -92,8 +109,8 @@ Ruby's interpreter runs your code a lot like that. Let me show you.
 </section>
 </section>
 <section>
-<section id="slide-org56114aa" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org56114aa">Our five lines</h2>
+<section id="slide-org5e29e2b" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org5e29e2b">Our five lines</h2>
 <div class="org-src-container">
 
 <pre id="point-class"><code class="ruby" >class Point
@@ -131,8 +148,8 @@ interpreter runs that.
 </section>
 </section>
 <section>
-<section id="slide-orgc4c1020" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgc4c1020">The bytecode</h2>
+<section id="slide-orgeef38b5" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="orgeef38b5">The bytecode</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./distance -e 'puts RubyVM::InstructionSequence.of(method(:distance)).disasm'
@@ -143,7 +160,7 @@ interpreter runs that.
 What the interpreter actually runs. Steps <code>0000</code>-<code>0010</code> are the first line, <code>dx = a.x - b.x</code>.
 </p>
 
-<pre class="example" id="org3fc714a">
+<pre class="example" id="org9461e1f">
 0000 getlocal_WC_0          a@0
 0002 opt_send_without_block &lt;calldata!mid:x, argc:0, ARGS_SIMPLE&gt;
 0004 getlocal_WC_0          b@1
@@ -208,10 +225,10 @@ and how many arguments. See the Q&amp;A doc.]
 </section>
 </section>
 <section>
-<section id="slide-org451eae8" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="org451eae8">Learning to sight</h2>
+<section id="slide-org8b0d06f" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org8b0d06f">Learning to sight</h2>
 
-<div id="orgf1b7df4" class="figure">
+<div id="org29f6936" class="figure">
 <p><img src="img/out/sighting.svg" alt="A trained swimmer looks once, then keeps their head down" class="org-svg" />
 </p>
 </div>
@@ -239,8 +256,8 @@ first, then plans the whole method.
 </section>
 </section>
 <section>
-<section id="slide-orgc92fce5" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgc92fce5">YJIT: compile as you go</h2>
+<section id="slide-orga27a89b" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="orga27a89b">YJIT: compile as you go</h2>
 <ul>
 <li>Once a method is called often (warm), compile <b>a block</b>, a few instructions, and run it</li>
 <li>Look at the values that really turned up</li>
@@ -267,13 +284,13 @@ next few for exactly that. Sighting as you swim.
 </section>
 </section>
 <section>
-<section id="slide-orgbba0ea1" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgbba0ea1">YJIT: in its own words</h2>
+<section id="slide-org01f9b22" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org01f9b22">YJIT: in its own words</h2>
 <p class="cap">
 YJIT's dump, trimmed: its comments (<code>#</code>), and the arm64 machine code it wrote under each.
 </p>
 
-<pre class="example" id="orgb7b3453">
+<pre class="example" id="orgfe72f5b">
 # Block: distance@distance.rb:7
 # Insn: 0002 opt_send_without_block (stack_size: 1)
 # call to Point#x
@@ -353,8 +370,8 @@ housekeeping between these lines.]
 </section>
 </section>
 <section>
-<section id="slide-orgab31788" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgab31788">ZJIT: watch, then plan</h2>
+<section id="slide-org09d8d02" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org09d8d02">ZJIT: watch, then plan</h2>
 <ul>
 <li>While the interpreter runs the method, record which types turn up: a <b>profile</b></li>
 <li>Then turn the <b>whole method</b> into a plan: the <b>IR</b> (intermediate representation)</li>
@@ -382,13 +399,13 @@ watching a few laps, then planning the whole course.
 </section>
 </section>
 <section>
-<section id="slide-orgea0fba3" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgea0fba3">ZJIT: in its own words</h2>
+<section id="slide-org6a1b7d1" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org6a1b7d1">ZJIT: in its own words</h2>
 <p class="cap">
 ZJIT's own dump, trimmed: its <b>IR</b> (intermediate representation), the plan for the whole method. Each line: <code>name:type = operation inputs</code>.
 </p>
 
-<pre class="example" id="org284322e">
+<pre class="example" id="org50fe53c">
 fn distance@distance.rb:7:
 bb3(v15:BasicObject, v16:BasicObject, v17:BasicObject):
   v79:ObjectSubclass[class_exact:Point] = GuardType v16
@@ -459,9 +476,9 @@ if someone redefines Point#x.]
 </section>
 </section>
 <section>
-<section id="slide-org9055d54" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org9055d54">On five lines, nearly a tie</h2>
-<pre class="example" id="orgea92bbf">
+<section id="slide-orgf58a328" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="orgf58a328">On five lines, nearly a tie</h2>
+<pre class="example" id="orgbee87a1">
 YJIT                                      ZJIT
 # Insn: 0008 opt_minus (stack_size: 2)
 # guard arg0 fixnum                       v93:Fixnum = GuardType v83, Fixnum
@@ -509,10 +526,10 @@ ZJIT exists, we need something every Ruby codebase is full of.
 </section>
 </section>
 <section>
-<section id="slide-org69c53ea" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="org69c53ea">The plateau</h2>
+<section id="slide-org02d28c7" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org02d28c7">The plateau</h2>
 
-<div id="org323f7a2" class="figure">
+<div id="orgf892188" class="figure">
 <p><img src="img/out/plateau.svg" alt="Swim times flatten once straight legs are fast; in Ruby the time left is at method calls, which ZJIT can copy in" class="org-svg" />
 </p>
 </div>
@@ -545,8 +562,8 @@ Let's add one turn to our five lines, and watch both compilers take it.
 </section>
 </section>
 <section>
-<section id="slide-org8eba5e2" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org8eba5e2">One more call</h2>
+<section id="slide-org6f82f0c" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org6f82f0c">One more call</h2>
 <div class="org-src-container">
 
 <pre id="distance-v2"><code class="ruby" >def sq(n) = n * n
@@ -573,10 +590,10 @@ called sq.
 </section>
 </section>
 <section>
-<section id="slide-org85c8737" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="org85c8737">One more call is one more buoy</h2>
+<section id="slide-org0b516b2" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org0b516b2">One more call is one more buoy</h2>
 
-<div id="org7bfa7b4" class="figure">
+<div id="org05fa91a" class="figure">
 <p><img src="img/out/turn-buoy.svg" alt="One more call is one more turn buoy" class="org-svg" />
 </p>
 </div>
@@ -593,9 +610,9 @@ into distance. That's called inlining.
 </section>
 </section>
 <section>
-<section id="slide-org91c5c8e" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org91c5c8e">At the turn buoy</h2>
-<pre class="example" id="org4041c32">
+<section id="slide-org48b3bf6" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org48b3bf6">At the turn buoy</h2>
+<pre class="example" id="orgfb76cd5">
 YJIT                                     ZJIT
 # call to Object#sq                      PushInlineFrame :sq, v116, num_args=1
 # push callee control frame
@@ -651,10 +668,10 @@ is cheaper than a call, not free.]
 </section>
 </section>
 <section>
-<section id="slide-orgc574651" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="orgc574651">Why it's a ceiling</h2>
+<section id="slide-org2377590" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org2377590">Why it's a ceiling</h2>
 
-<div id="orgf711249" class="figure">
+<div id="org9533cce" class="figure">
 <p><img src="img/out/ceiling.svg" alt="Taking out a call means changing both sides at once; YJIT's blocks are already machine code, ZJIT's whole-method plan is still open to change" class="org-svg" />
 </p>
 </div>
@@ -704,10 +721,10 @@ more code at once to the optimizer".]
 </section>
 </section>
 <section>
-<section id="slide-orgaaa9f55" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="orgaaa9f55">The 2-beat kick</h2>
+<section id="slide-org36b32c2" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org36b32c2">The 2-beat kick</h2>
 
-<div id="org45fe5f9" class="figure">
+<div id="orgbed4f45" class="figure">
 <p><img src="img/out/two-beat-kick.svg" alt="Improving one kick at a time keeps all six; seeing the whole stroke lets you drop four. YJIT improves each block and the call stays; ZJIT sees the whole method and drops it" class="org-svg" />
 </p>
 </div>
@@ -734,8 +751,8 @@ word for that is the compilation unit.
 </section>
 </section>
 <section>
-<section id="slide-orgd85a1ec" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgd85a1ec">So, why build the second one?</h2>
+<section id="slide-org5e4666e" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org5e4666e">So, why build the second one?</h2>
 <ol>
 <li>The next gains need the <b>whole method as one plan</b>. A compiler that works block by block never has one.</li>
 <li>A more traditional compiler, so <b>more people can help build it</b>.</li>
@@ -792,9 +809,9 @@ contribute to").]
 </section>
 </section>
 <section>
-<section id="slide-org29e0635" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org29e0635">Race day: Rails params</h2>
-<pre class="example" id="org3fd2d27">
+<section id="slide-org4cff6b7" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org4cff6b7">Race day: Rails params</h2>
+<pre class="example" id="orgc6945ef">
 def [](key)
   super(convert_key(key))
 end
@@ -824,13 +841,13 @@ method calling a small method.
 </section>
 </section>
 <section>
-<section id="slide-org7003bc7" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org7003bc7">params, through both</h2>
+<section id="slide-org3dce922" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org3dce922">params, through both</h2>
 <p class="cap">
 YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</code>
 </p>
 
-<pre class="example" id="org2bd4360">
+<pre class="example" id="org9cce053">
 # call to ActiveSupport::HashWithIndifferentAccess#convert_key
 # push callee control frame
 # gen_direct_jmp: existing block
@@ -845,7 +862,7 @@ YJIT at <code>[]</code>: stops at the turn, a real call to <code>convert_key</co
 ZJIT at <code>[]</code>: takes it in stride, <code>convert_key</code> copied in
 </p>
 
-<pre class="example" id="org429e82d">
+<pre class="example" id="orgd2dbb50">
 PushInlineFrame :convert_key, v27, num_args=1
 v78:BoolExact = IsA v10, v43
 CondBranch v50, bb8(), bb7()
@@ -889,10 +906,10 @@ convert<sub>key</sub> into it and folds "Symbol <code>=</code> :id" away entirel
 </section>
 </section>
 <section>
-<section id="slide-orgc70edc8" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
-<h2 id="orgc70edc8">The feed stop</h2>
+<section id="slide-org84ff4f2" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat" class="diagram">
+<h2 id="org84ff4f2">The feed stop</h2>
 
-<div id="orgb333305" class="figure">
+<div id="orgd9282e5" class="figure">
 <p><img src="img/out/feed-stop.svg" alt="A feed stop: a better stroke doesn't make it shorter" class="org-svg" />
 </p>
 </div>
@@ -908,8 +925,8 @@ garbage collection. A JIT speeds up the swim, not the stop at the boat.
 </section>
 </section>
 <section>
-<section id="slide-org52f4146" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org52f4146">A glimpse: seven everyday lines</h2>
+<section id="slide-org0ba8d75" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org0ba8d75">A glimpse: seven everyday lines</h2>
 <p class="cap">
 Each line in its own method, called 100,000 times, default settings. Counting calls into Ruby methods: calls into C happen under both.
 </p>
@@ -1003,8 +1020,8 @@ And as it says at the bottom: inlined isn't free.
 </section>
 </section>
 <section>
-<section id="slide-orgb44bc1d" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgb44bc1d">Calm water, choppy water</h2>
+<section id="slide-org8e55007" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org8e55007">Calm water, choppy water</h2>
 <div class="org-src-container">
 
 <pre><code class="ruby" >def double(x) = x + x   # called with Integers only, or with five types
@@ -1015,7 +1032,7 @@ And as it says at the bottom: inlined isn't free.
 Calm water, only Integers: ZJIT copies <code>double</code> in, one check, one add. Choppy water, five types at the same spot. ZJIT plans for all five:
 </p>
 
-<pre class="example" id="org9dc7e45">
+<pre class="example" id="orge39dd64">
 PushInlineFrame :double, v23, num_args=1
 CondBranchHasType v10, ArrayExact, bb8(), bb9()
 v72:BasicObject = CCallWithFrame v37, :Array#+, v10
@@ -1081,8 +1098,8 @@ its fast stroke for the common wave. We didn't time which matters more.
 </section>
 </section>
 <section>
-<section id="slide-org74033d3" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org74033d3">Measured: the ZJIT team's results, and ours</h2>
+<section id="slide-orgdd89232" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="orgdd89232">Measured: the ZJIT team's results, and ours</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -1176,8 +1193,8 @@ hwia-yjit-stats and hwia-zjit-stats.]
 </section>
 </section>
 <section>
-<section id="slide-orgd0dbfbd" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="orgd0dbfbd">Read your own code</h2>
+<section id="slide-orgd08f717" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="orgd08f717">Read your own code</h2>
 <div class="org-src-container">
 
 <pre><code class="sh" >ruby -r ./your_file -e 'puts RubyVM::InstructionSequence.of(method(:m)).disasm'
@@ -1211,8 +1228,8 @@ is out of the compiler's reach.
 </section>
 </section>
 <section>
-<section id="slide-org10dade0" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org10dade0">What it means for Ruby</h2>
+<section id="slide-org3a0ecd2" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org3a0ecd2">What it means for Ruby</h2>
 <p>
 YJIT compiles Ruby a bit at a time, deciding as it goes; ZJIT plans a
 whole method at once, so it can see through small method calls and pay
@@ -1250,8 +1267,8 @@ it with &#x2013;zjit.
 </section>
 </section>
 <section>
-<section id="slide-org0ec66cc" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org0ec66cc">Head down</h2>
+<section id="slide-org9f440ec" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org9f440ec">Head down</h2>
 <p>
 <i>"Every time you lift your head, you slow down."</i>
 </p>
@@ -1285,8 +1302,8 @@ turns, and that's what the second compiler was built for. Thank you.
 </section>
 </section>
 <section>
-<section id="slide-org3155b80" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
-<h2 id="org3155b80">Sources</h2>
+<section id="slide-org4343788" data-background="img/sedin-branding.png" data-background-size="260px auto" data-background-position="right 150px bottom 22px" data-background-repeat="no-repeat">
+<h2 id="org4343788">Sources</h2>
 <div class="cap" style="display:grid;grid-template-columns:auto auto;column-gap:70px;width:fit-content;margin:10px auto 0;text-align:left;font-size:0.5em;line-height:1.55">
 <div>
 <p style="margin:0 0 6px"><b>The ZJIT team, Rails at Scale</b></p>
